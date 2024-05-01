@@ -1,17 +1,17 @@
 {
-  "name": "underoneroof",
+  "name": "express-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "backend.js",
   "scripts": {
-    "start": "cd packages/react-frontend/ && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "workspaces": [
-    "packages/*"
-  ],
+  "dependencies": {
+    "express": "^4.19.2"
+  },
   "devDependencies": {
     "nodemon": "^3.1.0"
   }
