@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import userServices from "./services/user-service.js";
+import choreServices from "./services/chore-services.js";
 
 const app = express();
 const port = 8000;
@@ -27,9 +28,33 @@ app.get("/users", (req, res) => {
     
 });
 
+app.get("/chores", (req, res) => {
+  const chore = req.query.chore;
+  const roommate = req.query.roommate;
+  let promise = choreServices.getChores(chore, roommate);
+  promise.then((result) => {
+    result = { chores_list: result };
+    res.send(result);
+  } )
+    
+});
+
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = userServices.findUserById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+
+app.get("/chores/:id", (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = choreServices.findChoreById(id);
   promise.then((result) => {
     if (result === undefined) {
       res.status(404).send("Resource not found.");
@@ -50,7 +75,19 @@ app.delete("/users/:id", (req, res) => {
       res.status(204).send();
     }
   })
-})
+});
+
+app.delete("/chores/:id", (req, res) => {
+  const id = req.params["id"];
+  let promise = choreServices.deleteChoreById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
 
 
 app.post("/users", (req, res) => {
@@ -58,6 +95,15 @@ app.post("/users", (req, res) => {
   const promise = userServices.addUser(userToAdd);
   promise.then((newUser) => {
     res.status(201).send(newUser);
+  })
+  
+});
+
+app.post("/chores", (req, res) => {
+  const choreToAdd = req.body;
+  const promise = choreServices.addChore(choreToAdd);
+  promise.then((newChore) => {
+    res.status(201).send(newChore);
   })
   
 });
