@@ -6,7 +6,8 @@ function TableHeader() {
     <thead>
       <tr>
         <th>date</th>
-        <th>Name</th>
+		<th>time</th>
+        <th>name</th>
         <th>Event</th>
 		<th>description</th>
         <th>Remove</th>
@@ -20,6 +21,7 @@ function TableBody(props) {
     return(
       <tr key = {index}>
         <td>{row.date}</td>
+		<td>{row.time}</td>
         <td>{row.name}</td>
         <td>{row.Event}</td>
 		<td>{row.description}</td>

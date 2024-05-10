@@ -3,6 +3,7 @@ import React, { useState } from "react";
 function Form(props) {
   const [person, setPerson] = useState({
     date: "",
+	time: "",
     name: "",
     Event: "",
 	description: "",
@@ -18,7 +19,7 @@ function Form(props) {
 
   function submitForm() {
     props.handleSubmit(person);
-    setPerson({ date: "", name: "", Event: "" , description: "" });
+    setPerson({ date: "", time: "", name: "", Event: "" , description: "" });
   }
 
   return (
@@ -28,6 +29,13 @@ function Form(props) {
         type="text"
         name="date"
         value={person.date}
+        onChange={handleChange}
+      />
+	  <label htmlFor="time">Time</label>
+      <input
+        type="text"
+        name="time"
+        value={person.time}
         onChange={handleChange}
       />
       <label htmlFor="name">Name</label>
@@ -51,7 +59,7 @@ function Form(props) {
         value={person.description}
         onChange={handleChange}
       />
-      <input type="button" value="Submit" onClick={submitForm} />
+      <input type="button" value="Add Event" onClick={submitForm} />
     </form>
   );
 }
