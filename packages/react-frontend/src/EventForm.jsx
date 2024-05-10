@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-function Form(props) {
+function EventForm(props) {
   const [person, setPerson] = useState({
     date: "",
-	time: "",
-    name: "",
+	Time: "",
+    Name: "",
     Event: "",
-	description: "",
+	Description: "",
   });
 
   function handleChange(event) {
@@ -19,7 +19,7 @@ function Form(props) {
 
   function submitForm() {
     props.handleSubmit(person);
-    setPerson({ date: "", time: "", name: "", Event: "" , description: "" });
+    setPerson({ date: "", Time: "", Name: "", Event: "" , Description: "" });
   }
 
   return (
@@ -31,18 +31,18 @@ function Form(props) {
         value={person.date}
         onChange={handleChange}
       />
-	  <label htmlFor="time">Time</label>
+	  <label htmlFor="Time">Time</label>
       <input
         type="text"
-        name="time"
-        value={person.time}
+        name="Time"
+        value={person.Time}
         onChange={handleChange}
       />
-      <label htmlFor="name">Name</label>
+      <label htmlFor="Name">Name</label>
       <input
         type="text"
-        name="name"
-        value={person.name}
+        name="Name"
+        value={person.Name}
         onChange={handleChange}
       />
       <label htmlFor="Event">Event</label>
@@ -52,11 +52,11 @@ function Form(props) {
         value={person.Event}
         onChange={handleChange}
       />
-	   <label htmlFor="description">Description</label>
+	   <label htmlFor="Description">Description</label>
       <input
         type="text"
-        name="description"
-        value={person.description}
+        name="Description"
+        value={person.Description}
         onChange={handleChange}
       />
       <input type="button" value="Add Event" onClick={submitForm} />
@@ -64,4 +64,4 @@ function Form(props) {
   );
 }
 
-export default Form;
+export default EventForm;

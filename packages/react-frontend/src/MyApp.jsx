@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Table from "./EventTable";
-import Form from "./EventForm";
+import EventTable from "./EventTable";
+import EventForm from "./EventForm";
 
 function MyApp() {
   const [characters, setCharacters] = useState([]);
@@ -16,11 +16,11 @@ function MyApp() {
 }
   return (
   <div className="container">
-    <Table
+    <EventTable
       characterData={characters}
       removeCharacter={removeOneCharacter}
     />
-  <Form handleSubmit={updateList} />
+  <EventForm handleSubmit={updateList} />
   </div>
   
 );
