@@ -1,5 +1,6 @@
 // src/MyApp.jsx
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Table from "./Table";
 import ChoreTable from "./ChoreTable";
 import Form from "./Form";
@@ -25,7 +26,50 @@ const initialcharacters = [
 ];
 
 function MyApp() {
+  const INVALID_TOKEN = "INVALID_TOKEN";
+  const [token, setToken] = useState(INVALID_TOKEN);
+  const [message, setMessage] = useState("");
   const [chores, setChores] = useState([]);
+
+  function addAuthHeader(otherHeaders = {}) {
+    if (token === INVALID_TOKEN) {
+      return otherHeaders;
+    } else {
+      return {
+        ...otherHeaders,
+        Authorization: `Bearer ${token}`
+      };
+    }
+  }
+
+  function signupUser(creds) {
+    const promise = fetch(`${API_PREFIX}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(creds)
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          response
+            .json()
+            .then((payload) => setToken(payload.token));
+          setMessage(
+            `Signup successful for user: ${creds.username}; auth token saved`
+          );
+        } else {
+          setMessage(
+            `Signup Error ${response.status}: ${response.data}`
+          );
+        }
+      })
+      .catch((error) => {
+        setMessage(`Signup Error: ${error}`);
+      });
+  
+    return promise;
+  }
 
   function removeOneChore(index) {
     const id = chores[index]._id
@@ -60,14 +104,25 @@ function MyApp() {
   }
 
   function fetchChores() {
-    const promise = fetch("http://localhost:8000/chores");
+    const promise = fetch(`${API_PREFIX}/chores`, {
+      headers: addAuthHeader()
+    });
+  
     return promise;
   }
 
   useEffect(() => {
     fetchChores()
-      .then((res) => res.json())
-      .then((json) => setChores(json["chores_list"]))
+      .then((res) =>
+        res.status === 200 ? res.json() : undefined
+      )
+      .then((json) => {
+        if (json) {
+          setChores(json["chores_list"]);
+        } else {
+          setChores(null);
+        }
+      })
       .catch((error) => { console.log(error); });
   }, [] );
 
@@ -92,13 +147,23 @@ function MyApp() {
   }
 
   return (
-    <div className = "container">
-      <ChoreTable 
-      choreData = {chores} 
-      removeChore = {removeOneChore}
-      />
-      <ChoreForm handleSubmit = {updateList}/>
-    </div>
+    <Router> 
+      <div className="container">
+        <Route
+          path="/login"
+          element={<Login handleSubmit={loginUser} />}
+        />
+        <Route
+          path="/signup"
+          element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
+        />
+        <ChoreTable
+          choreData = {chores} 
+          removeChore = {removeOneChore}
+        />
+        <ChoreForm handleSubmit={updateList} />
+      </div>
+    </Router>
   );
 }
 export default MyApp;

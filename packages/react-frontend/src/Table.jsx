@@ -15,6 +15,9 @@ function TableHeader() {
 }
 
 function TableBody(props) {
+  if(props.characterData === null) {
+    return <caption>Data Unavailable</caption>;
+  }
   const rows = props.characterData.map((row, index) => {
     return(
       <tr key = {index}>

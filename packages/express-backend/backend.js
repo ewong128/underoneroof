@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
+import { authenticateUser, registerUser } from "./auth.js";
 
 const app = express();
 const port = 8000;
@@ -17,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 
-app.get("/users", (req, res) => {
+app.get("/users", authenticateUser, (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
   let promise = userServices.getUsers(name, job);
@@ -28,7 +29,7 @@ app.get("/users", (req, res) => {
     
 });
 
-app.get("/chores", (req, res) => {
+app.get("/chores", authenticateUser, (req, res) => {
   const chore = req.query.chore;
   const roommate = req.query.roommate;
   let promise = choreServices.getChores(chore, roommate);
@@ -39,7 +40,7 @@ app.get("/chores", (req, res) => {
     
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = userServices.findUserById(id);
   promise.then((result) => {
@@ -52,7 +53,7 @@ app.get("/users/:id", (req, res) => {
   
 });
 
-app.get("/chores/:id", (req, res) => {
+app.get("/chores/:id", authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = choreServices.findChoreById(id);
   promise.then((result) => {
@@ -65,7 +66,7 @@ app.get("/chores/:id", (req, res) => {
   
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = userServices.deleteUserById(id);
   promise.then((result) => {
@@ -77,7 +78,7 @@ app.delete("/users/:id", (req, res) => {
   })
 });
 
-app.delete("/chores/:id", (req, res) => {
+app.delete("/chores/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = choreServices.deleteChoreById(id);
   promise.then((result) => {
@@ -89,8 +90,7 @@ app.delete("/chores/:id", (req, res) => {
   })
 });
 
-
-app.post("/users", (req, res) => {
+app.post("/users", authenticateUser, (req, res) => {
   const userToAdd = req.body;
   const promise = userServices.addUser(userToAdd);
   promise.then((newUser) => {
@@ -99,7 +99,7 @@ app.post("/users", (req, res) => {
   
 });
 
-app.post("/chores", (req, res) => {
+app.post("/chores", authenticateUser, (req, res) => {
   const choreToAdd = req.body;
   const promise = choreServices.addChore(choreToAdd);
   promise.then((newChore) => {
@@ -107,6 +107,10 @@ app.post("/chores", (req, res) => {
   })
   
 });
+
+app.post("/signup", registerUser);
+
+app.post("/login", registerUser);
 
 app.listen(port, () => {
   console.log(
