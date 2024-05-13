@@ -1,7 +1,6 @@
 // src/MyApp.jsx
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation, Navigate, Outlet } from "react-router-dom";
-import Table from "./Table";
 import ChoreTable from "./ChoreTable";
 import ChoreForm from "./ChoreForm";
 import Login from "./Login";
@@ -208,8 +207,13 @@ function updatecharacterList(person) {
         <ChoreTable
           choreData = {chores} 
           removeChore = {removeOneChore}
-        />
-        <ChoreForm handleSubmit={updateList} />
+          />
+          <ChoreForm handleSubmit={updateList} />
+          <EventTable
+            characterData={characters}
+            removeCharacter={removeOneCharacter}
+          />
+        <EventForm handleSubmit={updateList} />
       </div>
   );
 }

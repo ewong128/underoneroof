@@ -27,7 +27,7 @@ function EventForm(props) {
       <label htmlFor="date">Date</label>
       <input
         type="text"
-        name="date"
+        name="Date"
         value={person.date}
         onChange={handleChange}
       />
