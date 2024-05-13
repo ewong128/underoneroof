@@ -1,10 +1,11 @@
 // src/MyApp.jsx
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation, Navigate, Outlet } from "react-router-dom";
 import Table from "./Table";
 import ChoreTable from "./ChoreTable";
 import Form from "./Form";
 import ChoreForm from "./ChoreForm";
+import Login from "./Login";
 
 const initialcharacters = [
   {
@@ -43,7 +44,9 @@ function MyApp() {
   }
 
   function signupUser(creds) {
-    const promise = fetch(`${API_PREFIX}/signup`, {
+    const navigate = useNavigate();
+  
+    const promise = fetch("Http://localhost:8000/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -58,6 +61,7 @@ function MyApp() {
           setMessage(
             `Signup successful for user: ${creds.username}; auth token saved`
           );
+          navigate("/");
         } else {
           setMessage(
             `Signup Error ${response.status}: ${response.data}`
@@ -66,6 +70,33 @@ function MyApp() {
       })
       .catch((error) => {
         setMessage(`Signup Error: ${error}`);
+      });
+  
+    return promise;
+  }
+
+  function loginUser(creds) {
+    const promise = fetch("Http://localhost:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(creds)
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          response
+            .json()
+            .then((payload) => setToken(payload.token));
+          setMessage(`Login successful; auth token saved`);
+        } else {
+          setMessage(
+            `Login Error ${response.status}: ${response.data}`
+          );
+        }
+      })
+      .catch((error) => {
+        setMessage(`Login Error: ${error}`);
       });
   
     return promise;
@@ -104,7 +135,7 @@ function MyApp() {
   }
 
   function fetchChores() {
-    const promise = fetch(`${API_PREFIX}/chores`, {
+    const promise = fetch("Http://localhost:8000/chores", {
       headers: addAuthHeader()
     });
   
@@ -147,23 +178,23 @@ function MyApp() {
   }
 
   return (
-    <Router> 
       <div className="container">
-        <Route
-          path="/login"
-          element={<Login handleSubmit={loginUser} />}
-        />
-        <Route
-          path="/signup"
-          element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
-        />
+        <Routes> 
+          <Route
+            path="/login"
+            element={<Login handleSubmit={loginUser} />}
+          />
+          <Route
+            path="/signup"
+            element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
+          />
+        </Routes>
         <ChoreTable
           choreData = {chores} 
           removeChore = {removeOneChore}
         />
         <ChoreForm handleSubmit={updateList} />
       </div>
-    </Router>
   );
 }
 export default MyApp;

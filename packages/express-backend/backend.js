@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
-import { authenticateUser, registerUser } from "./auth.js";
+import { authenticateUser, registerUser, loginUser } from "./auth.js";
 
 const app = express();
 const port = 8000;
@@ -110,7 +110,7 @@ app.post("/chores", authenticateUser, (req, res) => {
 
 app.post("/signup", registerUser);
 
-app.post("/login", registerUser);
+app.post("/login", loginUser);
 
 app.listen(port, () => {
   console.log(

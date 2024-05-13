@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 function Login(props) {
+  console.log("handleSubmit prop:", props.handleSubmit);
+
   const [creds, setCreds] = useState({
     username: "",
     pwd: ""
@@ -8,9 +10,26 @@ function Login(props) {
 
   const { mode } = props;
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+    switch (name) {
+      case "username":
+        setCreds({ ...creds, username: value });
+        break;
+      case "password":
+        setCreds({ ...creds, pwd: value });
+        break;
+    }
+  }
+
+  function submitForm() {
+    props.handleSubmit(creds);
+    setCreds({ username: "", pwd: "" });
+  }
+
   return (
     <div className="login-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
-      <label htmlFor="title">UnderOneRoof</label>
+      <label>UnderOneRoof</label>
       <form style={{ width: "50%" }}>
         <label htmlFor="username">Username</label>
         <input
@@ -39,22 +58,5 @@ function Login(props) {
       </form>
     </div>
   );  
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-    switch (name) {
-      case "username":
-        setCreds({ ...creds, username: value });
-        break;
-      case "password":
-        setCreds({ ...creds, pwd: value });
-        break;
-    }
-  }
-
-  function submitForm() {
-    props.handleSubmit(creds);
-    setCreds({ username: "", pwd: "" });
-  }
 }
 export default Login;
