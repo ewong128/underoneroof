@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function Login(props) {
-  console.log("handleSubmit prop:", props.handleSubmit);
+  //console.log("handleSubmit prop:", props.handleSubmit);
 
   const [creds, setCreds] = useState({
     username: "",
@@ -23,6 +23,7 @@ function Login(props) {
   }
 
   function submitForm() {
+    console.log(props);
     props.handleSubmit(creds);
     setCreds({ username: "", pwd: "" });
   }
