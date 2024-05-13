@@ -4,8 +4,8 @@ import React, { useState } from "react";
 function ChoreForm(props) {
     const [chore, setChore] = useState({
         chore: "",
-        Roommate: "",
-        Day: ""
+        roommate: "",
+        day: ""
     });
 
     function handleChange(event) {

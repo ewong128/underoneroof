@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation, Navigate, Outlet } from "react-router-dom";
 import Table from "./Table";
 import ChoreTable from "./ChoreTable";
-import Form from "./Form";
 import ChoreForm from "./ChoreForm";
 import Login from "./Login";
+import EventTable from "./EventTable";
+import EventForm from "./EventForm";
 
 const initialcharacters = [
   {
@@ -101,7 +102,16 @@ function MyApp() {
   
     return promise;
   }
+  const [characters, setCharacters] = useState([]);
+   
 
+  function removeOneCharacter(index) {
+    const updated = characters.filter((character, i) => {
+      return i !== index;
+	  
+	  });
+    setCharacters(updated);
+  }
   function removeOneChore(index) {
     const id = chores[index]._id
 
@@ -134,6 +144,9 @@ function MyApp() {
       })
   }
 
+function updatecharacterList(person) {
+  setCharacters([...characters, person]);
+}
   function fetchChores() {
     const promise = fetch("Http://localhost:8000/chores", {
       headers: addAuthHeader()
@@ -164,11 +177,12 @@ function MyApp() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(chore),
-    });
+});
 
     return promise;
   }
-
+  
+  
   function deleteChore(id){
     const promise = fetch("Http://localhost:8000/chores/" + id, {
       method: "DELETE",
@@ -176,6 +190,8 @@ function MyApp() {
 
     return promise;
   }
+
+
 
   return (
       <div className="container">
@@ -197,4 +213,6 @@ function MyApp() {
       </div>
   );
 }
+
 export default MyApp;
+

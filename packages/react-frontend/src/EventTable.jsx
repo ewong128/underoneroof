@@ -5,9 +5,11 @@ function TableHeader() {
   return (
     <thead>
       <tr>
-        <th>ID</th>
+        <th>date</th>
+		<th>Time</th>
         <th>Name</th>
-        <th>Job</th>
+        <th>Event</th>
+		<th>Description</th>
         <th>Remove</th>
       </tr>
     </thead>
@@ -21,9 +23,11 @@ function TableBody(props) {
   const rows = props.characterData.map((row, index) => {
     return(
       <tr key = {index}>
-        <td>{row._id}</td>
-        <td>{row.name}</td>
-        <td>{row.job}</td>
+        <td>{row.date}</td>
+		<td>{row.Time}</td>
+        <td>{row.Name}</td>
+        <td>{row.Event}</td>
+		<td>{row.Description}</td>
         <td>
           <button onClick={() => props.removeCharacter(index)}>
             Delete
@@ -40,7 +44,7 @@ function TableBody(props) {
   );
 }
 
-function Table(props) {
+function EventTable(props) {
   return (
     <table>
       <TableHeader />
@@ -52,4 +56,4 @@ function Table(props) {
   );
 }
 
-export default Table;
+export default EventTable;
