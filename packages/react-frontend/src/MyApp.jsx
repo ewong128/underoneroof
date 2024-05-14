@@ -167,7 +167,7 @@ function updatecharacterList(person) {
         }
       })
       .catch((error) => { console.log(error); });
-  }, [] );
+  }, [token] );
 
   function postChore(chore) {
     const promise = fetch("Http://localhost:8000/chores", {
