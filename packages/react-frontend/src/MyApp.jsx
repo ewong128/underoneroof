@@ -150,7 +150,7 @@ function updatecharacterList(person) {
         }
       })
       .catch((error) => { console.log(error); });
-  }, [] );
+  }, [token] );
 
   useEffect(() => {
     // Check if the user is logged in
