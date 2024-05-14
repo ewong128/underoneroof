@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 function EventForm(props) {
   const [person, setPerson] = useState({
-    date: "",
-	Time: "",
+    Date: "",
+    Time: "",
     Name: "",
     Event: "",
-	Description: "",
+    Description: "",
   });
 
   function handleChange(event) {
@@ -19,22 +19,24 @@ function EventForm(props) {
 
   function submitForm() {
     props.handleSubmit(person);
-    setPerson({ date: "", Time: "", Name: "", Event: "" , Description: "" });
+    setPerson({ Date: "", Time: "", Name: "", Event: "" , Description: "" });
   }
 
   return (
     <form>
-      <label htmlFor="date">Date</label>
+      <label htmlFor="Date">Date</label>
       <input
         type="text"
         name="Date"
-        value={person.date}
+        id="Date"
+        value={person.Date}
         onChange={handleChange}
       />
 	  <label htmlFor="Time">Time</label>
       <input
         type="text"
         name="Time"
+        id="Time"
         value={person.Time}
         onChange={handleChange}
       />
@@ -42,6 +44,7 @@ function EventForm(props) {
       <input
         type="text"
         name="Name"
+        id="Name"
         value={person.Name}
         onChange={handleChange}
       />
@@ -49,6 +52,7 @@ function EventForm(props) {
       <input
         type="text"
         name="Event"
+        id="Event"
         value={person.Event}
         onChange={handleChange}
       />
@@ -56,6 +60,7 @@ function EventForm(props) {
       <input
         type="text"
         name="Description"
+        id="Description"
         value={person.Description}
         onChange={handleChange}
       />

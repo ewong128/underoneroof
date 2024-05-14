@@ -108,6 +108,10 @@ function MyApp() {
       })
   }
 
+  function updatecharacterList(person) {
+    setCharacters([...characters, person]);
+  }
+
   function updateList(chore){
     postChore(chore)
       .then((res) => {
@@ -216,7 +220,7 @@ function updatecharacterList(person) {
                 characterData={characters}
                 removeCharacter={removeOneCharacter}
               />
-              <EventForm handleSubmit={updateList} />
+              <EventForm handleSubmit={updatecharacterList} />
             </> } 
           />
       </Routes>
