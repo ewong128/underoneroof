@@ -162,9 +162,9 @@ function updatecharacterList(person) {
   function postChore(chore) {
     const promise = fetch("Http://localhost:8000/chores", {
       method: "POST",
-      headers: {
+      headers: addAuthHeader({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify(chore),
 });
 
@@ -175,6 +175,7 @@ function updatecharacterList(person) {
   function deleteChore(id){
     const promise = fetch("Http://localhost:8000/chores/" + id, {
       method: "DELETE",
+      headers: addAuthHeader()
     })
 
     return promise;
