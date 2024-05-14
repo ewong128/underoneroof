@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function Login(props) {
-  console.log("handleSubmit prop:", props.handleSubmit);
 
   const [creds, setCreds] = useState({
     username: "",
@@ -23,6 +22,7 @@ function Login(props) {
   }
 
   function submitForm() {
+    //debugger;
     props.handleSubmit(creds);
     setCreds({ username: "", pwd: "" });
   }
@@ -51,7 +51,7 @@ function Login(props) {
         />
         <input
           type="button"
-          value={mode === "login" ? "Log In" : "Sign Up"}
+          value={props.buttonLabel || "Log In"}
           onClick={submitForm}
           style={{ width: "100%", marginTop: "10px" }}
         />

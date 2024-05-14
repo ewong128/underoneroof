@@ -16,6 +16,7 @@
     "nodemon": "^3.1.0"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "mongoose": "^8.3.3",
