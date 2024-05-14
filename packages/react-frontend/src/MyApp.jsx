@@ -31,6 +31,8 @@ function MyApp() {
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
   const [chores, setChores] = useState([]);
+  const [characters, setCharacters] = useState([]);
+  const navigate = useNavigate();
 
   function addAuthHeader(otherHeaders = {}) {
     if (token === INVALID_TOKEN) {
@@ -44,8 +46,6 @@ function MyApp() {
   }
 
   function signupUser(creds) {
-    const navigate = useNavigate();
-  
     const promise = fetch("Http://localhost:8000/signup", {
       method: "POST",
       headers: {
@@ -89,6 +89,7 @@ function MyApp() {
             .json()
             .then((payload) => setToken(payload.token));
           setMessage(`Login successful; auth token saved`);
+          navigate("/");
         } else {
           setMessage(
             `Login Error ${response.status}: ${response.data}`
@@ -100,9 +101,7 @@ function MyApp() {
       });
   
     return promise;
-  }
-  const [characters, setCharacters] = useState([]);
-   
+  }   
 
   function removeOneCharacter(index) {
     const updated = characters.filter((character, i) => {
@@ -111,6 +110,7 @@ function MyApp() {
 	  });
     setCharacters(updated);
   }
+
   function removeOneChore(index) {
     const id = chores[index]._id
 
@@ -201,20 +201,24 @@ function updatecharacterList(person) {
           />
           <Route
             path="/signup"
-            element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
+            element={<Login handleSubmit={signupUser} buttonLabel = "Sign Up" />}
           />
-        </Routes>
-        <ChoreTable
-          choreData = {chores} 
-          removeChore = {removeOneChore}
-          />
-          <ChoreForm handleSubmit={updateList} />
-          <EventTable
-            characterData={characters}
-            removeCharacter={removeOneCharacter}
-          />
-        <EventForm handleSubmit={updateList} />
-      </div>
+          <Route 
+            path="/" 
+            element={<>
+              <ChoreTable
+                choreData={chores}
+                removeChore={removeOneChore}
+              />
+              <ChoreForm handleSubmit={updateList} />
+              <EventTable
+                characterData={characters}
+                removeCharacter={removeOneCharacter}
+              />
+              <EventForm handleSubmit={updateList} />
+        </>} />
+      </Routes>
+    </div>
   );
 }
 

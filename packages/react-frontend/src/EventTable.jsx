@@ -5,7 +5,7 @@ function TableHeader() {
   return (
     <thead>
       <tr>
-        <th>date</th>
+        <th>Date</th>
 		<th>Time</th>
         <th>Name</th>
         <th>Event</th>

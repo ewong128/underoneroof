@@ -11,18 +11,18 @@ import "./main.css";
 
 const router = createBrowserRouter([
     {
-      path: "/",
+      path: "*",
       element: <div><MyApp /></div>,
       errorElement: <ErrorPage />,
     },
-    {
-        path: "/login",
-        element: <Login mode="login"/>,
-    },
-    {
-        path: "/signup",
-        element: <Login mode="signup" />,
-    }
+    // {
+    //     path: "/login",
+    //     element: <Login mode="login"/>,
+    // },
+    // {
+    //     path: "/signup",
+    //     element: <Login mode="signup" />,
+    // }
   ]);
 
 // Create the container
