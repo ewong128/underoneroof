@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Login(props) {
 
@@ -56,6 +57,11 @@ function Login(props) {
           style={{ width: "100%", marginTop: "10px" }}
         />
       </form>
+      {location.pathname === "/login" && (
+        <p>
+          Don't have an account? <Link to="/signup">Sign Up</Link>
+        </p>
+      )}
     </div>
   );  
 }

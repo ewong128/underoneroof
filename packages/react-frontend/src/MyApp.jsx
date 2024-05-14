@@ -7,29 +7,11 @@ import Login from "./Login";
 import EventTable from "./EventTable";
 import EventForm from "./EventForm";
 
-const initialcharacters = [
-  {
-    name: "Charlie",
-    job: "Janitor"
-  },
-  {
-    name: "Mac",
-    job: "Bouncer"
-  },
-  {
-    name: "Dee",
-    job: "Aspring actress"
-  },
-  {
-    name: "Dennis",
-    job: "Bartender"
-  }
-];
-
 function MyApp() {
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [chores, setChores] = useState([]);
   const [characters, setCharacters] = useState([]);
   const navigate = useNavigate();
@@ -89,6 +71,7 @@ function MyApp() {
             .json()
             .then((payload) => setToken(payload.token));
           setMessage(`Login successful; auth token saved`);
+          setIsLoggedIn(true);
           navigate("/");
         } else {
           setMessage(
@@ -169,6 +152,18 @@ function updatecharacterList(person) {
       .catch((error) => { console.log(error); });
   }, [] );
 
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+    if (!token) {
+      // If not logged in, redirect to the login page
+      navigate("/login");
+    } else {
+      // If logged in, set the state to true
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   function postChore(chore) {
     const promise = fetch("Http://localhost:8000/chores", {
       method: "POST",
@@ -194,6 +189,16 @@ function updatecharacterList(person) {
 
   return (
       <div className="container">
+        {/* <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        </ul>
+      </nav> */}
         <Routes> 
           <Route
             path="/login"
@@ -204,7 +209,7 @@ function updatecharacterList(person) {
             element={<Login handleSubmit={signupUser} buttonLabel = "Sign Up" />}
           />
           <Route 
-            path="/" 
+            path="/"
             element={<>
               <ChoreTable
                 choreData={chores}
@@ -216,7 +221,8 @@ function updatecharacterList(person) {
                 removeCharacter={removeOneCharacter}
               />
               <EventForm handleSubmit={updateList} />
-        </>} />
+            </> } 
+          />
       </Routes>
     </div>
   );
