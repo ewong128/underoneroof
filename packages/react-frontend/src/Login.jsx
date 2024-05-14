@@ -9,6 +9,7 @@ function Login(props) {
   });
 
   const { mode } = props;
+  const welcomeMessage = location.pathname === "/login" ? "Welcome back!" : "Create an account with us!";
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -30,7 +31,8 @@ function Login(props) {
 
   return (
     <div className="login-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
-      <label>UnderOneRoof</label>
+      <h1>UnderOneRoof</h1>
+      <p style={{ fontSize: "1rem", fontWeight: "300" }}>{welcomeMessage}</p>
       <form style={{ width: "50%" }}>
         <label htmlFor="username">Username</label>
         <input

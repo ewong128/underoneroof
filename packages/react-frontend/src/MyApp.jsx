@@ -11,7 +11,6 @@ function MyApp() {
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [chores, setChores] = useState([]);
   const [characters, setCharacters] = useState([]);
   const navigate = useNavigate();
@@ -71,7 +70,6 @@ function MyApp() {
             .json()
             .then((payload) => setToken(payload.token));
           setMessage(`Login successful; auth token saved`);
-          setIsLoggedIn(true);
           navigate("/");
         } else {
           setMessage(
@@ -154,14 +152,11 @@ function updatecharacterList(person) {
 
   useEffect(() => {
     // Check if the user is logged in
-    const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+    const token = localStorage.getItem("token"); 
+    // If not logged in, redirect to the login page
     if (!token) {
-      // If not logged in, redirect to the login page
       navigate("/login");
-    } else {
-      // If logged in, set the state to true
-      setIsLoggedIn(true);
-    }
+    } 
   }, []);
 
   function postChore(chore) {
