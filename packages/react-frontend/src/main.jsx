@@ -6,23 +6,14 @@ import {
   } from "react-router-dom";
 import MyApp from "./MyApp";
 import ErrorPage from "./error-page";
-import Login from "./Login";
 import "./main.css";
 
 const router = createBrowserRouter([
     {
       path: "*",
       element: <div><MyApp /></div>,
-      errorElement: <ErrorPage />,
+      errorElement: <ErrorPage />
     },
-    // {
-    //     path: "/login",
-    //     element: <Login mode="login"/>,
-    // },
-    // {
-    //     path: "/signup",
-    //     element: <Login mode="signup" />,
-    // }
   ]);
 
 // Create the container

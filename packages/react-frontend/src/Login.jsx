@@ -10,6 +10,7 @@ function Login(props) {
 
   const { mode } = props;
   const welcomeMessage = location.pathname === "/login" ? "Welcome back!" : "Create an account with us!";
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -25,12 +26,24 @@ function Login(props) {
 
   function submitForm() {
     //debugger;
-    props.handleSubmit(creds);
+    props.handleSubmit(creds)
+      .then(response => {
+        if (response.status === 401) {
+          setErrorMessage("Invalid credentials.");
+        } else {
+          // Reset error message if login succeeds
+          setErrorMessage("");
+        }
+      })
+      .catch(error => {
+        setErrorMessage("Invalid credentials.");
+      });
     setCreds({ username: "", pwd: "" });
   }
 
   return (
-    <div className="login-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
+    <div className="login-container" 
+    style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
       <h1>UnderOneRoof</h1>
       <p style={{ fontSize: "1rem", fontWeight: "300" }}>{welcomeMessage}</p>
       <form style={{ width: "50%" }}>
@@ -59,6 +72,7 @@ function Login(props) {
           style={{ width: "100%", marginTop: "10px" }}
         />
       </form>
+      {errorMessage && !(location.pathname == "/signup") && <p>{errorMessage}</p>}
       {location.pathname === "/login" && (
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>
