@@ -6,7 +6,6 @@
   import Login from "./routes/Login";
   import EventTable from "./routes/EventTable";
   import EventForm from "./routes/EventForm";
-  import Sidebar from "./components/Sidebar";
 
   function MyApp() {
     const INVALID_TOKEN = "INVALID_TOKEN";
