@@ -8,12 +8,6 @@ import { authenticateUser, registerUser, loginUser } from "./auth.js";
 const app = express();
 const port = 8000;
 
-const users = {
-    users_list: [
-        
-    ]
-};
-
 app.use(cors());
 app.use(express.json());
 
