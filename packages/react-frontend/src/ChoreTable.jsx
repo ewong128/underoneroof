@@ -8,6 +8,8 @@ function TableHeader() {
         <th>Chore</th>
         <th>Assigned to</th>
         <th>Day of the Week</th>
+        <th>Status</th>
+        <th>Completed</th>
         <th>Delete</th>
       </tr>
     </thead>
@@ -24,6 +26,10 @@ function TableBody(props) {
         <td>{row.chore}</td>
         <td>{row.roommate}</td>
         <td>{row.day}</td>
+        <td>{row.status}</td>
+        <td>
+          <input type="checkbox" id="completed" name="completed" onClick={() => props.updateChoreStatus(index)}/>
+        </td>
         <td>
           <button onClick={() => props.removeChore(index)}>
             Delete
@@ -47,6 +53,7 @@ function ChoreTable(props) {
       <TableBody 
       choreData = {props.choreData}
       removeChore = {props.removeChore}
+      updateChoreStatus = {props.updateChoreStatus}
       />
     </table>
   );

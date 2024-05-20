@@ -78,6 +78,18 @@ app.delete("/users/:id", authenticateUser, (req, res) => {
   })
 });
 
+app.put("/chores/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = choreServices.updateChoreById(id, req.body);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(200).send(result);
+    }
+  })
+});
+
 app.delete("/chores/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = choreServices.deleteChoreById(id);
