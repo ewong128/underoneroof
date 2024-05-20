@@ -63,7 +63,7 @@ export function authenticateUser(req, res, next) {
     const authHeader = req.headers["authorization"];
     //Getting the 2nd part of the auth header (the token)
     const token = authHeader && authHeader.split(" ")[1];
-  
+    console.log('authenticate user')
     if (!token) {
       console.log("No token received");
       res.status(401).end();
@@ -88,14 +88,13 @@ export function loginUser(req, res) {
     //find user creds in database
     userServices.findUserByName(
       username
-    ).then((user) => {
-      
-      const retrievedUser = user;
+    ).then((array) => {
   
-      if (!retrievedUser) {
+      if (array.length === 0) {
         // invalid username
         res.status(401).send("Unauthorized");
       } else {
+        const retrievedUser = array[0];
         bcrypt
           .compare(pwd, retrievedUser.hashedPassword)
           .then((matched) => {

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {useEffect} from "react";
 
 function Login(props) {
 
+  const  navigate = useNavigate()
   const [creds, setCreds] = useState({
     username: "",
     pwd: ""

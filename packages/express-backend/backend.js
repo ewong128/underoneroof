@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
+import groupServices from "./services/group-services.js"
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
 
 const app = express();
@@ -95,6 +96,15 @@ app.post("/users", authenticateUser, (req, res) => {
   const promise = userServices.addUser(userToAdd);
   promise.then((newUser) => {
     res.status(201).send(newUser);
+  })
+  
+});
+
+app.post("/groups", authenticateUser, (req, res) => {
+  const groupToAdd = req.body;
+  const promise = groupServices.addGroup(groupToAdd);
+  promise.then((newGroup) => {
+    res.status(201).send(newGroup);
   })
   
 });

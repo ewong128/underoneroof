@@ -6,6 +6,7 @@ import ChoreForm from "./ChoreForm";
 import Login from "./Login";
 import EventTable from "./EventTable";
 import EventForm from "./EventForm";
+import GroupForm from "./GroupForm";
 
 function MyApp() {
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -19,6 +20,7 @@ function MyApp() {
     if (token === INVALID_TOKEN) {
       return otherHeaders;
     } else {
+      console.log("before header")
       return {
         ...otherHeaders,
         Authorization: `Bearer ${token}`
@@ -42,7 +44,7 @@ function MyApp() {
           setMessage(
             `Signup successful for user: ${creds.username}; auth token saved`
           );
-          navigate("/");
+          navigate("/createGroup");
         } else {
           setMessage(
             `Signup Error ${response.status}: ${response.data}`
@@ -82,7 +84,36 @@ function MyApp() {
       });
   
     return promise;
-  }   
+  }  
+  
+  function createGroup(group) {
+    const promise = fetch("Http://localhost:8000/groups", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify(group)
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response)
+          response
+            .json()
+            .then((payload) => setToken(payload.token));
+          setMessage(`Group successfully created; auth token saved`);
+          navigate("/");
+        } else {
+          setMessage(
+            `Login Error ${response.status}: ${response.data}`
+          );
+        }
+      })
+      .catch((error) => {
+        setMessage(`Login Error: ${error}`);
+      });
+  
+    return promise;
+  }  
 
   function removeOneCharacter(index) {
     const updated = characters.filter((character, i) => {
@@ -207,6 +238,10 @@ function updatecharacterList(person) {
           <Route
             path="/signup"
             element={<Login handleSubmit={signupUser} buttonLabel = "Sign Up" />}
+          />
+          <Route
+            path="/createGroup"
+            element={<GroupForm handleSubmit={createGroup} buttonLabel = "Create Group" />}
           />
           <Route 
             path="/"
