@@ -101,33 +101,35 @@
     }  
   
   function createGroup(group) {
-    const promise = fetch("Http://localhost:8000/groups", {
+    const promise = fetch("http://localhost:8000/groups", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
       }),
       body: JSON.stringify(group)
     })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response)
-          response
-            .json()
-            .then((payload) => setToken(payload.token));
-          setMessage(`Group successfully created; auth token saved`);
-          navigate("/");
-        } else {
-          setMessage(
-            `Login Error ${response.status}: ${response.data}`
-          );
-        }
-      })
-      .catch((error) => {
-        setMessage(`Login Error: ${error}`);
-      });
-  
+    .then(response => {
+      if (response.status === 201) {
+        return response.json();
+      } else {
+        return response.json().then(data => {
+          throw new Error(data.message || `Error ${response.status}`);
+        });
+      }
+    })
+    .then(payload => {
+      setMessage("Group successfully created.");
+      console.log("Group creation successful, navigating to home."); // Debugging line
+      navigate("/"); // Correctly navigate to the home page
+    })
+    .catch(error => {
+      setMessage(`Group Creation Error: ${error.message}`);
+      console.error("Group creation error:", error); // Debugging line
+    });
+
     return promise;
-  }  
+  }
+ 
 
     function removeOneCharacter(index) {
       const updated = characters.filter((character, i) => {
@@ -173,9 +175,10 @@
         })
     }
 
-  function updatecharacterList(person) {
-    setCharacters([...characters, person]);
-  }
+    function updatecharacterList(person) {
+      setCharacters([...characters, person]);
+    }
+    
     function fetchChores() {
       const promise = fetch("Http://localhost:8000/chores", {
         headers: addAuthHeader()
@@ -248,8 +251,8 @@
             <Route
             path="/createGroup"
             element={<GroupForm handleSubmit={createGroup} buttonLabel = "Create Group" />}
-          />
-          <Route 
+            />
+            <Route 
               path="/"
               element={<>
                 <button className="logout-button" onClick={handleLogout}> Logout </button>
