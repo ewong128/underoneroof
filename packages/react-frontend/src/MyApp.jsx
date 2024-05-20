@@ -18,9 +18,12 @@
 
     function addAuthHeader(otherHeaders = {}) {
       const storedToken = localStorage.getItem("token");
+      console.log("in auth header")
       if (!storedToken || storedToken === INVALID_TOKEN) {
+        console.log('no stored token found"')
         return otherHeaders;
       } else {
+        console.log("token in header")
         return {
           ...otherHeaders,
           Authorization: `Bearer ${storedToken}`
@@ -100,7 +103,7 @@
       return promise;
     }  
   
-  function createGroup(group) {
+  function createGroup(group, rememberMe) {
     const promise = fetch("Http://localhost:8000/groups", {
       method: "POST",
       headers: addAuthHeader({
@@ -108,24 +111,20 @@
       }),
       body: JSON.stringify(group)
     })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response)
-          response
-            .json()
-            .then((payload) => setToken(payload.token));
-          setMessage(`Group successfully created; auth token saved`);
-          navigate("/");
-        } else {
-          setMessage(
-            `Login Error ${response.status}: ${response.data}`
-          );
-        }
-      })
-      .catch((error) => {
-        setMessage(`Login Error: ${error}`);
-      });
-  
+    .then((res) => {
+      if(res.status === 201)
+        return res.json()})
+    .then((json) => {
+      if (json){
+        setGroup([...groups, json])
+        navigate("/")
+      }
+      
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+      
     return promise;
   }  
 
