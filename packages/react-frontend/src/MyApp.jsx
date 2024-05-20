@@ -24,18 +24,28 @@ const initialcharacters = [
   }
 ];
 
+
 function MyApp() {
   const [chores, setChores] = useState([]);
-  const [characters, setCharacters] = useState([]);
+  const [events, setEvents] = useState([]);
    
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-	  
-	  });
-    setCharacters(updated);
+  function removeOneEvent(index) {
+    const date = events[index]._id
+
+    deleteEvents(id)
+      .then((res) => {
+        if(res.status === 204){
+          const updated = events.filter((events, i) => {
+            return i !== index;
+          })
+          setEvents(updated);
+        }})
+      .catch((error) => {
+        console.log(error)
+      })
   }
+  
   function removeOneChore(index) {
     const id = chores[index]._id
 
@@ -68,13 +78,26 @@ function MyApp() {
       })
   }
 
-function updatecharacterList(person) {
-  setCharacters([...characters, person]);
+function updateEventList(events) {
+  postEvent(events)
+      .then((res) => {
+        if(res.status === 201)
+          return res.json()})
+      .then((json) => {
+        if (json){
+          setEvents([...events, json])
+        }
+        
+      })
+      .catch((error) => {
+        console.log(error);
+      })
 }
   function fetchChores() {
     const promise = fetch("http://localhost:8000/chores");
     return promise;
   }
+ 
 
   useEffect(() => {
     fetchChores()
@@ -82,6 +105,23 @@ function updatecharacterList(person) {
       .then((json) => setChores(json["chores_list"]))
       .catch((error) => { console.log(error); });
   }, [] );
+
+ function fetchEvents() {
+    const promise = fetch("http://localhost:8000/events");
+    return promise;
+  }
+ 
+
+  useEffect(() => {
+    fetchEvents()
+      .then((res) => res.json())
+      .then((json) => setEvents(json["events_list"]))
+      .catch((error) => { console.log(error); });
+  }, [] );
+
+
+
+
 
   function postChore(chore) {
     const promise = fetch("Http://localhost:8000/chores", {
@@ -95,9 +135,30 @@ function updatecharacterList(person) {
     return promise;
   }
   
+  function postEvent(events) {
+    const promise = fetch("Http://localhost:8000/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(events),
+});
+
+    return promise;
+  }
+  
   
   function deleteChore(id){
     const promise = fetch("Http://localhost:8000/chores/" + id, {
+      method: "DELETE",
+    })
+
+    return promise;
+  }
+
+
+ function deleteEvent(id){
+    const promise = fetch("Http://localhost:8000/events/" + id, {
       method: "DELETE",
     })
 
@@ -114,10 +175,10 @@ function updatecharacterList(person) {
       />
       <ChoreForm handleSubmit = {updateList}/>
     <EventTable
-      characterData={characters}
-      removeCharacter={removeOneCharacter}
+      eventData={events}
+      removeEvents={removeOneEvent}
     />
-  <EventForm handleSubmit={updateList} />
+  <EventForm handleSubmit={updateEventList} />
   </div>
   
 );

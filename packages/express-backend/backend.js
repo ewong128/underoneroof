@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
+import eventsServices from "./services/event-services.js";
+
 
 const app = express();
 const port = 8000;
@@ -39,6 +41,17 @@ app.get("/chores", (req, res) => {
     
 });
 
+app.get("/events", (req, res) => {
+  const events = req.query.events;
+  const name = req.query.name;
+  let promise = eventsServices.getEvents(events, name);
+  promise.then((result) => {
+    result = { events_list: result };
+    res.send(result);
+  } )
+    
+});
+
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = userServices.findUserById(id);
@@ -55,6 +68,18 @@ app.get("/users/:id", (req, res) => {
 app.get("/chores/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = choreServices.findChoreById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+app.get("/events/:id", (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = eventsServices.findEventById(id);
   promise.then((result) => {
     if (result === undefined) {
       res.status(404).send("Resource not found.");
@@ -89,6 +114,18 @@ app.delete("/chores/:id", (req, res) => {
   })
 });
 
+app.delete("/events/:id", (req, res) => {
+  const id = req.params["id"];
+  let promise = eventServices.deleteEventById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
@@ -104,6 +141,15 @@ app.post("/chores", (req, res) => {
   const promise = choreServices.addChore(choreToAdd);
   promise.then((newChore) => {
     res.status(201).send(newChore);
+  })
+  
+});
+
+app.post("/events", (req, res) => {
+  const eventToAdd = req.body;
+  const promise = eventsServices.addEvent(eventToAdd);
+  promise.then((newEvent) => {
+    res.status(201).send(newEvent);
   })
   
 });

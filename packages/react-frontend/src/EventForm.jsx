@@ -1,25 +1,29 @@
 import React, { useState } from "react";
 
 function EventForm(props) {
-  const [person, setPerson] = useState({
+  const [events, setEvents] = useState({
     date: "",
-	Time: "",
-    Name: "",
-    Event: "",
-	Description: "",
+	time: "",
+    name: "",
+    events: "",
+	description: "",
   });
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setPerson(prevPerson => ({
-      ...prevPerson,
+
+  function handleChange(events) {
+    const { name, value } = events.target;
+	
+	 setEvents(prevEvents => ({
+      ...prevEvents,
       [name]: value
     }));
+
+ 
   }
 
   function submitForm() {
-    props.handleSubmit(person);
-    setPerson({ date: "", Time: "", Name: "", Event: "" , Description: "" });
+    props.handleSubmit(events);
+    setEvents({ date: "", time: "", name: "", events: "" , description: "" });
   }
 
   return (
@@ -28,35 +32,35 @@ function EventForm(props) {
       <input
         type="text"
         name="date"
-        value={person.date}
+        value={events.date}
         onChange={handleChange}
       />
-	  <label htmlFor="Time">Time</label>
+	  <label htmlFor="time">Time</label>
       <input
         type="text"
-        name="Time"
-        value={person.Time}
+        name="time"
+        value={events.time}
         onChange={handleChange}
       />
-      <label htmlFor="Name">Name</label>
+      <label htmlFor="name">Name</label>
       <input
         type="text"
-        name="Name"
-        value={person.Name}
+        name="name"
+        value={events.name}
         onChange={handleChange}
       />
-      <label htmlFor="Event">Event</label>
+      <label htmlFor="events">Event</label>
       <input
         type="text"
-        name="Event"
-        value={person.Event}
+        name="events"
+        value={events.events}
         onChange={handleChange}
       />
-	   <label htmlFor="Description">Description</label>
+	   <label htmlFor="description">Description</label>
       <input
         type="text"
-        name="Description"
-        value={person.Description}
+        name="description"
+        value={events.description}
         onChange={handleChange}
       />
       <input type="button" value="Add Event" onClick={submitForm} />
