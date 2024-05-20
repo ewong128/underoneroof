@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function GroupForm(props) {
-
   const [group, setGroup] = useState({
     name: "",
+    roommates: [],
   });
 
   const { mode } = props;
@@ -18,8 +18,10 @@ function GroupForm(props) {
 
   function submitForm() {
     //debugger;
-    props.handleSubmit(group)
-      .then(response => {
+    console.log(group.name);
+    props
+      .handleSubmit(group)
+      .then((response) => {
         if (response.status === 401) {
           setErrorMessage("Invalid group name1.");
         } else {
@@ -27,16 +29,24 @@ function GroupForm(props) {
           setErrorMessage("");
         }
       })
-      .catch(error => {
-        console.log(error.response)
+      .catch((error) => {
+        console.log(error.response);
         setErrorMessage("Error when creating group name.");
       });
-    setGroup({ name: ""});
+    console.log(group);
+    setGroup({ name: "" });
   }
 
   return (
-    <div className="group-container" 
-    style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
+    <div
+      className="group-container"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "20vh",
+      }}
+    >
       <h1>UnderOneRoof</h1>
       <p style={{ fontSize: "1rem", fontWeight: "300" }}>{welcomeMessage}</p>
       <form style={{ width: "50%" }}>
@@ -56,13 +66,15 @@ function GroupForm(props) {
           style={{ width: "100%", marginTop: "10px" }}
         />
       </form>
-      {errorMessage && !(location.pathname == "/signup") && <p>{errorMessage}</p>}
+      {errorMessage && !(location.pathname == "/signup") && (
+        <p>{errorMessage}</p>
+      )}
       {location.pathname === "/signup/createGroup" && (
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
       )}
     </div>
-  );  
+  );
 }
 export default GroupForm;
