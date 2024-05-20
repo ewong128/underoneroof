@@ -4,7 +4,7 @@ import {useEffect} from "react";
 
 function Login(props) {
 
-  const  navigate = useNavigate()
+  const navigate = useNavigate()
   const [creds, setCreds] = useState({
     username: "",
     pwd: ""

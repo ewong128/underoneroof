@@ -138,6 +138,7 @@ function MyApp() {
 
     return promise;
   }
+ 
 
   function removeOneCharacter(index) {
     const updated = characters.filter((character, i) => {
@@ -182,16 +183,17 @@ function MyApp() {
       });
   }
 
-  function updatecharacterList(person) {
-    setCharacters([...characters, person]);
-  }
-  function fetchChores() {
-    const promise = fetch("Http://localhost:8000/chores", {
-      headers: addAuthHeader(),
-    });
-
-    return promise;
-  }
+    function updatecharacterList(person) {
+      setCharacters([...characters, person]);
+    }
+    
+    function fetchChores() {
+      const promise = fetch("Http://localhost:8000/chores", {
+        headers: addAuthHeader()
+      });
+    
+      return promise;
+    }
 
   useEffect(() => {
     fetchChores()
@@ -240,41 +242,40 @@ function MyApp() {
     return promise;
   }
 
-  return (
-    <div className="container">
-      <Routes>
-        <Route path="/login" element={<Login handleSubmit={loginUser} />} />
-        <Route
-          path="/signup"
-          element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
-        />
-        <Route
-          path="/createGroup"
-          element={
-            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <>
-              <button className="logout-button" onClick={handleLogout}>
-                {" "}
-                Logout{" "}
-              </button>
-              <ChoreTable choreData={chores} removeChore={removeOneChore} />
-              <ChoreForm handleSubmit={updateList} />
-              <EventTable
-                characterData={characters}
-                removeCharacter={removeOneCharacter}
-              />
-              <EventForm handleSubmit={updatecharacterList} />
-            </>
-          }
-        />
-      </Routes>
-    </div>
-  );
-}
+    return (
+        <div className="container">
+          <Routes> 
+            <Route
+              path="/login"
+              element={<Login handleSubmit={loginUser} />}
+            />
+            <Route
+              path="/signup"
+              element={<Login handleSubmit={signupUser} buttonLabel = "Sign Up" />}
+            />
+            <Route
+            path="/createGroup"
+            element={<GroupForm handleSubmit={createGroup} buttonLabel = "Create Group" />}
+            />
+            <Route 
+              path="/"
+              element={<>
+                <button className="logout-button" onClick={handleLogout}> Logout </button>
+                <ChoreTable
+                  choreData={chores}
+                  removeChore={removeOneChore}
+                />
+                <ChoreForm handleSubmit={updateList} />
+                <EventTable
+                  characterData={characters}
+                  removeCharacter={removeOneCharacter}
+                />
+                <EventForm handleSubmit={updatecharacterList} />
+              </> } 
+            />
+        </Routes>
+      </div>
+    );
+  }
 
 export default MyApp;
