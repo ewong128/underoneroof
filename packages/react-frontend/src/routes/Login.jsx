@@ -13,6 +13,7 @@ function Login(props) {
   const { mode } = props;
   const welcomeMessage = location.pathname === "/login" ? "Welcome back!" : "Create an account with us!";
   const [errorMessage, setErrorMessage] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -26,9 +27,12 @@ function Login(props) {
     }
   }
 
+  function handleCheckboxChange(event) {
+    setRememberMe(event.target.checked);
+  }
+
   function submitForm() {
-    //debugger;
-    props.handleSubmit(creds)
+    props.handleSubmit(creds, rememberMe)
       .then(response => {
         if (response.status === 401) {
           setErrorMessage("Invalid credentials.");
@@ -67,6 +71,15 @@ function Login(props) {
           onChange={handleChange}
           style={{ width: "100%", marginTop: "10px" }}
         />
+        <label style={{ display: "flex", alignItems: "center" }}>
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={handleCheckboxChange}
+            style={{ marginRight: "8px" }}
+          />
+          Remember me
+        </label>
         <input
           type="button"
           value={props.buttonLabel || "Log In"}
