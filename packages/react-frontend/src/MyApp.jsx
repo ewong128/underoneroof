@@ -6,7 +6,7 @@
   import Login from "./routes/Login";
   import EventTable from "./routes/EventTable";
   import EventForm from "./routes/EventForm";
-  import GroupForm from "./routes/GroupForm"
+  import GroupForm from "./routes/GroupForm";
 
   function MyApp() {
     const INVALID_TOKEN = "INVALID_TOKEN";
