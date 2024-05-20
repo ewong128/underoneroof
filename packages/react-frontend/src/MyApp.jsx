@@ -184,8 +184,9 @@ function MyApp() {
       })
       .then((json) => {
         if (json) {
-          const updated = chores.toSpliced(index, 1, json);
-          setChores(updated);
+          chores[index] = json;
+          console.log(chores[index]);
+          setChores(chores);
         }
       })
       .catch((error) => {
