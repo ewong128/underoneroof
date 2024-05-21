@@ -55,7 +55,7 @@ function MyApp() {
 
   function signupUser(creds, rememberMe) {
     creds.rememberMe = rememberMe;
-
+    localStorage.setItem("current user", creds.username);
     const promise = fetch("Http://localhost:8000/signup", {
       method: "POST",
       headers: {
@@ -83,14 +83,10 @@ function MyApp() {
     return promise;
   }
 
-<<<<<<< HEAD
+  // check for next component
   function loginUser(creds, rememberMe, next) {
     localStorage.setItem("current user", creds.username);
-=======
-  // check for next component 
-  function loginUser(creds, rememberMe) {
     creds.rememberMe = rememberMe;
->>>>>>> e8e3d6c489cff630726312bd37d7ccdcc368dbb1
     const promise = fetch("Http://localhost:8000/login", {
       method: "POST",
       headers: {
@@ -286,6 +282,12 @@ function MyApp() {
         <Route
           path="/signup"
           element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
+        />
+        <Route
+          path="/createGroup"
+          element={
+            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
+          }
         />
         <Route
           path="/createGroup"
