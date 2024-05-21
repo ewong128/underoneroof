@@ -290,10 +290,8 @@ function MyApp() {
           }
         />
         <Route
-          path="/createGroup"
-          element={
-            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
-          }
+          path="/acceptInvitation"
+          element={<GroupForm handleSubmit={addGroup} />}
         />
         <Route
           path="/"
