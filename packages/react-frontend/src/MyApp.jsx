@@ -242,6 +242,10 @@ function MyApp() {
     return promise;
   }
 
+  function copyLink(){
+    navigator.clipboard.writeText("Http://localhost:8000/chores");
+  }
+
     return (
         <div className="container">
           <Routes> 
@@ -261,6 +265,7 @@ function MyApp() {
               path="/"
               element={<>
                 <button className="logout-button" onClick={handleLogout}> Logout </button>
+                <button className ="invite" onClick={copyLink}>Invite Roommates</button>
                 <ChoreTable
                   choreData={chores}
                   removeChore={removeOneChore}
