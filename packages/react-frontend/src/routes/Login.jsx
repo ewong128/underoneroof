@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {useEffect} from "react";
+
 
 function Login(props) {
 
@@ -14,6 +15,7 @@ function Login(props) {
   const welcomeMessage = location.pathname === "/login" ? "Welcome back!" : "Create an account with us!";
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [searchParams] = useSearchParams();
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -32,7 +34,8 @@ function Login(props) {
   }
 
   function submitForm() {
-    props.handleSubmit(creds, rememberMe)
+    const next = searchParams.get("next")
+    props.handleSubmit(creds, rememberMe, next)
       .then(response => {
         if (response.status === 401) {
           setErrorMessage("Invalid credentials.");

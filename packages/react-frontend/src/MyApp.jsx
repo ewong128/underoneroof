@@ -12,6 +12,7 @@ import Login from "./routes/Login";
 import EventTable from "./routes/EventTable";
 import EventForm from "./routes/EventForm";
 import GroupForm from "./routes/GroupForm";
+import { jwtDecode } from "jwt-decode";
 
 function MyApp() {
   const INVALID_TOKEN = "INVALID_TOKEN";
@@ -82,7 +83,7 @@ function MyApp() {
     return promise;
   }
 
-  function loginUser(creds, rememberMe) {
+  function loginUser(creds, rememberMe, next) {
     localStorage.setItem("current user", creds.username);
     const promise = fetch("Http://localhost:8000/login", {
       method: "POST",
@@ -97,7 +98,7 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(`Login successful; auth token saved`);
-          navigate("/");
+          navigate(next || "/");
         } else {
           setMessage(`Login Error ${response.status}: ${response.data}`);
         }
@@ -138,7 +139,6 @@ function MyApp() {
 
     return promise;
   }
- 
 
   function removeOneCharacter(index) {
     const updated = characters.filter((character, i) => {
@@ -183,25 +183,25 @@ function MyApp() {
       });
   }
 
-    function updatecharacterList(person) {
-      setCharacters([...characters, person]);
-    }
-    
-    function fetchChores() {
-      const promise = fetch("Http://localhost:8000/chores", {
-        headers: addAuthHeader()
-      });
-    
-      return promise;
-    }
+  function updatecharacterList(person) {
+    setCharacters([...characters, person]);
+  }
 
-    function fetchGroup(username) {
-      const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
-        headers: addAuthHeader()
-      });
-    
-      return promise;
-    }
+  function fetchChores() {
+    const promise = fetch("Http://localhost:8000/chores", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroup(username) {
+    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
 
   useEffect(() => {
     fetchChores()
@@ -250,18 +250,20 @@ function MyApp() {
     return promise;
   }
 
-  function copyLink(){
-
+  function copyLink() {
     const currentUser = localStorage.getItem("current user");
     let group_id = "";
-    console.log(currentUser)
+    console.log(currentUser);
     fetchGroup(currentUser)
-    .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          group_id = (json[0]._id).toString()
-          console.log(group_id)
-          navigator.clipboard.writeText("Http://localhost:5173/login?next=acceptInvitation?group=" + group_id);
+          group_id = json[0]._id.toString();
+          console.log(group_id);
+          navigator.clipboard.writeText(
+            "Http://localhost:5173/login?next=acceptInvitation?group=" +
+              group_id
+          );
         } else {
           //setChores(null);
         }
@@ -269,45 +271,46 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-    
-    
   }
 
-    return (
-        <div className="container">
-          <Routes> 
-            <Route
-              path="/login"
-              element={<Login handleSubmit={loginUser} />}
-            />
-            <Route
-              path="/signup"
-              element={<Login handleSubmit={signupUser} buttonLabel = "Sign Up" />}
-            />
-            <Route
-            path="/createGroup"
-            element={<GroupForm handleSubmit={createGroup} buttonLabel = "Create Group" />}
-            />
-            <Route 
-              path="/"
-              element={<>
-                <button className="logout-button" onClick={handleLogout}> Logout </button>
-                <button className ="invite" onClick={copyLink}>Invite Roommates</button>
-                <ChoreTable
-                  choreData={chores}
-                  removeChore={removeOneChore}
-                />
-                <ChoreForm handleSubmit={updateList} />
-                <EventTable
-                  characterData={characters}
-                  removeCharacter={removeOneCharacter}
-                />
-                <EventForm handleSubmit={updatecharacterList} />
-              </> } 
-            />
-        </Routes>
-      </div>
-    );
-  }
+  return (
+    <div className="container">
+      <Routes>
+        <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+        <Route
+          path="/signup"
+          element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
+        />
+        <Route
+          path="/createGroup"
+          element={
+            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <>
+              <button className="logout-button" onClick={handleLogout}>
+                {" "}
+                Logout{" "}
+              </button>
+              <button className="invite" onClick={copyLink}>
+                Invite Roommates
+              </button>
+              <ChoreTable choreData={chores} removeChore={removeOneChore} />
+              <ChoreForm handleSubmit={updateList} />
+              <EventTable
+                characterData={characters}
+                removeCharacter={removeOneCharacter}
+              />
+              <EventForm handleSubmit={updatecharacterList} />
+            </>
+          }
+        />
+      </Routes>
+    </div>
+  );
+}
 
 export default MyApp;
