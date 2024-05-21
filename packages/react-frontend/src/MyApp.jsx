@@ -253,12 +253,15 @@ function MyApp() {
   function copyLink(){
 
     const currentUser = localStorage.getItem("current user");
-
+    let group_id = "";
+    console.log(currentUser)
     fetchGroup(currentUser)
     .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json)
+          group_id = (json[0]._id).toString()
+          console.log(group_id)
+          navigator.clipboard.writeText("Http://localhost:8000/login?next=acceptInvitation?group=" + group_id);
         } else {
           //setChores(null);
         }
@@ -266,7 +269,8 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-    navigator.clipboard.writeText("Http://localhost:8000/login?next=acceptInvitation?group=");
+    
+    
   }
 
     return (

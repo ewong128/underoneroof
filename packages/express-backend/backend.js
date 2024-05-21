@@ -63,6 +63,7 @@ app.get("/chores/:id", authenticateUser, (req, res) => {
 
 app.get("/groups", authenticateUser, (req, res) => {
   const roommate = req.query.roommate;
+  console.log("in backend")
   console.log(roommate)
   let promise = groupServices.findGroupByRoommate(roommate);
   promise.then((result) => {
