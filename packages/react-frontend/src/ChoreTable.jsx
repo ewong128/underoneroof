@@ -17,43 +17,44 @@ function TableHeader() {
 }
 
 function TableBody(props) {
-  if(props.choreData === null) {
+  if (props.choreData === null) {
     return <caption>Data Unavailable</caption>;
   }
   const rows = props.choreData.map((row, index) => {
-    return(
-      <tr key = {index}>
+    return (
+      <tr key={index}>
         <td>{row.chore}</td>
         <td>{row.roommate}</td>
         <td>{row.day}</td>
         <td>{row.status}</td>
         <td>
-          <input type="checkbox" id="completed" name="completed" onClick={() => props.updateChoreStatus(index)}/>
+          <input
+            type="checkbox"
+            id="completed"
+            name="completed"
+            onClick={() => props.updateChoreStatus(index)}
+          />
         </td>
         <td>
           <button onClick={() => props.removeChore(index)}>
             Delete
+            <img src="/assets/trash.svg"></img>
           </button>
         </td>
       </tr>
-    )
-  }
-  )
-  return(
-    <tbody>
-      {rows}
-    </tbody>
-  );
+    );
+  });
+  return <tbody>{rows}</tbody>;
 }
 
 function ChoreTable(props) {
   return (
     <table>
       <TableHeader />
-      <TableBody 
-      choreData = {props.choreData}
-      removeChore = {props.removeChore}
-      updateChoreStatus = {props.updateChoreStatus}
+      <TableBody
+        choreData={props.choreData}
+        removeChore={props.removeChore}
+        updateChoreStatus={props.updateChoreStatus}
       />
     </table>
   );

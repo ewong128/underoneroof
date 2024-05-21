@@ -85,6 +85,8 @@ app.put("/chores/:id", authenticateUser, (req, res) => {
     if (!result){
       res.status(404).send("Resource not found.");
     } else{
+      console.log("put backend")
+      console.log(result)
       res.status(200).send(result);
     }
   })

@@ -184,9 +184,8 @@ function MyApp() {
       })
       .then((json) => {
         if (json) {
-          chores[index] = json;
-          console.log(chores[index]);
-          setChores(chores);
+          console.log(json);
+          setChores(chores.toSpliced(index, 1, json));
         }
       })
       .catch((error) => {
