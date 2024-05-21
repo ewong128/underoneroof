@@ -54,7 +54,7 @@ function MyApp() {
   }
 
   function signupUser(creds, rememberMe) {
-    localStorage.setItem("current user", creds.username);
+    creds.rememberMe = rememberMe;
 
     const promise = fetch("Http://localhost:8000/signup", {
       method: "POST",
@@ -83,8 +83,14 @@ function MyApp() {
     return promise;
   }
 
+<<<<<<< HEAD
   function loginUser(creds, rememberMe, next) {
     localStorage.setItem("current user", creds.username);
+=======
+  // check for next component 
+  function loginUser(creds, rememberMe) {
+    creds.rememberMe = rememberMe;
+>>>>>>> e8e3d6c489cff630726312bd37d7ccdcc368dbb1
     const promise = fetch("Http://localhost:8000/login", {
       method: "POST",
       headers: {

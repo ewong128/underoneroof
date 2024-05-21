@@ -6,13 +6,12 @@
   dotenv.config();
 
   export function registerUser(req, res) {
-      const { username, pwd } = req.body; // from form
+      const { username, pwd, rememberMe } = req.body; // from form
     
       if (!username || !pwd) {
         res.status(400).send("Bad request: Invalid input data.");
       }
       else{
-        //need to modify else if statement
         userServices.findUserByName(username).then((list) => {
           if (list.length){
             res.status(409).send("Username already taken");
@@ -22,10 +21,9 @@
             .genSalt(10)
             .then((salt) => bcrypt.hash(pwd, salt))
             .then((hashedPassword) => {
-              generateAccessToken(username).then((token) => {
+              generateAccessToken(username, rememberMe).then((token) => {
                 console.log("Token:", token);
                 
-                //creds.push({ username, hashedPassword });
                 userServices.addUser({username, hashedPassword}).then( () =>
                   {res.status(201).send({ token: token })}
                 );
@@ -39,12 +37,14 @@
     }
 
 
-  function generateAccessToken(username) {
+  function generateAccessToken(username, rememberMe) {
+    // expiry for 30 days or for 1 hr w/o rememberMe
+    const expires_when = rememberMe ? '30d' : '1h'; 
       return new Promise((resolve, reject) => {
         jwt.sign(
           { username: username },
           process.env.TOKEN_SECRET,
-          { expiresIn: "1d" },
+          { expiresIn: expires_when },
           (error, token) => {
             if (error) {
               reject(error);
@@ -82,7 +82,7 @@
   }
 
 export function loginUser(req, res) {
-    const { username, pwd } = req.body; // from form
+    const { username, pwd, rememberMe } = req.body; // from form
     //find user creds in database
     userServices.findUserByName(
       username
@@ -97,7 +97,7 @@ export function loginUser(req, res) {
           .compare(pwd, retrievedUser.hashedPassword)
           .then((matched) => {
             if (matched) {
-              generateAccessToken(username).then((token) => {
+              generateAccessToken(username, rememberMe).then((token) => {
                 res.status(200).send({ token: token });
               });
             } else {
