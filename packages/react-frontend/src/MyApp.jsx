@@ -195,6 +195,14 @@ function MyApp() {
       return promise;
     }
 
+    function fetchGroup(username) {
+      const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+        headers: addAuthHeader()
+      });
+    
+      return promise;
+    }
+
   useEffect(() => {
     fetchChores()
       .then((res) => (res.status === 200 ? res.json() : undefined))
@@ -243,7 +251,22 @@ function MyApp() {
   }
 
   function copyLink(){
-    navigator.clipboard.writeText("Http://localhost:8000/chores");
+
+    const currentUser = localStorage.getItem("current user");
+
+    fetchGroup(currentUser)
+    .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          console.log(json)
+        } else {
+          //setChores(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    navigator.clipboard.writeText("Http://localhost:8000/login?next=acceptInvitation?group=");
   }
 
     return (

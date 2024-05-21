@@ -31,7 +31,7 @@ function addGroup(group) {
 }
 
 function findGroupByRoommate(roommate) {
-  return groupModel.find({ roommate: roommate });
+  return groupModel.find({ roommate: [roommate] });
 }
 
 function deleteGroupById(id){

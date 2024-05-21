@@ -61,6 +61,18 @@ app.get("/chores/:id", authenticateUser, (req, res) => {
   
 });
 
+app.get("/groups", authenticateUser, (req, res) => {
+  const roommate = req.query.roommate;
+  console.log(roommate)
+  let promise = groupServices.findGroupByRoommate(roommate);
+  promise.then((result) => {
+    console.log("before result")
+    console.log(result)
+    res.send(result);
+  } )
+    
+});
+
 app.delete("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = userServices.deleteUserById(id);
