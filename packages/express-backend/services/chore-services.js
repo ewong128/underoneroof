@@ -35,7 +35,7 @@ function addChore(chore) {
 }
 
 function updateChoreById(id,body) {
-  const promise = choreModel.findByIdAndUpdate(id, body);
+  const promise = choreModel.findByIdAndUpdate(id, body, {new : true});
   return promise;
 }
 
