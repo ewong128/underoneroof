@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import {useEffect} from "react";
-
+import { useEffect } from "react";
 
 function Login(props) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [creds, setCreds] = useState({
     username: "",
-    pwd: ""
+    pwd: "",
   });
 
   const { mode } = props;
-  const welcomeMessage = location.pathname === "/login" ? "Welcome back!" : "Create an account with us!";
+  const welcomeMessage =
+    location.pathname === "/login"
+      ? "Welcome back!"
+      : "Create an account with us!";
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [searchParams] = useSearchParams();
@@ -34,9 +35,10 @@ function Login(props) {
   }
 
   function submitForm() {
-    const next = searchParams.get("next")
-    props.handleSubmit(creds, rememberMe, next)
-      .then(response => {
+    const next = searchParams.get("next");
+    props
+      .handleSubmit(creds, rememberMe, next)
+      .then((response) => {
         if (response.status === 401) {
           setErrorMessage("Invalid credentials.");
         } else {
@@ -44,15 +46,22 @@ function Login(props) {
           setErrorMessage("");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         setErrorMessage("Invalid credentials.");
       });
     setCreds({ username: "", pwd: "" });
   }
 
   return (
-    <div className="login-container" 
-    style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
+    <div
+      className="login-container"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "20vh",
+      }}
+    >
       <h1>UnderOneRoof</h1>
       <p style={{ fontSize: "1rem", fontWeight: "300" }}>{welcomeMessage}</p>
       <form style={{ width: "50%" }}>
@@ -90,13 +99,15 @@ function Login(props) {
           style={{ width: "100%", marginTop: "10px" }}
         />
       </form>
-      {errorMessage && !(location.pathname == "/signup") && <p>{errorMessage}</p>}
+      {errorMessage && !(location.pathname == "/signup") && (
+        <p>{errorMessage}</p>
+      )}
       {location.pathname === "/login" && (
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
       )}
     </div>
-  );  
+  );
 }
 export default Login;

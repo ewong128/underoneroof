@@ -12,6 +12,7 @@ import Login from "./routes/Login";
 import EventTable from "./routes/EventTable";
 import EventForm from "./routes/EventForm";
 import GroupForm from "./routes/GroupForm";
+import Invitation from "./routes/Invitation";
 import { jwtDecode } from "jwt-decode";
 
 function MyApp() {
@@ -100,6 +101,7 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(`Login successful; auth token saved`);
+          console.log(next);
           navigate(next || "/");
         } else {
           setMessage(`Login Error ${response.status}: ${response.data}`);
@@ -205,6 +207,14 @@ function MyApp() {
     return promise;
   }
 
+  function fetchGroupById(id) {
+    const promise = fetch("Http://localhost:8000/groups/" + id, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
   useEffect(() => {
     fetchChores()
       .then((res) => (res.status === 200 ? res.json() : undefined))
@@ -275,6 +285,54 @@ function MyApp() {
       });
   }
 
+  function updateGroup(group_id) {
+    const currentUser = localStorage.getItem("current user");
+    console.log("before put group");
+    console.log(group_id);
+    let group = null;
+
+    fetchGroupById(group_id)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          console.log(json);
+          console.log(json[0]);
+          group = json;
+
+          putGroup(group_id, currentUser, group)
+            .then((res) => {
+              if (res.status === 200) return res.json();
+            })
+            .then((json) => {
+              if (json) {
+                console.log(json);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function putGroup(id, currentUser, group) {
+    const promise = fetch("Http://localhost:8000/groups/" + id, {
+      method: "PUT",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        group: group.name,
+        roommates: group.roommates.push(currentUser),
+      }),
+    });
+
+    return promise;
+  }
+
   return (
     <div className="container">
       <Routes>
@@ -291,7 +349,7 @@ function MyApp() {
         />
         <Route
           path="/acceptInvitation"
-          element={<GroupForm handleSubmit={addGroup} />}
+          element={<Invitation handleSubmit={updateGroup} />}
         />
         <Route
           path="/"

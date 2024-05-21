@@ -38,10 +38,17 @@ function deleteGroupById(id){
   return groupModel.findByIdAndDelete(id);
 }
 
+function updateGroupById(id,body) {
+  const promise = groupModel.findByIdAndUpdate(id, body, {new : true});
+  return promise;
+}
+
+
 export default {
   addGroup,
   getGroups,
   findGroupById,
   findGroupByRoommate,
-  deleteGroupById
+  deleteGroupById,
+  updateGroupById
 };

@@ -74,6 +74,19 @@ app.get("/groups", authenticateUser, (req, res) => {
     
 });
 
+app.get("/groups/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  console.log(id)
+  console.log("in backend")
+  let promise = groupServices.findGroupById(id);
+  promise.then((result) => {
+    console.log("before result")
+    console.log(result)
+    res.send(result);
+  } )
+    
+});
+
 app.delete("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = userServices.deleteUserById(id);
@@ -114,6 +127,20 @@ app.post("/groups", authenticateUser, (req, res) => {
     res.status(201).send(newGroup);
   })
   
+});
+
+app.put("/groups/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = groupServices.updateGroupById(id, req.body);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      console.log("put backend")
+      console.log(result)
+      res.status(200).send(result);
+    }
+  })
 });
 
 app.post("/chores", authenticateUser, (req, res) => {

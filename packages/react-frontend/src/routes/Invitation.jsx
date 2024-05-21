@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 
-function InvitationForm(props) {
+function Invitation(props) {
   const { mode } = props;
   const welcomeMessage = "Accept Invite!";
   const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
+  const [searchParams] = useSearchParams();
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -13,8 +14,9 @@ function InvitationForm(props) {
   }
 
   function submitForm() {
+    const group_id = searchParams.get("group");
     props
-      .handleSubmit(group)
+      .handleSubmit(group_id)
       .then((response) => {
         if (response.status === 401) {
           setErrorMessage("Invalid group name1.");
@@ -27,7 +29,7 @@ function InvitationForm(props) {
         console.log(error);
         setErrorMessage(error.message);
       });
-    setGroup({ name: "" });
+    //setGroup({ name: "" });
   }
 
   return (
@@ -55,4 +57,4 @@ function InvitationForm(props) {
   );
 }
 
-export default GroupForm;
+export default Invitation;
