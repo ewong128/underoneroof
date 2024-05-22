@@ -6,6 +6,8 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "../navigation/Navbar";
 import ChoreTable from "./routes/ChoreTable";
 import ChoreForm from "./routes/ChoreForm";
 import Login from "./routes/Login";
@@ -281,7 +283,8 @@ function MyApp() {
         <Route path="/login" element={<Login handleSubmit={loginUser} />} />
         <Route
           path="/signup"
-          element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
+          element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" 
+            signUpButtonStyle={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />}
         />
         <Route
           path="/createGroup"
@@ -299,13 +302,7 @@ function MyApp() {
           path="/"
           element={
             <>
-              <button className="logout-button" onClick={handleLogout}>
-                {" "}
-                Logout{" "}
-              </button>
-              <button className="invite" onClick={copyLink}>
-                Invite Roommates
-              </button>
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
               <ChoreTable choreData={chores} removeChore={removeOneChore} />
               <ChoreForm handleSubmit={updateList} />
               <EventTable

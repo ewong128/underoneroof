@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import groupLogo from "../../group.png";
 
 function GroupForm(props) {
   const [group, setGroup] = useState({
@@ -38,9 +39,11 @@ function GroupForm(props) {
   }
 
   return (
-    <div className="group-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
-      <h1>UnderOneRoof</h1>
-      <p style={{ fontSize: "1rem", fontWeight: "300" }}>{welcomeMessage}</p>
+    <div className="group-container"
+    style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
+    <img src={groupLogo} alt="logo" style={{ width: "75px", height: "75px", marginBottom: "10px" }} />
+    <h1 style={{ marginTop: "0", marginBottom: "10px" }}>UnderOneRoof</h1>
+    <p style={{ fontSize: "1rem", fontWeight: "300", marginBottom: "10px" }}>{welcomeMessage}</p>
       <form style={{ width: "50%" }}>
         <label htmlFor="username">Group Name</label>
         <input

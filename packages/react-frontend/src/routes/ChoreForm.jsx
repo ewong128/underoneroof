@@ -49,7 +49,7 @@ function ChoreForm(props) {
             value={chore.day}
             onChange={handleChange}
           />
-          <input type="button" value="Submit" onClick={submitForm} />
+          <input type="button" value="Add Chore" onClick={submitForm} style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
         </form>
     );
 }
