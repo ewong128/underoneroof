@@ -1,21 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../logo.png";
 
 const Navbar = ({ handleLogout, copyLink }) => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
   const navigate = useNavigate();
-
-  // const handleSearchChange = (e) => {
-  //   setSearchQuery(e.target.value);
-  // };
-
-  // const handleSearchSubmit = (e) => {
-  //   e.preventDefault();
-  //   // For demonstration purposes, we navigate to a search results page with the query as a URL parameter
-  //   navigate(`/search?query=${searchQuery}`);
-  // };
 
   const handleCopyLink = () => {
     copyLink();
@@ -36,21 +25,48 @@ const Navbar = ({ handleLogout, copyLink }) => {
           alt="logo"
           style={{ marginRight: "10px" }}
         />
-        <span className="ml-2" style={{ lineHeight: "30px", marginTop: "5px" }}>UnderOneRoof</span>
+        <span className="ml-2" style={{ marginTop: "5px" }}>UnderOneRoof</span> 
+        <div style={{ marginLeft: "20px", marginTop: "5px", fontSize: "1rem" }}>
+          <NavLink
+            to="/"
+            style={({ isActive }) => ({
+              marginRight: "10px",
+              fontWeight: isActive ? "bold" : "normal",
+              textDecoration: "none",
+              color: isActive ? "black" : "inherit",
+            })}
+          > {({ isActive }) => (
+            <span
+              style={{
+                textDecoration: isActive ? "underline" : "none",
+                cursor: "pointer",
+              }}
+            >
+              Home
+            </span>
+          )}
+          </NavLink>
+          <NavLink
+            to="/signup"
+            style={({ isActive }) => ({
+              marginRight: "10px",
+              fontWeight: isActive ? "bold" : "normal",
+              textDecoration: "none",
+              color: isActive ? "black" : "inherit",
+            })}
+          > {({ isActive }) => (
+            <span
+              style={{
+                textDecoration: isActive ? "underline" : "none",
+                cursor: "pointer",
+              }}
+            >
+              Sign Up
+            </span>
+          )}
+          </NavLink>
+        </div>
       </div>
-      {/* <form className="form-inline ml-auto d-flex align-items-center" onSubmit={handleSearchSubmit}>
-        <input
-          className="form-control mr-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-        <button className="btn btn-outline-success" type="submit">
-          Search
-        </button>
-      </form> */}
       <div className="ml-2 d-flex align-items-center">
         {copyMessage && (
           <span className="text-success" 

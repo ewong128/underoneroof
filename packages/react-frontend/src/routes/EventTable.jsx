@@ -34,7 +34,7 @@ function TableBody(props) {
         <td style ={{ paddingLeft: "23px" }}>
           <button onClick={() => props.removeChore(index)} 
             style={{ padding: 0, border: "none", background: "none" }}>
-            <img src={trashDelete} alt="Delete" style={{ width: "20px", height: "20px" }} />
+            <img src={trashDelete} alt="Delete" style={{ marginTop: "5px", width: "20px", height: "20px" }} />
           </button>
         </td>
       </tr>
