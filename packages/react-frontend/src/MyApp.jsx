@@ -270,6 +270,7 @@ function MyApp() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
+          console.log(json);
           group_id = json[0]._id.toString();
           console.log(group_id);
           navigator.clipboard.writeText(
@@ -301,7 +302,8 @@ function MyApp() {
 
           putGroup(group_id, currentUser, group)
             .then((res) => {
-              if (res.status === 200) return res.json();
+              navigate("/");
+              //if (res.status === 200) return res.json();
             })
             .then((json) => {
               if (json) {

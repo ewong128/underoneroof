@@ -15,20 +15,19 @@ function Invitation(props) {
 
   function submitForm() {
     const group_id = searchParams.get("group");
-    props
-      .handleSubmit(group_id)
-      .then((response) => {
-        if (response.status === 401) {
-          setErrorMessage("Invalid group name1.");
-        } else {
-          // Reset error message if login succeeds
-          setErrorMessage("");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setErrorMessage(error.message);
-      });
+    props.handleSubmit(group_id);
+    // .then((response) => {
+    //   if (response.status === 401) {
+    //     setErrorMessage("Invalid group name1.");
+    //   } else {
+    //     // Reset error message if login succeeds
+    //     setErrorMessage("");
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    //   setErrorMessage(error.message);
+    // });
     //setGroup({ name: "" });
   }
 
