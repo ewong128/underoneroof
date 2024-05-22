@@ -47,7 +47,7 @@ const Navbar = ({ handleLogout, copyLink }) => {
           )}
           </NavLink>
           <NavLink
-            to="/signup"
+            to="/agreement"
             style={({ isActive }) => ({
               marginRight: "10px",
               fontWeight: isActive ? "bold" : "normal",
@@ -61,7 +61,7 @@ const Navbar = ({ handleLogout, copyLink }) => {
                 cursor: "pointer",
               }}
             >
-              Sign Up
+              Roommate Agreement Form
             </span>
           )}
           </NavLink>

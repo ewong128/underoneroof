@@ -4,6 +4,7 @@ import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
 import groupServices from "./services/group-services.js"
+import agreementServices from "./services/agreement-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
 
 const app = express();
@@ -123,6 +124,34 @@ app.post("/chores", authenticateUser, (req, res) => {
     res.status(201).send(newChore);
   })
   
+});
+
+// for agreement form
+app.get('/agreements', authenticateUser, (req, res) => {
+  let promise = agreementServices.getAgreements();
+  promise.then(result => {
+    res.send(result);
+  });
+});
+
+app.post('/agreements', authenticateUser, (req, res) => {
+  const agreementToAdd = req.body;
+  const promise = agreementServices.addAgreement(agreementToAdd);
+  promise.then(newAgreement => {
+    res.status(201).send(newAgreement);
+  });
+});
+
+app.delete('/agreements/:id', authenticateUser, (req, res) => {
+  const id = req.params['id'];
+  const promise = agreementServices.deleteAgreementById(id);
+  promise.then(result => {
+    if (!result) {
+      res.status(404).send('Resource not found.');
+    } else {
+      res.status(204).send();
+    }
+  });
 });
 
 app.post("/signup", registerUser);
