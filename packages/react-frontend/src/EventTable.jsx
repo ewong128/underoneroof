@@ -5,12 +5,12 @@ function TableHeader() {
   return (
     <thead>
       <tr>
-        <th>date</th>
-		<th>time</th>
-        <th>name</th>
-        <th>events</th>
-		<th>description</th>
-        <th>remove</th>
+        <th>Date</th>
+		<th>Time</th>
+        <th>Name</th>
+        <th>Events</th>
+		<th>Description</th>
+        <th>Delete</th>
       </tr>
     </thead>
   );

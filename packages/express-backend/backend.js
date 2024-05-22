@@ -116,7 +116,7 @@ app.delete("/chores/:id", (req, res) => {
 
 app.delete("/events/:id", (req, res) => {
   const id = req.params["id"];
-  let promise = eventServices.deleteEventById(id);
+  let promise = eventsServices.deleteEventById(id);
   promise.then((result) => {
     if (!result){
       res.status(404).send("Resource not found.");

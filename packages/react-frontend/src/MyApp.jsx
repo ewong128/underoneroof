@@ -31,7 +31,7 @@ function MyApp() {
    
 
   function removeOneEvent(index) {
-    const date = events[index]._id
+    const id = events[index]._id
 
     deleteEvents(id)
       .then((res) => {
@@ -78,8 +78,8 @@ function MyApp() {
       })
   }
 
-function updateEventList(events) {
-  postEvent(events)
+function updateEventList(event) {
+  postEvent(event)
       .then((res) => {
         if(res.status === 201)
           return res.json()})
@@ -157,7 +157,7 @@ function updateEventList(events) {
   }
 
 
- function deleteEvent(id){
+ function deleteEvents(id){
     const promise = fetch("Http://localhost:8000/events/" + id, {
       method: "DELETE",
     })
