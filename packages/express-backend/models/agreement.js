@@ -22,8 +22,9 @@ const AgreementSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-}, 
-{ collection: 'agreements' });
+  }, 
+  { collection: 'agreements' }
+);
 
 const Agreement = mongoose.model('Agreement', AgreementSchema);
 

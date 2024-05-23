@@ -10,13 +10,24 @@ mongoose
   })
   .catch(error => console.log(error));
 
-function getAgreements() {
-  return Agreement.find();
+function getAgreements(agreement) {
+    let promise;
+    if (agreement === undefined) {
+        promise = Agreement.find();
+    } else if (agreement) {
+        promise = findAgreementById(agreement);
+    }
+    return promise;
+}
+
+function findAgreementById(id) {
+  return Agreement.findById(id);
 }
 
 function addAgreement(agreement) {
   const agreementToAdd = new Agreement(agreement);
-  return agreementToAdd.save();
+  const promise = agreementToAdd.save();
+  return promise;
 }
 
 function deleteAgreementById(id) {
@@ -25,6 +36,7 @@ function deleteAgreementById(id) {
 
 export default {
   getAgreements,
+  findAgreementById,
   addAgreement,
   deleteAgreementById,
 };

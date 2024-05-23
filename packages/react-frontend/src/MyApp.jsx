@@ -26,6 +26,7 @@
     const [characters, setCharacters] = useState([]);
     const [groups, setGroup] = useState([]);
     const [agreements, setAgreements] = useState([]);
+    const [allAgreementsSubmitted, setAllAgreementsSubmitted] = useState(false);
     const navigate = useNavigate();
 
     // authentiation
@@ -120,15 +121,25 @@
     }
 
     useEffect(() => {
-      // Check if the user is logged in
+      // check if the user logged in
       const token = localStorage.getItem("token");
-      // If not logged in, redirect to the login page
+    
+      // if not logged in, or token expired, redirect to the login page
       if (!token || token === INVALID_TOKEN) {
         navigate("/login");
       } else {
-        setToken(token);
+        // need to decode the token to check for expiration
+        const decodedToken = jwtDecode(token);
+        const expirationTime = decodedToken.exp * 1000; // milliseconds conversion
+    
+        // check if token has expired
+        if (Date.now() >= expirationTime) {
+          navigate("/login");
+        } else {
+          setToken(token);
+        }
       }
-    }, []);
+    }, []);    
 
     // group
 
@@ -360,6 +371,35 @@
       return promise;
     }
 
+    useEffect(() => {
+      fetchAgreements()
+        .then((res) => (res.status === 200 ? res.json() : undefined))
+        .then((json) => {
+          if (json) {
+            setAgreements(json["agreements"]);
+            // Check if all agreements have been submitted
+            fetchGroup(localStorage.getItem("current user"))
+              .then((res) => (res.status === 200 ? res.json() : undefined))
+              .then((groupJson) => {
+                if (groupJson) {
+                  const roommatesCount = groupJson[0].roommates.length;
+                  if (json["agreements"].length === roommatesCount) {
+                    setAllAgreementsSubmitted(true);
+                  }
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          } else {
+            setAgreements(null);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, [token]);  
+
     return (
       <div className="container">
         <Routes>
@@ -390,7 +430,9 @@
                     agreementData={agreements}
                     removeAgreement={removeOneAgreement}
                   />
-                  <AgreementForm handleSubmit={updateAgreements} />
+                  {!allAgreementsSubmitted && (
+                    <AgreementForm handleSubmit={updateAgreements} />
+                  )}
                 </>
               }
             />
