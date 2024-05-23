@@ -399,6 +399,23 @@
               return i !== index;
             });
             setContacts(updated);
+            
+            // check if all contacts have been submitted
+            fetchGroup(localStorage.getItem("current user"))
+              .then((res) => (res.status === 200 ? res.json() : undefined))
+              .then((groupJson) => {
+                if (groupJson) {
+                  const roommatesCount = groupJson[0].roommates.length;
+                  if (updated.length === roommatesCount) {
+                    setAllContactsSubmitted(true);
+                  } else {
+                    setAllContactsSubmitted(false);
+                  }
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           }
         })
         .catch((error) => {
@@ -423,12 +440,29 @@
         .then((json) => {
           if (json) {
             setContacts([...contacts, json]);
+            
+            // for no refresh
+            // check if all agreements submitted based on # of roommates
+            fetchGroup(localStorage.getItem("current user"))
+              .then((res) => (res.status === 200 ? res.json() : undefined))
+              .then((groupJson) => {
+                if (groupJson) {
+                  const roommatesCount = groupJson[0].roommates.length;
+                  if (contacts.length + 1 === roommatesCount) {
+                    setAllContactsSubmitted(true);
+                  }
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           }
         })
         .catch((error) => {
           console.log(error);
         });
     }
+    
 
     function fetchContacts() {
       const promise = fetch("Http://localhost:8000/contacts", {

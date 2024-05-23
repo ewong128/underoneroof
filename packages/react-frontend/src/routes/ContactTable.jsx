@@ -14,7 +14,7 @@ function ContactTable({ contactData, removeContact }) {
           border: "1px solid #ccc",
         }}
       >
-        <caption style={{ textAlign: "center" }}>No contacts submitted. Please fill out the form.</caption>
+        <caption style={{ textAlign: "center" }}>No emergency contacts recorded. Please fill out the form.</caption>
       </table>
     );
   }
