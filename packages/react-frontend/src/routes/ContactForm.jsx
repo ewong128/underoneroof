@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function AgreementForm(props) {
+function ContactForm(props) {
   const [formData, setFormData] = useState({
     emergencyContactRelation: "",
     emergencyContactName: "",
@@ -24,7 +24,7 @@ function AgreementForm(props) {
   }
 
   return (
-    <div className="agreement-form-container" style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "600px", margin: "0 auto", border: "1px solid #ccc", borderRadius: "10px" }}>
+    <div className="contacts-form-container" style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "600px", margin: "0 auto", border: "1px solid #ccc", borderRadius: "10px" }}>
       <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#0a978d" }}>Emergency Contacts</h2>
       <div style={{ marginBottom: "15px" }}>
         <label style={{ display: "block", marginBottom: "5px" }}>Emergency Contact Relation:</label>
@@ -76,4 +76,4 @@ function AgreementForm(props) {
   );
 }
 
-export default AgreementForm;
+export default ContactForm;

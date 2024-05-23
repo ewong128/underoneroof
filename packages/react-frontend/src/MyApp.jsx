@@ -14,7 +14,9 @@
   import EventTable from "./routes/EventTable";
   import EventForm from "./routes/EventForm";
   import GroupForm from "./routes/GroupForm";
-  import AgreementForm from "./routes/AgreementForm";
+  import ContactForm from "./routes/ContactForm";
+  import ContactTable from "./routes/ContactTable";
+  import PreferencesForm from "./routes/PreferencesForm";
   import AgreementTable from "./routes/AgreementTable";
   import { jwtDecode } from "jwt-decode";
 
@@ -26,7 +28,8 @@
     const [characters, setCharacters] = useState([]);
     const [groups, setGroup] = useState([]);
     const [agreements, setAgreements] = useState([]);
-    const [allAgreementsSubmitted, setAllAgreementsSubmitted] = useState(false);
+    const [contacts, setContacts] = useState([]);
+    const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
     const navigate = useNavigate();
 
     // authentiation
@@ -371,20 +374,96 @@
       return promise;
     }
 
+    // contacts form
     useEffect(() => {
-      fetchAgreements()
+      fetchContacts()
         .then((res) => (res.status === 200 ? res.json() : undefined))
         .then((json) => {
           if (json) {
-            setAgreements(json["agreements"]);
+            setContacts(json["contacts_list"]);
+          } else {
+            setContacts(null);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, [token]);
+
+    function removeOneContact(index) {
+      const id = contacts[index]._id;
+      deleteContact(id)
+        .then((res) => {
+          if (res.status === 204) {
+            const updated = contacts.filter((contact, i) => {
+              return i !== index;
+            });
+            setContacts(updated);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function deleteContact(id) {
+      const promise = fetch("Http://localhost:8000/contacts/" + id, {
+        method: "DELETE",
+        headers: addAuthHeader(),
+      });
+
+      return promise;
+    }
+
+    function updateContacts(contact) {
+      postContact(contact)
+        .then((res) => {
+          if (res.status === 201) return res.json();
+        })
+        .then((json) => {
+          if (json) {
+            setContacts([...contacts, json]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function fetchContacts() {
+      const promise = fetch("Http://localhost:8000/contacts", {
+        headers: addAuthHeader(),
+      });
+
+      return promise;
+    }
+
+    function postContact(contact) {
+      const promise = fetch("Http://localhost:8000/contacts", {
+        method: "POST",
+        headers: addAuthHeader({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify(contact),
+      });
+
+      return promise;
+    }
+
+    useEffect(() => {
+      fetchContacts()
+        .then((res) => (res.status === 200 ? res.json() : undefined))
+        .then((json) => {
+          if (json) {
+            setContacts(json["contacts_list"]);
             // Check if all agreements have been submitted
             fetchGroup(localStorage.getItem("current user"))
               .then((res) => (res.status === 200 ? res.json() : undefined))
               .then((groupJson) => {
                 if (groupJson) {
                   const roommatesCount = groupJson[0].roommates.length;
-                  if (json["agreements"].length === roommatesCount) {
-                    setAllAgreementsSubmitted(true);
+                  if (json["contacts_list"].length === roommatesCount) {
+                    setAllContactsSubmitted(true);
                   }
                 }
               })
@@ -392,7 +471,7 @@
                 console.log(error);
               });
           } else {
-            setAgreements(null);
+            setContacts(null);
           }
         })
         .catch((error) => {
@@ -403,11 +482,11 @@
     return (
       <div className="container">
         <Routes>
-          <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+          <Route path="/login" element={<Login handleSubmit={loginUser} 
+            loginButtonStyle={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }}/>} />
           <Route
             path="/signup"
-            element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" 
-              signUpButtonStyle={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />}
+            element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
           />
           <Route
             path="/createGroup"
@@ -426,13 +505,14 @@
               element={
                 <>
                   <Navbar handleLogout={handleLogout} copyLink={copyLink} />
-                  <AgreementTable
-                    agreementData={agreements}
-                    removeAgreement={removeOneAgreement}
+                  <ContactTable
+                    contactData={contacts}
+                    removeContact={removeOneContact}
                   />
-                  {!allAgreementsSubmitted && (
-                    <AgreementForm handleSubmit={updateAgreements} />
+                  {!allContactsSubmitted && (
+                    <ContactForm handleSubmit={updateContacts} />
                   )}
+                  {/* <PreferencesForm handleSubmit={updateContacts} /> */}
                 </>
               }
             />

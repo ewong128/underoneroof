@@ -91,8 +91,8 @@ function Login(props) {
           style={{ 
             width: "100%", 
             marginTop: "10px", 
-            backgroundColor: props.signUpButtonStyle?.backgroundColor || "", 
-            borderColor: props.signUpButtonStyle?.borderColor || "" 
+            backgroundColor: props.loginButtonStyle?.backgroundColor || "", 
+            borderColor: props.loginButtonStyle?.borderColor || "" 
           }}
         />
       </form>

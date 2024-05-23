@@ -5,6 +5,7 @@ import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
 import groupServices from "./services/group-services.js"
 import agreementServices from "./services/agreement-services.js";
+import contactServices from "./services/contact-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
 
 const app = express();
@@ -169,6 +170,51 @@ app.post("/agreements", authenticateUser, (req, res) => {
   const promise = agreementServices.addAgreement(agreementToAdd);
   promise.then((newAgreement) => {
     res.status(201).send(newAgreement);
+  })
+  
+});
+
+// for contacts
+app.get("/contacts", authenticateUser, (req, res) => {
+  const contact = req.query.contact;
+  let promise = contactServices.getContacts(contact);
+  promise.then((result) => {
+    result = { contacts_list: result };
+    res.send(result);
+  } )
+    
+});
+
+app.get("/contacts/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = contactServices.findContactById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+
+app.delete("/contacts/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = contactServices.deleteContactById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
+app.post("/contacts", authenticateUser, (req, res) => {
+  const contactToAdd = req.body;
+  const promise = contactServices.addContact(contactToAdd);
+  promise.then((newContact) => {
+    res.status(201).send(newContact);
   })
   
 });

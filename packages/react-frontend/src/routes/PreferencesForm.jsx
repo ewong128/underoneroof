@@ -1,0 +1,148 @@
+import React, { useState } from "react";
+
+function PreferencesForm(props) {
+  const [formData, setFormData] = useState({
+    preferredContact: "",
+    preferredContactOther: "",
+    responseTime: "",
+    responseTimeOther: "",
+    challengingConversation: "",
+    challengingConversationOther: "",
+    weekdaySleepHours: "",
+    weekendSleepHours: "",
+  });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
+  function submitForm() {
+    props.handleSubmit(formData);
+    setFormData({
+      preferredContact: "",
+      preferredContactOther: "",
+      responseTime: "",
+      responseTimeOther: "",
+      challengingConversation: "",
+      challengingConversationOther: "",
+      weekdaySleepHours: "",
+      weekendSleepHours: "",
+    });
+  }
+
+  return (
+    <div className="preferences-form-container" style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "600px", margin: "0 auto", border: "1px solid #ccc", borderRadius: "10px" }}>
+      <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#0a978d" }}>Communication Preferences</h2>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>1. Our preferred method of contact is:</label>
+        <select
+          name="preferredContact"
+          value={formData.preferredContact}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+        >
+          <option value="">Select...</option>
+          <option value="Text">Text</option>
+          <option value="Call">Call</option>
+          <option value="Email">Email</option>
+          <option value="Other">Other (please specify)</option>
+        </select>
+        {formData.preferredContact === "Other" && (
+          <input
+            type="text"
+            name="preferredContactOther"
+            value={formData.preferredContactOther}
+            onChange={handleChange}
+            style={{ width: "100%", padding: "8px", fontSize: "16px", marginTop: "5px" }}
+            placeholder="Please specify"
+          />
+        )}
+      </div>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>2. We will respond to each other's messages:</label>
+        <select
+          name="responseTime"
+          value={formData.responseTime}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+        >
+          <option value="">Select...</option>
+          <option value="Within 12 hours">Within 12 hours</option>
+          <option value="Within 24 hours">Within 24 hours</option>
+          <option value="Within 48 hours">Within 48 hours</option>
+          <option value="Other">Other (please specify)</option>
+        </select>
+        {formData.responseTime === "Other" && (
+          <input
+            type="text"
+            name="responseTimeOther"
+            value={formData.responseTimeOther}
+            onChange={handleChange}
+            style={{ width: "100%", padding: "8px", fontSize: "16px", marginTop: "5px" }}
+            placeholder="Please specify"
+          />
+        )}
+      </div>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>3. If we need to have a challenging or uncomfortable conversation, we will:</label>
+        <select
+          name="challengingConversation"
+          value={formData.challengingConversation}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+        >
+          <option value="">Select...</option>
+          <option value="Have it right then and there">Have it right then and there</option>
+          <option value="Give each other some time to calm down or cool off before sitting down to talk">
+            Give each other some time to calm down or cool off before sitting down to talk
+          </option>
+          <option value="Schedule a time to chat at least hours or days in advance">
+            Schedule a time to chat at least hours or days in advance
+          </option>
+          <option value="Other">Other (please specify)</option>
+        </select>
+        {formData.challengingConversation === "Other" && (
+          <input
+            type="text"
+            name="challengingConversationOther"
+            value={formData.challengingConversationOther}
+            onChange={handleChange}
+            style={{ width: "100%", padding: "8px", fontSize: "16px", marginTop: "5px" }}
+            placeholder="Please specify"
+          />
+        )}
+      </div>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>4. On weekdays (Monday-Friday), we will set aside the following hours for sleeping:</label>
+        <input
+          type="text"
+          name="weekdaySleepHours"
+          value={formData.weekdaySleepHours}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+          placeholder="e.g., 10 PM - 6 AM"
+        />
+      </div>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>5. On weekends (Saturday-Sunday), we will set aside the following hours for sleeping:</label>
+        <input
+          type="text"
+          name="weekendSleepHours"
+          value={formData.weekendSleepHours}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+          placeholder="e.g., 11 PM - 7 AM"
+        />
+      </div>
+      <button
+        onClick={submitForm}
+        style={{ padding: "10px 20px", backgroundColor: "#00AA9E", borderColor: "#0a978d", color: "#fff", fontSize: "16px", cursor: "pointer", borderRadius: "5px" }}
+      >
+        Submit
+      </button>
+    </div>
+  );
+}
+
+export default PreferencesForm;
