@@ -17,6 +17,9 @@ function TableHeader() {
 }
 
 function TableBody(props) {
+    if(props.eventData === null) {
+    return <caption>Data Unavailable</caption>;
+    }
   const rows = props.eventData.map((row, index) => {
     return(
       <tr key = {index}>

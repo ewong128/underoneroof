@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const EventsSchema = new mongoose.Schema(
+const EventSchema = new mongoose.Schema(
   {
     
 	date: {
@@ -38,6 +38,6 @@ const EventsSchema = new mongoose.Schema(
   { collection: "events_list" }
 );
 
-const Events = mongoose.model("Events", EventsSchema);
+const Event = mongoose.model("Event", EventSchema);
 
-export default Events;
+export default Event;

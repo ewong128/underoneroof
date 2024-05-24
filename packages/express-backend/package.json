@@ -7,17 +7,28 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon backend.js",
+    "lint": "eslint .",
     "start": "node backend.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "mongoose": "^8.3.5"
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.4",
+    "mongoose": "^8.3.5",
+    "react-router-dom": "^6.23.1",
+    "sort-by": "^0.0.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.3.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "prettier": "3.2.5"
   }
 }

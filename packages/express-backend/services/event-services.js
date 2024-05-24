@@ -28,22 +28,22 @@ function findEventById(id) {
   return eventModel.findById(id);
 }
 
-function addEvent(events) {
-  const eventToAdd = new eventModel(events);
+function addEvent(event) {
+  const eventToAdd = new eventModel(event);
   const promise = eventToAdd.save();
   return promise;
 }
 
-function findEventByEvent(events) {
-  return eventModel.find({ events: events });
+function findEventByEvent(event) {
+  return eventModel.find({ event: event });
 }
 
 function findEventByName(name) {
   return eventModel.find({ name: name });
 }
 
-function findEventByEventName(events, name) {
-  return eventModel.find({ events: events, name: name });
+function findEventByEventName(event, name) {
+  return eventModel.find({ event: event, name: name });
 }
 
 function deleteEventById(id) {
