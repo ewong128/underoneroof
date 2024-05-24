@@ -4,8 +4,8 @@ import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
 import groupServices from "./services/group-services.js"
-import agreementServices from "./services/agreement-services.js";
 import contactServices from "./services/contact-services.js";
+import preferenceServices from "./services/preference-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
 
 const app = express();
@@ -129,50 +129,6 @@ app.post("/groups", authenticateUser, (req, res) => {
   
 });
 
-// for agreement
-app.get("/agreements", authenticateUser, (req, res) => {
-  const agreement = req.query.agreement;
-  let promise = agreementServices.getAgreements(agreement);
-  promise.then((result) => {
-    result = { agreements: result };
-    res.send(result);
-  } )
-    
-});
-
-app.get("/agreements/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"]; //or req.params.id
-  let promise = agreementServices.findAgreementById(id);
-  promise.then((result) => {
-    if (result === undefined) {
-      res.status(404).send("Resource not found.");
-    } else {
-      res.send(result);
-    }
-  })
-  
-});
-
-app.delete("/agreements/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = agreementServices.deleteAgreementById(id);
-  promise.then((result) => {
-    if (!result){
-      res.status(404).send("Resource not found.");
-    } else{
-      res.status(204).send();
-    }
-  })
-});
-
-app.post("/agreements", authenticateUser, (req, res) => {
-  const agreementToAdd = req.body;
-  const promise = agreementServices.addAgreement(agreementToAdd);
-  promise.then((newAgreement) => {
-    res.status(201).send(newAgreement);
-  })
-  
-});
 
 // for contacts
 app.get("/contacts", authenticateUser, (req, res) => {
@@ -215,6 +171,51 @@ app.post("/contacts", authenticateUser, (req, res) => {
   const promise = contactServices.addContact(contactToAdd);
   promise.then((newContact) => {
     res.status(201).send(newContact);
+  })
+  
+});
+
+// for preferences
+app.get("/preferences", authenticateUser, (req, res) => {
+  const preference = req.query.preference;
+  let promise = preferenceServices.getPreferences(preference);
+  promise.then((result) => {
+    result = { preferences_list: result };
+    res.send(result);
+  } )
+    
+});
+
+app.get("/preferences/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = preferenceServices.findPrefById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+
+app.delete("/preferences/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = preferenceServices.deletePrefById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
+app.post("/preferences", authenticateUser, (req, res) => {
+  const prefToAdd = req.body;
+  const promise = preferenceServices.addPref(prefToAdd);
+  promise.then((newPref) => {
+    res.status(201).send(newPref);
   })
   
 });

@@ -17,7 +17,7 @@
   import ContactForm from "./routes/ContactForm";
   import ContactTable from "./routes/ContactTable";
   import PreferencesForm from "./routes/PreferencesForm";
-  import AgreementTable from "./routes/AgreementTable";
+  import PreferencesTable from "./routes/PreferencesTable";
   import { jwtDecode } from "jwt-decode";
 
   function MyApp() {
@@ -30,6 +30,7 @@
     const [agreements, setAgreements] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
+    const [preferences, setPreferences] = useState([]);
     const navigate = useNavigate();
 
     // authentiation
@@ -296,84 +297,6 @@
       setCharacters([...characters, person]);
     }
 
-    // agreement form
-
-    useEffect(() => {
-      fetchAgreements()
-        .then((res) => (res.status === 200 ? res.json() : undefined))
-        .then((json) => {
-          if (json) {
-            setAgreements(json["agreements"]);
-          } else {
-            setAgreements(null);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, [token]);
-
-    function removeOneAgreement(index) {
-      const id = agreements[index]._id;
-
-      deleteAgreement(id)
-        .then((res) => {
-          if (res.status === 204) {
-            const updated = agreements.filter((agreement, i) => {
-              return i !== index;
-            });
-            setAgreements(updated);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-
-    function deleteAgreement(id) {
-      const promise = fetch("Http://localhost:8000/agreements/" + id, {
-        method: "DELETE",
-        headers: addAuthHeader(),
-      });
-
-      return promise;
-    }
-
-    function updateAgreements(agreement) {
-      postAgreement(agreement)
-        .then((res) => {
-          if (res.status === 201) return res.json();
-        })
-        .then((json) => {
-          if (json) {
-            setAgreements([...agreements, json]);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-
-    function fetchAgreements() {
-      const promise = fetch("Http://localhost:8000/agreements", {
-        headers: addAuthHeader(),
-      });
-
-      return promise;
-    }
-
-    function postAgreement(agreement) {
-      const promise = fetch("Http://localhost:8000/agreements", {
-        method: "POST",
-        headers: addAuthHeader({
-          "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(agreement),
-      });
-
-      return promise;
-    }
-
     // contacts form
     useEffect(() => {
       fetchContacts()
@@ -513,6 +436,84 @@
         });
     }, [token]);  
 
+    // for preferences
+    useEffect(() => {
+      fetchPreferences()
+        .then((res) => (res.status === 200 ? res.json() : undefined))
+        .then((json) => {
+          if (json) {
+            setPreferences(json["contacts_list"]);
+          } else {
+            setPreferences(null);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, [token]);
+
+    function removeOnePreference(index) {
+      const id = preferences[index]._id;
+
+      deletePreference(id)
+        .then((res) => {
+          if (res.status === 204) {
+            const updated = preferences.filter((preference, i) => {
+              return i !== index;
+            });
+            setPreferences(updated);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    function deletePreference(id) {
+      const promise = fetch("Http://localhost:8000/preferences/" + id, {
+        method: "DELETE",
+        headers: addAuthHeader(),
+      });
+
+      return promise;
+    }
+
+    function updatePreferences(preference) {
+      postPreference(preference)
+        .then((res) => {
+          if (res.status === 201) return res.json();
+        })
+        .then((json) => {
+          if (json) {
+            setPreferences([...preferences, json]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    
+
+    function fetchPreferences() {
+      const promise = fetch("Http://localhost:8000/preferences", {
+        headers: addAuthHeader(),
+      });
+
+      return promise;
+    }
+
+    function postPreference(preference) {
+      const promise = fetch("Http://localhost:8000/preferences", {
+        method: "POST",
+        headers: addAuthHeader({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify(preference),
+      });
+
+      return promise;
+    }
+
     return (
       <div className="container">
         <Routes>
@@ -546,7 +547,8 @@
                   {!allContactsSubmitted && (
                     <ContactForm handleSubmit={updateContacts} />
                   )}
-                  {/* <PreferencesForm handleSubmit={updateContacts} /> */}
+                  <PreferencesTable preferencesData={preferences} removePreference={removeOnePreference} />
+                  <PreferencesForm handleSubmit={updateContacts} />
                 </>
               }
             />

@@ -10,11 +10,30 @@ function PreferencesForm(props) {
     challengingConversationOther: "",
     weekdaySleepHours: "",
     weekendSleepHours: "",
+    quietStudyTime: "",
+    studyHouseCondition: "",
+    sharingPossessions: "",
+    guestsPolicy: {
+      anyTime: false,
+      studyHours: false,
+      midtermsFinals: false,
+      advanceNotice: false,
+      other: false,
+      guestsPolicyOther: "",
+    },
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+  }
+
+  function handleGuestsPolicyChange(event) {
+    const { name, checked } = event.target;
+    setFormData(prevData => ({
+      ...prevData,
+      guestsPolicy: { ...prevData.guestsPolicy, [name]: checked },
+    }));
   }
 
   function submitForm() {
@@ -28,6 +47,17 @@ function PreferencesForm(props) {
       challengingConversationOther: "",
       weekdaySleepHours: "",
       weekendSleepHours: "",
+      quietStudyTime: "",
+      studyHouseCondition: "",
+      sharingPossessions: "",
+      guestsPolicy: {
+        anyTime: false,
+        studyHours: false,
+        midtermsFinals: false,
+        advanceNotice: false,
+        other: false,
+        guestsPolicyOther: "",
+      },
     });
   }
 
@@ -134,6 +164,114 @@ function PreferencesForm(props) {
           style={{ width: "100%", padding: "8px", fontSize: "16px" }}
           placeholder="e.g., 11 PM - 7 AM"
         />
+      </div>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>6. On weekdays (Monday-Friday), a reasonable time for quiet studying in our room is:</label>
+        <select
+          name="quietStudyTime"
+          value={formData.quietStudyTime}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+        >
+          <option value="">Select...</option>
+          <option value="Mornings">Mornings</option>
+          <option value="Afternoons">Afternoons</option>
+          <option value="Evenings">Evenings</option>
+          <option value="Late nights">Late nights</option>
+        </select>
+      </div>
+
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>7. When studying, the house should be:</label>
+        <select
+          name="studyHouseCondition"
+          value={formData.studyHouseCondition}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+        >
+          <option value="">Select...</option>
+          <option value="Silent">Silent</option>
+          <option value="Minimal background noise">Minimal background noise (e.g., low music or television) is OK</option>
+        </select>
+      </div>
+
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>8. We're OK with sharing our possessions and supplies with each other:</label>
+        <select
+          name="sharingPossessions"
+          value={formData.sharingPossessions}
+          onChange={handleChange}
+          style={{ width: "100%", padding: "8px", fontSize: "16px" }}
+        >
+          <option value="">Select...</option>
+          <option value="Never">Never</option>
+          <option value="Sometimes">Sometimes—just remember to ask permission first</option>
+        </select>
+      </div>
+      <div style={{ marginBottom: "15px" }}>
+        <label style={{ display: "block", marginBottom: "5px" }}>9. Friends and guests may come over (check all that apply):</label>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <label style={{ fontWeight: "normal", marginBottom: "5px" }}>
+            <input
+              type="checkbox"
+              name="anyTime"
+              checked={formData.guestsPolicy.anyTime}
+              onChange={handleGuestsPolicyChange}
+              style={{ marginRight: "10px" }}
+            />
+            Any time
+          </label>
+          <label style={{ fontWeight: "normal", marginBottom: "5px" }}>
+            <input
+              type="checkbox"
+              name="studyHours"
+              checked={formData.guestsPolicy.studyHours}
+              onChange={handleGuestsPolicyChange}
+              style={{ marginRight: "10px" }}
+            />
+            During study hours
+          </label>
+          <label style={{ fontWeight: "normal", marginBottom: "5px" }}>
+            <input
+              type="checkbox"
+              name="midtermsFinals"
+              checked={formData.guestsPolicy.midtermsFinals}
+              onChange={handleGuestsPolicyChange}
+              style={{ marginRight: "10px" }}
+            />
+            During midterms/finals
+          </label>
+          <label style={{ fontWeight: "normal", marginBottom: "5px" }}>
+            <input
+              type="checkbox"
+              name="advanceNotice"
+              checked={formData.guestsPolicy.advanceNotice}
+              onChange={handleGuestsPolicyChange}
+              style={{ marginRight: "10px" }}
+            />
+            With advance notice of hours or days
+          </label>
+          <label style={{ fontWeight: "normal", marginBottom: "5px" }}>
+            <input
+              type="checkbox"
+              name="other"
+              checked={formData.guestsPolicy.other}
+              onChange={handleGuestsPolicyChange}
+              style={{ marginRight: "10px" }}
+            />
+            Other (please specify)
+          </label>
+          {formData.guestsPolicy.other && (
+            <input
+              type="text"
+              name="guestsPolicyOther"
+              value={formData.guestsPolicy.guestsPolicyOther}
+              onChange={handleChange}
+              style={{ width: "100%", padding: "8px", fontSize: "16px", marginTop: "5px" }}
+              placeholder="Please specify"
+            />
+          )}
+        </div>
       </div>
       <button
         onClick={submitForm}

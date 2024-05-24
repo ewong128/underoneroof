@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Agreement from '../models/agreement.js';
 
 mongoose.set('debug', true);
 

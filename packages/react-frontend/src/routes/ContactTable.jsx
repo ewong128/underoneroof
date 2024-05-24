@@ -20,7 +20,7 @@ function ContactTable({ contactData, removeContact }) {
   }
 
   return (
-    <div style={{ margin: "20px", padding: "20px", border: "1px solid #ccc" }}>
+    <div style={{ margin: "20px", padding: "20px", border: "1px solid #ccc", borderRadius: "10px"}}>
       <div
         style={{
           textAlign: "center",
