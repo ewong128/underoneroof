@@ -13,14 +13,18 @@ const ChoreSchema = new mongoose.Schema(
       trim: true,
     },
     day: {
-        type: String,
-        required: true,
-        trim: true,
-        validate(value) {
-          if (value.length < 2)
-            throw new Error("Invalid day of the week, must be at least 2 characters.");
-        },
+      type: String,
+      required: true,
+      trim: true,
+      validate(value) {
+        if (value.length < 2)
+          throw new Error("Invalid day of the week, must be at least 2 characters.");
+      },
     },
+    group_id:{
+        type: {type: mongoose.Schema.Types.ObjectId, ref: "Group"},
+        
+    }
   },
   { collection: "chores_list" }
 );

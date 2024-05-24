@@ -8,7 +8,7 @@ const GroupSchema = new mongoose.Schema(
       trim: true,
     },
     roommates: {
-      type: Array,
+      type: [String],
       required: true,
       trim: true,
     },

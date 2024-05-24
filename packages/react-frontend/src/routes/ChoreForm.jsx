@@ -6,6 +6,7 @@ function ChoreForm(props) {
     chore: "",
     roommate: "",
     day: "",
+    group_id: undefined,
   });
 
   function handleChange(event) {
@@ -28,7 +29,7 @@ function ChoreForm(props) {
 
   function submitForm() {
     props.handleSubmit(chore);
-    setChore({ chore: "", roommate: "", day: "" });
+    setChore({ chore: "", roommate: "", day: "", group_id: undefined });
   }
 
   return (

@@ -173,6 +173,20 @@ function MyApp() {
   }
 
   function updateList(chore) {
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          console.log(json);
+          chore.group_id = json[0]._id;
+          console.log(group_id);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     postChore(chore)
       .then((res) => {
         if (res.status === 201) return res.json();
