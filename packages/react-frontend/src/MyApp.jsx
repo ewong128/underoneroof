@@ -54,7 +54,8 @@ function MyApp() {
     navigate("/login");
   }
 
-  function signupUser(creds, rememberMe) {
+  function signupUser(creds, rememberMe, next) {
+    console.log(next);
     creds.rememberMe = rememberMe;
     localStorage.setItem("current user", creds.username);
     const promise = fetch("Http://localhost:8000/signup", {
@@ -72,7 +73,7 @@ function MyApp() {
           setMessage(
             `Signup successful for user: ${creds.username}; auth token saved`
           );
-          navigate("/createGroup");
+          navigate(next || "/createGroup");
         } else {
           setMessage(`Signup Error ${response.status}: ${response.data}`);
         }
@@ -179,22 +180,26 @@ function MyApp() {
       .then((json) => {
         if (json) {
           console.log(json);
-          chore.group_id = json[0]._id;
-          console.log(group_id);
+          chore.group_id = json[0]._id.valueOf();
+          console.log(chore.group_id);
+          return chore;
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    postChore(chore)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
-      .then((json) => {
-        if (json) {
-          setChores([...chores, json]);
-        }
+      .then((chore) => {
+        console.log(chore);
+        postChore(chore)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              setChores([...chores, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -230,18 +235,39 @@ function MyApp() {
   }
 
   useEffect(() => {
-    fetchChores()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setChores(json["chores_list"]);
-        } else {
-          setChores(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(
+        fetchChores()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              const updated = json["chores_list"].filter((chore, i) => {
+                console.log(chore);
+                return chore.group_id === group_id;
+              });
+              console.log(updated);
+              setChores(updated);
+            } else {
+              setChores(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      );
   }, [token]);
 
   useEffect(() => {
@@ -256,6 +282,8 @@ function MyApp() {
   }, []);
 
   function postChore(chore) {
+    console.log(chore);
+    console.log(JSON.stringify(chore));
     const promise = fetch("Http://localhost:8000/chores", {
       method: "POST",
       headers: addAuthHeader({
@@ -342,7 +370,7 @@ function MyApp() {
       }),
       body: JSON.stringify({
         group: group.name,
-        roommates: group.roommates.push(currentUser),
+        roommates: group.roommates.concat([currentUser]),
       }),
     });
 

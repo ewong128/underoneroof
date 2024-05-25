@@ -144,7 +144,9 @@ app.put("/groups/:id", authenticateUser, (req, res) => {
 });
 
 app.post("/chores", authenticateUser, (req, res) => {
+  console.log(req.body)
   const choreToAdd = req.body;
+  
   const promise = choreServices.addChore(choreToAdd);
   promise.then((newChore) => {
     res.status(201).send(newChore);

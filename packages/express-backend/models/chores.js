@@ -22,8 +22,10 @@ const ChoreSchema = new mongoose.Schema(
       },
     },
     group_id:{
-        type: {type: mongoose.Schema.Types.ObjectId, ref: "Group"},
-        
+        type: String,
+        trim: true
+        //type: mongoose.Schema.Types.ObjectId, 
+        //ref: "Group"
     }
   },
   { collection: "chores_list" }

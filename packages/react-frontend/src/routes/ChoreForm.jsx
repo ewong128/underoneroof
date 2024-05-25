@@ -29,7 +29,7 @@ function ChoreForm(props) {
 
   function submitForm() {
     props.handleSubmit(chore);
-    setChore({ chore: "", roommate: "", day: "", group_id: undefined });
+    setChore({ chore: "", roommate: "", day: "" });
   }
 
   return (

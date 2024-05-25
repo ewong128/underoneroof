@@ -18,6 +18,11 @@ function Login(props) {
   const [rememberMe, setRememberMe] = useState(false);
   const [searchParams] = useSearchParams();
 
+  let next = searchParams.get("next");
+  console.log(next);
+
+  localStorage.setItem("link", "/signup?next=" + next);
+
   function handleChange(event) {
     const { name, value } = event.target;
     switch (name) {
@@ -35,7 +40,8 @@ function Login(props) {
   }
 
   function submitForm() {
-    const next = searchParams.get("next");
+    //const next = searchParams.get("next");
+    console.log(next);
     props
       .handleSubmit(creds, rememberMe, next)
       .then((response) => {
@@ -102,11 +108,17 @@ function Login(props) {
       {errorMessage && !(location.pathname == "/signup") && (
         <p>{errorMessage}</p>
       )}
-      {location.pathname === "/login" && (
-        <p>
-          Don't have an account? <Link to="/signup">Sign Up</Link>
-        </p>
-      )}
+      {location.pathname === "/login" &&
+        (next === null ? (
+          <p>
+            Don't have an account? <Link to="/signup">Sign Up</Link>
+          </p>
+        ) : (
+          <p>
+            Don't have an account?{" "}
+            <Link to={"/signup?next=" + next}>Sign Up</Link>
+          </p>
+        ))}
     </div>
   );
 }
