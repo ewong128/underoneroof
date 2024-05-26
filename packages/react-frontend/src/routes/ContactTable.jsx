@@ -2,7 +2,7 @@ import React from "react";
 import contactIcon from "../../contact.png";
 
 function ContactTable({ contactData, removeContact }) {
-  const contacts = Array.isArray(contactData) ? contactData : []; // if no contacts
+  const contacts = Array.isArray(contactData) ? contactData : [];
   const currentUser = localStorage.getItem("current user");
 
   if (contacts.length === 0) {
@@ -20,7 +20,7 @@ function ContactTable({ contactData, removeContact }) {
   }
 
   return (
-    <div style={{ margin: "20px", padding: "20px", border: "1px solid #ccc", borderRadius: "10px"}}>
+    <div style={{ margin: "20px", padding: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
       <div
         style={{
           textAlign: "center",
@@ -37,22 +37,26 @@ function ContactTable({ contactData, removeContact }) {
         />
         <h2 style={{ margin: 0, fontSize: "1.5rem" }}>Emergency Contacts</h2>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-starto" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
         {contacts.map((contact, index) => (
           <div key={index} style={{ width: "calc(25% - 10px)", marginBottom: "20px" }}>
-            <h3 style={{ color: "#0a978d", fontSize: "1.5rem" }}> {currentUser}'s Contact </h3>
-            <p>
-              <strong>Emergency Contact Relation:</strong> <p>{contact.emergencyContactRelation}</p>
-            </p>
-            <p>
-              <strong>Emergency Contact Name:</strong> <p>{contact.emergencyContactName}</p>
-            </p>
-            <p>
-              <strong>Emergency Contact Email:</strong> <p>{contact.emergencyContactEmail}</p>
-            </p>
-            <p>
-              <strong>Emergency Contact Phone:</strong> <p>{contact.emergencyContactPhone}</p>
-            </p>
+            <h3 style={{ color: "#0a978d", fontSize: "1.5rem" }}>{currentUser}'s Contact</h3>
+            <div style={{ marginBottom: "10px" }}>
+              <strong>Emergency Contact Relation:</strong>
+              <div>{contact.emergencyContactRelation}</div>
+            </div>
+            <div style={{ marginBottom: "10px" }}>
+              <strong>Emergency Contact Name:</strong>
+              <div>{contact.emergencyContactName}</div>
+            </div>
+            <div style={{ marginBottom: "10px" }}>
+              <strong>Emergency Contact Email:</strong>
+              <div>{contact.emergencyContactEmail}</div>
+            </div>
+            <div style={{ marginBottom: "10px" }}>
+              <strong>Emergency Contact Phone:</strong>
+              <div>{contact.emergencyContactPhone}</div>
+            </div>
             <button
               onClick={() => removeContact(index)}
               style={{

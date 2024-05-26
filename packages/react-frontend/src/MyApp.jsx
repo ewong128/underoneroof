@@ -27,7 +27,6 @@
     const [chores, setChores] = useState([]);
     const [characters, setCharacters] = useState([]);
     const [groups, setGroup] = useState([]);
-    const [agreements, setAgreements] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
     const [preferences, setPreferences] = useState([]);
@@ -442,7 +441,7 @@
         .then((res) => (res.status === 200 ? res.json() : undefined))
         .then((json) => {
           if (json) {
-            setPreferences(json["contacts_list"]);
+            setPreferences(json["preferences_list"]);
           } else {
             setPreferences(null);
           }
@@ -548,7 +547,7 @@
                     <ContactForm handleSubmit={updateContacts} />
                   )}
                   <PreferencesTable preferencesData={preferences} removePreference={removeOnePreference} />
-                  <PreferencesForm handleSubmit={updateContacts} />
+                  <PreferencesForm handleSubmit={updatePreferences} />
                 </>
               }
             />
