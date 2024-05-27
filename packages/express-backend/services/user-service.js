@@ -10,16 +10,16 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-function getUsers(name, job) {
+function getUsers(username, group) {
   let promise;
-  if (name === undefined && job === undefined) {
+  if (username === undefined && group === undefined) {
     promise = userModel.find();
-  } else if (name && !job) {
-    promise = findUserByName(name);
-  } else if (job && !name) {
-    promise = findUserByJob(job);
-  } else if (job && name){
-    promise = findUserByNameJob(name, job);
+  } else if (username && !group) {
+    promise = findUserByName(username);
+  } else if (group && !username) {
+    promise = findUserByGroup(group);
+  } else if (group && username){
+    promise = findUserByNameGroup(username, group);
   }
   return promise;
 }
@@ -34,16 +34,16 @@ function addUser(user) {
   return promise;
 }
 
-function findUserByName(name) {
-  return userModel.find({ name: name });
+function findUserByName(username) {
+  return userModel.find({ username: username });
 }
 
-function findUserByJob(job) {
-  return userModel.find({ job: job });
+function findUserByGroup(group) {
+  return userModel.find({ group: group });
 }
 
-function findUserByNameJob(name, job){
-  return userModel.find({name: name, job: job});
+function findUserByNameGroup(username, group){
+  return userModel.find({username: username, group: group});
 }
 
 function deleteUserById(id){
@@ -55,6 +55,6 @@ export default {
   getUsers,
   findUserById,
   findUserByName,
-  findUserByJob,
+  findUserByGroup,
   deleteUserById
 };

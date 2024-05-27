@@ -18,7 +18,7 @@ function getChores(chore, roommate) {
     promise = findChoreByChore(chore);
   } else if (roommate && !chore) {
     promise = findChoreByRoommate(roommate);
-  } else if (roommate && chore){
+  } else if (roommate && chore) {
     promise = findChoreByChoreRoommate(chore, roommate);
   }
   return promise;
@@ -47,11 +47,11 @@ function findChoreByRoommate(roommate) {
   return choreModel.find({ roommate: roommate });
 }
 
-function findChoreByChoreRoommate(chore, roommate){
-  return choreModel.find({chore: chore, roommate: roommate});
+function findChoreByChoreRoommate(chore, roommate) {
+  return choreModel.find({ chore: chore, roommate: roommate });
 }
 
-function deleteChoreById(id){
+function deleteChoreById(id) {
   return choreModel.findByIdAndDelete(id);
 }
 
