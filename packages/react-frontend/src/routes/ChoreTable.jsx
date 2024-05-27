@@ -36,10 +36,7 @@ function TableBody(props) {
           />
         </td>
         <td>
-          <button onClick={() => props.removeChore(index)}>
-            Delete
-            <img src="/assets/trash.svg"></img>
-          </button>
+          <button onClick={() => props.removeChore(index)}>Delete</button>
         </td>
       </tr>
     );
