@@ -5,7 +5,7 @@ function TableHeader() {
   return (
     <thead>
       <tr>
-        <th colSpan="4">Chores</th> 
+        <th colSpan="6">Chores</th> 
       </tr>
       <tr>
         <th>Chore</th>

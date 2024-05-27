@@ -50,8 +50,9 @@ function ChoreForm(props) {
         onChange={handleChange}
       />
 
-      <label htmlFor="day">Day</label>
+<label htmlFor="day">Day</label>
       <select name="day" id="day" onChange={handleChange} value={chore.day}>
+        <option value="" disabled>Select a day</option>
         <option value="Sunday">Sunday</option>
         <option value="Monday">Monday</option>
         <option value="Tuesday">Tuesday</option>
@@ -61,7 +62,7 @@ function ChoreForm(props) {
         <option value="Saturday">Saturday</option>
       </select>
 
-      <input type="button" value="Submit" onClick={submitForm} />
+      <input type="button" value="Add Chore" onClick={submitForm} style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
     </form>
   );
 }
