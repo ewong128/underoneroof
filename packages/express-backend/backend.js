@@ -166,40 +166,7 @@ app.delete("/contacts/:id", authenticateUser, (req, res) => {
   })
 });
 
-app.post("/contacts", authenticateUser, (req, res) => {
-  const contactToAdd = req.body;
-  const promise = contactServices.addContact(contactToAdd);
-  promise.then((newContact) => {
-    res.status(201).send(newContact);
-  })
-  
-});
-
-// for preferences
-app.get("/preferences", authenticateUser, (req, res) => {
-  const preference = req.query.preference;
-  let promise = preferenceServices.getPreferences(preference);
-  promise.then((result) => {
-    result = { preferences_list: result };
-    res.send(result);
-  } )
-    
-});
-
-app.get("/preferences/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"]; //or req.params.id
-  let promise = preferenceServices.findPrefById(id);
-  promise.then((result) => {
-    if (result === undefined) {
-      res.status(404).send("Resource not found.");
-    } else {
-      res.send(result);
-    }
-  })
-  
-});
-
-app.delete("/preferences/:id", authenticateUser, (req, res) => {
+app.delete("/chores/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = preferenceServices.deletePrefById(id);
   promise.then((result) => {

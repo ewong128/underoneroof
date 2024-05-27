@@ -12,6 +12,12 @@ const ChoreSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    status: {
+      type: String,
+      required: true,
+      trim: true,
+      default: "Pending..."
+    },
     day: {
         type: String,
         required: true,

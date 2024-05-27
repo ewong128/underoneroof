@@ -11,30 +11,30 @@ function EventForm(props) {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setPerson(prevPerson => ({
+    setPerson((prevPerson) => ({
       ...prevPerson,
-      [name]: value
+      [name]: value,
     }));
   }
 
   function submitForm() {
     props.handleSubmit(person);
-    setPerson({ Date: "", Time: "", Name: "", Event: "" , Description: "" });
+    setPerson({ Date: "", Time: "", Name: "", Event: "", Description: "" });
   }
 
   return (
     <form>
       <label htmlFor="Date">Date</label>
       <input
-        type="text"
+        type="date"
         name="Date"
         id="Date"
         value={person.Date}
         onChange={handleChange}
       />
-	  <label htmlFor="Time">Time</label>
+      <label htmlFor="Time">Time</label>
       <input
-        type="text"
+        type="time"
         name="Time"
         id="Time"
         value={person.Time}
@@ -56,7 +56,7 @@ function EventForm(props) {
         value={person.Event}
         onChange={handleChange}
       />
-	   <label htmlFor="Description">Description</label>
+      <label htmlFor="Description">Description</label>
       <input
         type="text"
         name="Description"
