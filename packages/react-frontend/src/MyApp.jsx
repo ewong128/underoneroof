@@ -243,6 +243,44 @@ function MyApp() {
     return promise;
   }
 
+  function updateChore(index) {
+    const id = chores[index]._id;
+    const chore = chores[index];
+    putChore(id, chore)
+      .then((res) => {
+        if (res.status === 200) return res.json();
+      })
+      .then((json) => {
+        if (json) {
+          console.log(json);
+          setChores(chores.toSpliced(index, 1, json));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function putChore(id, chore) {
+    console.log(chore);
+    console.log(chore.chore);
+    console.log(chore.roommate);
+    const promise = fetch("Http://localhost:8000/chores/" + id, {
+      method: "PUT",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        chore: chore.chore,
+        roommate: chore.roommate,
+        status: "Completed",
+        day: chore.day,
+      }),
+    });
+
+    return promise;
+  }
+
   function deleteChore(id) {
     const promise = fetch("Http://localhost:8000/chores/" + id, {
       method: "DELETE",
@@ -306,7 +344,11 @@ function MyApp() {
               <button className="invite" onClick={copyLink}>
                 Invite Roommates
               </button>
-              <ChoreTable choreData={chores} removeChore={removeOneChore} />
+              <ChoreTable
+                choreData={chores}
+                removeChore={removeOneChore}
+                updateChoreStatus={updateChore}
+              />
               <ChoreForm handleSubmit={updateList} />
               <EventTable
                 characterData={characters}
