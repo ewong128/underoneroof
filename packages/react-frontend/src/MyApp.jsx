@@ -344,7 +344,11 @@ function MyApp() {
               <button className="invite" onClick={copyLink}>
                 Invite Roommates
               </button>
-              <ChoreTable choreData={chores} removeChore={removeOneChore} />
+              <ChoreTable
+                choreData={chores}
+                removeChore={removeOneChore}
+                updateChoreStatus={updateChore}
+              />
               <ChoreForm handleSubmit={updateList} />
               <EventTable
                 characterData={characters}
