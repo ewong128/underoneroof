@@ -1,56 +1,69 @@
+// src/Table.jsx
 import React from "react";
+import trashDelete from "../../trash.png";
 
 function TableHeader() {
   return (
     <thead>
       <tr>
+        <th colSpan="6">Events</th>
+      </tr>
+      <tr>
         <th>Date</th>
         <th>Time</th>
         <th>Name</th>
-        <th>Event</th>
+        <th>Events</th>
         <th>Description</th>
-        <th>Remove</th>
+        <th>Delete</th>
       </tr>
     </thead>
   );
 }
 
 function TableBody(props) {
-  if(props.characterData === null) {
+  if (props.eventData === null) {
     return <caption>Data Unavailable</caption>;
   }
-  const rows = props.characterData.map((row, index) => {
-    return(
-      <tr key = {index}>
-        <td>{row.Date}</td>
-        <td>{row.Time}</td>
-        <td>{row.Name}</td>
-        <td>{row.Event}</td>
-        <td>{row.Description}</td>
-        <td>
-          <button onClick={() => props.removeCharacter(index)}>
-            Delete
+
+  const rows = props.eventData.map((row, index) => {
+    return (
+      <tr key={index}>
+        <td>{row.date}</td>
+        <td>{row.time}</td>
+        <td>{row.name}</td>
+        <td>{row.event}</td>
+        <td>{row.description}</td>
+        <td style={{ textAlign: "center" }}>
+          <button
+            onClick={() => props.removeEvent(index)}
+            style={{
+              padding: 0,
+              border: "none",
+              background: "none",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <img
+              src={trashDelete}
+              alt="Delete"
+              style={{ width: "20px", height: "25px", marginRight: "-45px", marginTop: "5px" }}
+            />
           </button>
         </td>
       </tr>
-    )
-  }
-  )
-  return(
-    <tbody>
-      {rows}
-    </tbody>
-  );
+    );
+  });
+
+  return <tbody>{rows}</tbody>;
 }
 
 function EventTable(props) {
   return (
     <table>
       <TableHeader />
-      <TableBody 
-      characterData = {props.characterData}
-      removeCharacter = {props.removeCharacter}
-      />
+      <TableBody eventData={props.eventData} removeEvent={props.removeEvent} />
     </table>
   );
 }

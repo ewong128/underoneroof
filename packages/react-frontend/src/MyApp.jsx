@@ -6,6 +6,8 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "../navigation/Navbar";
 import ChoreTable from "./routes/ChoreTable";
 import ChoreForm from "./routes/ChoreForm";
 import Login from "./routes/Login";
@@ -13,6 +15,10 @@ import EventTable from "./routes/EventTable";
 import EventForm from "./routes/EventForm";
 import GroupForm from "./routes/GroupForm";
 import Invitation from "./routes/Invitation";
+import ContactForm from "./routes/ContactForm";
+import ContactTable from "./routes/ContactTable";
+import PreferencesForm from "./routes/PreferencesForm";
+import PreferencesTable from "./routes/PreferencesTable";
 import { jwtDecode } from "jwt-decode";
 
 function MyApp() {
@@ -20,9 +26,14 @@ function MyApp() {
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
   const [chores, setChores] = useState([]);
-  const [characters, setCharacters] = useState([]);
+  const [events, setEvents] = useState([]);
   const [groups, setGroup] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
+  const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
+
+  // authentiation
 
   function addAuthHeader(otherHeaders = {}) {
     const storedToken = localStorage.getItem("token");
@@ -115,6 +126,29 @@ function MyApp() {
     return promise;
   }
 
+  useEffect(() => {
+    // check if the user logged in
+    const token = localStorage.getItem("token");
+
+    // if not logged in, or token expired, redirect to the login page
+    if (!token || token === INVALID_TOKEN) {
+      navigate("/login");
+    } else {
+      // need to decode the token to check for expiration
+      const decodedToken = jwtDecode(token);
+      const expirationTime = decodedToken.exp * 1000; // milliseconds conversion
+
+      // check if token has expired
+      if (Date.now() >= expirationTime) {
+        navigate("/login");
+      } else {
+        setToken(token);
+      }
+    }
+  }, []);
+
+  // group
+
   function createGroup(group, rememberMe) {
     const currentUser = localStorage.getItem("current user");
     group.roommates.push(currentUser);
@@ -145,12 +179,54 @@ function MyApp() {
     return promise;
   }
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+  function fetchGroup(username) {
+    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+      headers: addAuthHeader(),
     });
-    setCharacters(updated);
+
+    return promise;
   }
+
+  function copyLink() {
+    const currentUser = localStorage.getItem("current user");
+    let group_id = "";
+    console.log(currentUser);
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          group_id = json[0]._id.toString();
+          console.log(group_id);
+          navigator.clipboard.writeText(
+            "Http://localhost:5173/login?next=acceptInvitation?group=" +
+              group_id
+          );
+        } else {
+          //setChores(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function removeOneEvent(index) {
+    const id = events[index]._id;
+
+    deleteEvents(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = events.filter((events, i) => {
+            return i !== index;
+          });
+          setEvents(updated);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  // chore table
 
   function removeOneChore(index) {
     const id = chores[index]._id;
@@ -167,10 +243,6 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-  }
-
-  function updatecharacterList(person) {
-    setCharacters([...characters, person]);
   }
 
   function updateList(chore) {
@@ -205,9 +277,20 @@ function MyApp() {
         console.log(error);
       });
   }
-
-  function updatecharacterList(person) {
-    setCharacters([...characters, person]);
+  function updateEventList(events) {
+    postEvent(events)
+      .then((res) => {
+        if (res.status === 201) return res.json();
+      })
+      .then((json) => {
+        if (json) {
+          // setEvents([...events, json])
+          setEvents((prevEvents) => [...prevEvents, json]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function fetchChores() {
@@ -270,16 +353,53 @@ function MyApp() {
       );
   }, [token]);
 
+  function fetchEvents() {
+    const promise = fetch("Http://localhost:8000/events", {
+      headers: addAuthHeader(),
+    });
+    return promise;
+  }
+
   useEffect(() => {
-    // Check if the user is logged in
-    const token = localStorage.getItem("token");
-    // If not logged in, redirect to the login page
-    if (!token || token === INVALID_TOKEN) {
-      navigate("/login");
-    } else {
-      setToken(token);
-    }
-  }, []);
+    fetchEvents()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setEvents(json["events_list"]);
+        } else {
+          setEvents(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  useEffect(() => {
+    fetchEvents()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setEvents(json["events_list"]);
+        } else {
+          setEvents(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  function postEvent(event) {
+    const promise = fetch("Http://localhost:8000/events", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify(event),
+    });
+    return promise;
+  }
 
   function postChore(chore) {
     console.log(chore);
@@ -303,24 +423,240 @@ function MyApp() {
 
     return promise;
   }
+  function deleteEvents(id) {
+    const promise = fetch("Http://localhost:8000/events/" + id, {
+      method: "DELETE",
+      headers: addAuthHeader(),
+    });
 
-  function copyLink() {
-    const currentUser = localStorage.getItem("current user");
-    let group_id = "";
-    console.log(currentUser);
-    fetchGroup(currentUser)
-      .then((res) => (res.status === 200 ? res.json() : undefined))
+    return promise;
+  }
+  function updateChore(index) {
+    const id = chores[index]._id;
+    const chore = chores[index];
+    putChore(id, chore)
+      .then((res) => {
+        if (res.status === 200) return res.json();
+      })
       .then((json) => {
         if (json) {
           console.log(json);
-          group_id = json[0]._id.toString();
-          console.log(group_id);
-          navigator.clipboard.writeText(
-            "Http://localhost:5173/login?next=acceptInvitation?group=" +
-              group_id
-          );
+          setChores(chores.toSpliced(index, 1, json));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function putChore(id, chore) {
+    console.log(chore);
+    console.log(chore.chore);
+    console.log(chore.roommate);
+    const promise = fetch("Http://localhost:8000/chores/" + id, {
+      method: "PUT",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        chore: chore.chore,
+        roommate: chore.roommate,
+        status: "Completed",
+        day: chore.day,
+      }),
+    });
+
+    return promise;
+  }
+
+  // contacts form
+  useEffect(() => {
+    fetchContacts()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setContacts(json["contacts_list"]);
         } else {
-          //setChores(null);
+          setContacts(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  function removeOneContact(index) {
+    const id = contacts[index]._id;
+    deleteContact(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = contacts.filter((contact, i) => {
+            return i !== index;
+          });
+          setContacts(updated);
+
+          // check if all contacts have been submitted
+          fetchGroup(localStorage.getItem("current user"))
+            .then((res) => (res.status === 200 ? res.json() : undefined))
+            .then((groupJson) => {
+              if (groupJson) {
+                const roommatesCount = groupJson[0].roommates.length;
+                if (updated.length === roommatesCount) {
+                  setAllContactsSubmitted(true);
+                } else {
+                  setAllContactsSubmitted(false);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function deleteContact(id) {
+    const promise = fetch("Http://localhost:8000/contacts/" + id, {
+      method: "DELETE",
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function updateContacts(contact) {
+    postContact(contact)
+      .then((res) => {
+        if (res.status === 201) return res.json();
+      })
+      .then((json) => {
+        if (json) {
+          setContacts([...contacts, json]);
+
+          // for no refresh
+          // check if all agreements submitted based on # of roommates
+          fetchGroup(localStorage.getItem("current user"))
+            .then((res) => (res.status === 200 ? res.json() : undefined))
+            .then((groupJson) => {
+              if (groupJson) {
+                const roommatesCount = groupJson[0].roommates.length;
+                if (contacts.length + 1 === roommatesCount) {
+                  setAllContactsSubmitted(true);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function fetchContacts() {
+    const promise = fetch("Http://localhost:8000/contacts", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function postContact(contact) {
+    const promise = fetch("Http://localhost:8000/contacts", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify(contact),
+    });
+
+    return promise;
+  }
+
+  useEffect(() => {
+    fetchContacts()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setContacts(json["contacts_list"]);
+          // Check if all agreements have been submitted
+          fetchGroup(localStorage.getItem("current user"))
+            .then((res) => (res.status === 200 ? res.json() : undefined))
+            .then((groupJson) => {
+              if (groupJson) {
+                const roommatesCount = groupJson[0].roommates.length;
+                if (json["contacts_list"].length === roommatesCount) {
+                  setAllContactsSubmitted(true);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          setContacts(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  // for preferences
+  useEffect(() => {
+    fetchPreferences()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setPreferences(json["preferences_list"]);
+        } else {
+          setPreferences(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  function removeOnePreference(index) {
+    const id = preferences[index]._id;
+
+    deletePreference(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = preferences.filter((preference, i) => {
+            return i !== index;
+          });
+          setPreferences(updated);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function deletePreference(id) {
+    const promise = fetch("Http://localhost:8000/preferences/" + id, {
+      method: "DELETE",
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function updatePreferences(preference) {
+    postPreference(preference)
+      .then((res) => {
+        if (res.status === 201) return res.json();
+      })
+      .then((json) => {
+        if (json) {
+          setPreferences([...preferences, json]);
         }
       })
       .catch((error) => {
@@ -377,10 +713,41 @@ function MyApp() {
     return promise;
   }
 
+  function fetchPreferences() {
+    const promise = fetch("Http://localhost:8000/preferences", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function postPreference(preference) {
+    const promise = fetch("Http://localhost:8000/preferences", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify(preference),
+    });
+
+    return promise;
+  }
+
   return (
     <div className="container">
       <Routes>
-        <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+        <Route
+          path="/login"
+          element={
+            <Login
+              handleSubmit={loginUser}
+              loginButtonStyle={{
+                backgroundColor: "#00AA9E",
+                borderColor: "#0a978d",
+              }}
+            />
+          }
+        />
         <Route
           path="/signup"
           element={<Login handleSubmit={signupUser} buttonLabel="Sign Up" />}
@@ -396,23 +763,58 @@ function MyApp() {
           element={<Invitation handleSubmit={updateGroup} />}
         />
         <Route
+          path="/agreement"
+          element={
+            <>
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <ContactTable
+                contactData={contacts}
+                removeContact={removeOneContact}
+              />
+              {!allContactsSubmitted && (
+                <ContactForm handleSubmit={updateContacts} />
+              )}
+              <PreferencesTable
+                preferencesData={preferences}
+                removePreference={removeOnePreference}
+              />
+              <PreferencesForm handleSubmit={updatePreferences} />
+            </>
+          }
+        />
+        <Route
+          path="/agreement"
+          element={
+            <>
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <ContactTable
+                contactData={contacts}
+                removeContact={removeOneContact}
+              />
+              {!allContactsSubmitted && (
+                <ContactForm handleSubmit={updateContacts} />
+              )}
+              <PreferencesTable
+                preferencesData={preferences}
+                removePreference={removeOnePreference}
+              />
+              <PreferencesForm handleSubmit={updatePreferences} />
+            </>
+          }
+        />
+        <Route
           path="/"
           element={
             <>
-              <button className="logout-button" onClick={handleLogout}>
-                {" "}
-                Logout{" "}
-              </button>
-              <button className="invite" onClick={copyLink}>
-                Invite Roommates
-              </button>
-              <ChoreTable choreData={chores} removeChore={removeOneChore} />
-              <ChoreForm handleSubmit={updateList} />
-              <EventTable
-                characterData={characters}
-                removeCharacter={removeOneCharacter}
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <ChoreTable
+                choreData={chores}
+                removeChore={removeOneChore}
+                updateChoreStatus={updateChore}
               />
-              <EventForm handleSubmit={updatecharacterList} />
+              <ChoreForm handleSubmit={updateList} />
+              <EventTable eventData={events} removeEvents={removeOneEvent} />
+              <EventForm handleSubmit={updateEventList} />
             </>
           }
         />

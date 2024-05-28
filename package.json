@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "cd packages/react-frontend/ && npm run dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}"
   },
   "author": "",
   "license": "ISC",
@@ -13,15 +15,21 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@eslint/compat": "^1.0.1",
+    "eslint": "^8.57.0",
     "nodemon": "^3.1.0",
-    "prettier": "3.2.5"
+    "prettier": "^3.2.5"
   },
   "dependencies": {
+    "bootstrap": "^5.1.3",
     "dotenv": "^16.4.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "mongoose": "^8.3.3",
+    "react-bootstrap": "^2.10.2",
+    "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "styled-components": "^5.3.10"
   }
 }

@@ -29,8 +29,14 @@ function findChoreById(id) {
 }
 
 function addChore(chore) {
+  console.log(chore);
   const choreToAdd = new choreModel(chore);
   const promise = choreToAdd.save();
+  return promise;
+}
+
+function updateChoreById(id,body) {
+  const promise = choreModel.findByIdAndUpdate(id, body, {new : true});
   return promise;
 }
 
@@ -57,5 +63,6 @@ export default {
   findChoreByChore,
   findChoreByRoommate,
   findChoreByChoreRoommate,
-  deleteChoreById,
+  updateChoreById,
+  deleteChoreById
 };

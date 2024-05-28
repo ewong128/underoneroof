@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import logo from "../../logo.png";
 import { useEffect } from "react";
 
 function Login(props) {
@@ -102,7 +103,12 @@ function Login(props) {
           type="button"
           value={props.buttonLabel || "Log In"}
           onClick={submitForm}
-          style={{ width: "100%", marginTop: "10px" }}
+          style={{
+            width: "100%",
+            marginTop: "10px",
+            backgroundColor: props.loginButtonStyle?.backgroundColor || "",
+            borderColor: props.loginButtonStyle?.borderColor || "",
+          }}
         />
       </form>
       {errorMessage && !(location.pathname == "/signup") && (
