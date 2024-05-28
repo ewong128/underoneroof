@@ -7,6 +7,7 @@ import groupServices from "./services/group-services.js"
 import contactServices from "./services/contact-services.js";
 import preferenceServices from "./services/preference-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
+import eventServices from "./services/event-services.js";
 
 const app = express();
 const port = 8000;
@@ -26,7 +27,19 @@ app.get("/users", authenticateUser, (req, res) => {
     
 });
 
-app.get("/users/:id", authenticateUser, (req, res) => {
+app.get("/events", authenticateUser, (req, res) => {
+  const event = req.query.event;
+  const name = req.query.name;
+  let promise = eventServices.getEvents(event, name);
+  promise.then((result) => {
+    result = { events_list: result };
+    res.send(result);
+  } )
+    
+});
+
+
+app.get("/users/:id",  authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = userServices.findUserById(id);
   promise.then((result) => {
@@ -225,6 +238,7 @@ app.delete("/preferences/:id", authenticateUser, (req, res) => {
   })
 });
 
+
 app.post("/preferences", authenticateUser, (req, res) => {
   const prefToAdd = req.body;
   const promise = preferenceServices.addPref(prefToAdd);
@@ -232,6 +246,52 @@ app.post("/preferences", authenticateUser, (req, res) => {
     res.status(201).send(newPref);
   })
   
+});
+
+app.post("/events", authenticateUser, (req, res) => {
+  //console.log("the body",req.body);
+  const eventToAdd = req.body;
+  const promise = eventServices.addEvent(eventToAdd);
+  promise.then((newEvent) => {
+    res.status(201).send(newEvent);
+  })
+  
+});
+
+app.get("/events/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = eventServices.findEventById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+
+app.delete("/events/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = eventServices.deleteEventById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+app.delete("/events/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = eventServices.deleteEventById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
 });
 
 app.post("/signup", registerUser);

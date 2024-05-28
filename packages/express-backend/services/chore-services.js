@@ -29,6 +29,7 @@ function findChoreById(id) {
 }
 
 function addChore(chore) {
+  console.log(chore);
   const choreToAdd = new choreModel(chore);
   const promise = choreToAdd.save();
   return promise;
