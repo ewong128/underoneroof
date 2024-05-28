@@ -1,3 +1,4 @@
+// src/Table.jsx
 import React from "react";
 import trashDelete from "../../trash.png";
 
@@ -9,32 +10,33 @@ function TableHeader() {
       </tr>
       <tr>
         <th>Date</th>
-        <th>Time</th>
+		<th>Time</th>
         <th>Name</th>
-        <th>Event</th>
-        <th>Description</th>
-        <th>Remove</th>
+        <th>Events</th>
+		<th>Description</th>
+        <th>Delete</th>
       </tr>
     </thead>
   );
 }
 
 function TableBody(props) {
-  if(props.characterData === null) {
+    if(props.eventData === null) {
     return <caption>Data Unavailable</caption>;
-  }
-  const rows = props.characterData.map((row, index) => {
+    }
+  const rows = props.eventData.map((row, index) => {
     return(
       <tr key = {index}>
-        <td>{row.Date}</td>
-        <td>{row.Time}</td>
-        <td>{row.Name}</td>
-        <td>{row.Event}</td>
-        <td>{row.Description}</td>
-        <td style ={{ paddingLeft: "23px" }}>
-          <button onClick={() => props.removeChore(index)} 
-            style={{ padding: 0, border: "none", background: "none" }}>
-            <img src={trashDelete} alt="Delete" style={{ marginTop: "5px", width: "20px", height: "20px" }} />
+        <td>{row.date}</td>
+        <td>{row.time}</td>
+        <td>{row.name}</td>
+        <td>{row.event}</td>
+        <td>{row.description}</td>
+        <td style ={{ paddingLeft: "23px" }}></td>
+        <td>
+          <button onClick={() => props.removeEvent(index)}
+          style={{ padding: 0, border: "none", background: "none" }}>
+          <img src={trashDelete} alt="Delete" style={{ marginTop: "5px", width: "20px", height: "20px" }} />
           </button>
         </td>
       </tr>
@@ -53,8 +55,8 @@ function EventTable(props) {
     <table>
       <TableHeader />
       <TableBody 
-      characterData = {props.characterData}
-      removeCharacter = {props.removeCharacter}
+      eventData = {props.eventData}
+      removeEvent = {props.removeEvents}
       />
     </table>
   );
