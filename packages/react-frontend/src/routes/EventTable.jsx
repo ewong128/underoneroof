@@ -1,8 +1,12 @@
 import React from "react";
+import trashDelete from "../../trash.png";
 
 function TableHeader() {
   return (
     <thead>
+      <tr>
+        <th colSpan="6">Events</th> 
+      </tr>
       <tr>
         <th>Date</th>
         <th>Time</th>
@@ -27,9 +31,10 @@ function TableBody(props) {
         <td>{row.Name}</td>
         <td>{row.Event}</td>
         <td>{row.Description}</td>
-        <td>
-          <button onClick={() => props.removeCharacter(index)}>
-            Delete
+        <td style ={{ paddingLeft: "23px" }}>
+          <button onClick={() => props.removeChore(index)} 
+            style={{ padding: 0, border: "none", background: "none" }}>
+            <img src={trashDelete} alt="Delete" style={{ marginTop: "5px", width: "20px", height: "20px" }} />
           </button>
         </td>
       </tr>

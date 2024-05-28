@@ -64,7 +64,7 @@ function EventForm(props) {
         value={person.Description}
         onChange={handleChange}
       />
-      <input type="button" value="Add Event" onClick={submitForm} />
+      <input type="button" value="Add Event" onClick={submitForm} style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
     </form>
   );
 }
