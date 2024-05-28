@@ -29,6 +29,7 @@ function findEventById(id) {
 }
 
 function addEvent(events) {
+  console.log(events);
   const eventToAdd = new eventModel(events);
   const promise = eventToAdd.save();
   return promise;

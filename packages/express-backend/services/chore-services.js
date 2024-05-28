@@ -18,7 +18,7 @@ function getChores(chore, roommate) {
     promise = findChoreByChore(chore);
   } else if (roommate && !chore) {
     promise = findChoreByRoommate(roommate);
-  } else if (roommate && chore){
+  } else if (roommate && chore) {
     promise = findChoreByChoreRoommate(chore, roommate);
   }
   return promise;
@@ -29,8 +29,14 @@ function findChoreById(id) {
 }
 
 function addChore(chore) {
+  console.log(chore);
   const choreToAdd = new choreModel(chore);
   const promise = choreToAdd.save();
+  return promise;
+}
+
+function updateChoreById(id,body) {
+  const promise = choreModel.findByIdAndUpdate(id, body, {new : true});
   return promise;
 }
 
@@ -42,11 +48,11 @@ function findChoreByRoommate(roommate) {
   return choreModel.find({ roommate: roommate });
 }
 
-function findChoreByChoreRoommate(chore, roommate){
-  return choreModel.find({chore: chore, roommate: roommate});
+function findChoreByChoreRoommate(chore, roommate) {
+  return choreModel.find({ chore: chore, roommate: roommate });
 }
 
-function deleteChoreById(id){
+function deleteChoreById(id) {
   return choreModel.findByIdAndDelete(id);
 }
 
@@ -57,5 +63,6 @@ export default {
   findChoreByChore,
   findChoreByRoommate,
   findChoreByChoreRoommate,
+  updateChoreById,
   deleteChoreById
 };
