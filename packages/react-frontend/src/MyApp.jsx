@@ -190,14 +190,15 @@ function MyApp() {
       });
   }
 
-function updateEventList(event) {
-  postEvent(event)
+function updateEventList(events) {
+  postEvent(events)
       .then((res) => {
         if(res.status === 201)
           return res.json()})
       .then((json) => {
         if (json){
-          setEvents([...events, json])
+         // setEvents([...events, json])
+         setEvents((prevEvents) => [...prevEvents, json]);
         }
         
       })
@@ -205,6 +206,7 @@ function updateEventList(event) {
         console.log(error);
       })
 }
+
   function fetchChores() {
     const promise = fetch("Http://localhost:8000/chores", {
       headers: addAuthHeader(),
@@ -283,13 +285,13 @@ function updateEventList(event) {
     return promise;
   }
   
-  function postEvent(events) {
+  function postEvent(event) {
     const promise = fetch("Http://localhost:8000/events", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
       }),
-      body: JSON.stringify(events),
+      body: JSON.stringify(event),
 });
 
     return promise;

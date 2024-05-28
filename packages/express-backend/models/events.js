@@ -15,12 +15,13 @@ const EventSchema = new mongoose.Schema(
         trim: true,
        
       },
-	  events: {
+	  
+	name: {
       type: String,
       required: true,
       trim: true,
     },
-	name: {
+    event: {
       type: String,
       required: true,
       trim: true,

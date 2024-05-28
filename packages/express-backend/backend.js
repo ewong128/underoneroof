@@ -138,6 +138,7 @@ app.post("/chores", authenticateUser, (req, res) => {
 });
 
 app.post("/events", authenticateUser, (req, res) => {
+  //console.log("the body",req.body);
   const eventToAdd = req.body;
   const promise = eventServices.addEvent(eventToAdd);
   promise.then((newEvent) => {

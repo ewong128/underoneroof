@@ -26,10 +26,10 @@ function TableBody(props) {
         <td>{row.date}</td>
 		<td>{row.time}</td>
         <td>{row.name}</td>
-        <td>{row.events}</td>
+        <td>{row.event}</td>
 		<td>{row.description}</td>
         <td>
-          <button onClick={() => props.removeEvents(index)}>
+          <button onClick={() => props.removeEvent(index)}>
             Delete
           </button>
         </td>
@@ -50,7 +50,7 @@ function EventTable(props) {
       <TableHeader />
       <TableBody 
       eventData = {props.eventData}
-      removeEvents = {props.removeEvents}
+      removeEvent = {props.removeEvents}
       />
     </table>
   );

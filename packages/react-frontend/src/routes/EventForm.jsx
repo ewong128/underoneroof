@@ -1,67 +1,67 @@
 import React, { useState } from "react";
 
 function EventForm(props) {
-  const [person, setPerson] = useState({
-    Date: "",
-    Time: "",
-    Name: "",
-    Event: "",
-    Description: "",
+  const [event, setEvent] = useState({
+    date: "",
+    time: "",
+    name: "",
+    event: "",
+    description: "",
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setPerson(prevPerson => ({
-      ...prevPerson,
+    setEvent(prevEvent => ({
+      ...prevEvent,
       [name]: value
     }));
   }
 
   function submitForm() {
-    props.handleSubmit(person);
-    setPerson({ Date: "", Time: "", Name: "", Event: "" , Description: "" });
+    props.handleSubmit(event);
+    setEvent({ date: "", time: "", name: "", event: "" , description: "" });
   }
 
   return (
     <form>
-      <label htmlFor="Date">Date</label>
+      <label htmlFor="date">Date</label>
       <input
         type="text"
-        name="Date"
-        id="Date"
-        value={person.Date}
+        name="date"
+        id="date"
+        value={event.date}
         onChange={handleChange}
       />
-	  <label htmlFor="Time">Time</label>
+	  <label htmlFor="time">Time</label>
       <input
         type="text"
-        name="Time"
-        id="Time"
-        value={person.Time}
+        name="time"
+        id="time"
+        value={event.time}
         onChange={handleChange}
       />
-      <label htmlFor="Name">Name</label>
+      <label htmlFor="name">Name</label>
       <input
         type="text"
-        name="Name"
-        id="Name"
-        value={person.Name}
+        name="name"
+        id="name"
+        value={event.name}
         onChange={handleChange}
       />
-      <label htmlFor="Event">Event</label>
+      <label htmlFor="event">Event</label>
       <input
         type="text"
-        name="Event"
-        id="Event"
-        value={person.Event}
+        name="event"
+        id="event"
+        value={event.event}
         onChange={handleChange}
       />
-	   <label htmlFor="Description">Description</label>
+	   <label htmlFor="description">Description</label>
       <input
         type="text"
-        name="Description"
-        id="Description"
-        value={person.Description}
+        name="description"
+        id="description"
+        value={event.description}
         onChange={handleChange}
       />
       <input type="button" value="Add Event" onClick={submitForm} />
