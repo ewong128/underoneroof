@@ -30,7 +30,7 @@ function TableBody(props) {
         <td>{row.roommate}</td>
         <td>{row.day}</td>
         <td>{row.status}</td>
-        <td>
+        <td style={{ paddingLeft: "1px", paddingRight: "-20px", textAlign: "center" }}> 
           <input
             type="checkbox"
             id="completed"
@@ -38,7 +38,7 @@ function TableBody(props) {
             onClick={() => props.updateChoreStatus(index)}
           />
         </td>
-        <td style ={{ paddingLeft: "23px" }}>
+        <td style={{ paddingLeft: "23px" }}>
           <button onClick={() => props.removeChore(index)} 
             style={{ padding: 0, border: "none", background: "none" }}><img src={trashDelete} alt="Delete" style={{ marginTop: "5px", width: "20px", height: "25px" }} /></button>
         </td>
