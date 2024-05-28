@@ -63,7 +63,7 @@ function EventTable(props) {
   return (
     <table>
       <TableHeader />
-      <TableBody eventData={props.eventData} removeEvent={props.removeEvent} />
+      <TableBody eventData={props.eventData} removeEvent={props.removeEvents} />
     </table>
   );
 }
