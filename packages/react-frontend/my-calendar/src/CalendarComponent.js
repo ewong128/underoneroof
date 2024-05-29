@@ -1,3 +1,4 @@
+// Working
 import React, { useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
@@ -19,33 +20,58 @@ const CalendarContainer = styled.div`
 const StyledCalendar = styled(Calendar)`
   width: 100%;
   max-width: 1200px;
-  background-color: white;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
 
-  .rbc-event {
+  .rbc-toolbar {
+    margin-bottom: 20px;
     background-color: #3f51b5;
-    color: white;
+    color: #ffffff;
+    border-radius: 15px 15px 0 0;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .rbc-toolbar button {
+    background-color: transparent;
     border: none;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .rbc-toolbar button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .rbc-month-view {
+    padding: 10px;
+  }
+
+  .rbc-date-cell {
+    font-weight: bold;
   }
 
   .rbc-today {
     background-color: #ffeb3b !important;
+    color: #000000;
   }
 
   .rbc-off-range-bg {
-    background-color: #f0f8ff;
+    background-color: #ffffff;
   }
 `;
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState([
     {
-      title: 'CSC 307 Sprint #2',
-      start: new Date(),
-      end: new Date(),
-      allDay: false,
+      // title: 'CSC 307 Sprint #2',
+      // start: new Date(),
+      // end: new Date(),
+      // allDay: false,
     },
   ]);
 
@@ -79,17 +105,19 @@ const CalendarComponent = () => {
 
 export default CalendarComponent;
 
+
 // import React, { useState } from 'react';
-// import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+// import { Calendar, momentLocalizer } from 'react-big-calendar';
 // import moment from 'moment';
 // import 'react-big-calendar/lib/css/react-big-calendar.css';
 // import styled from 'styled-components';
+// import EventForm from './EventForm';
 
 // const localizer = momentLocalizer(moment);
 
 // const CalendarContainer = styled.div`
 //   display: flex;
-//   justify-content: center;
+//   flex-direction: column;
 //   align-items: center;
 //   height: 100vh;
 //   background-color: #f0f8ff;
@@ -100,104 +128,45 @@ export default CalendarComponent;
 // const StyledCalendar = styled(Calendar)`
 //   width: 100%;
 //   max-width: 1200px;
-//   background-color: white;
-//   border: none;
-//   border-radius: 10px;
-//   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+//   background-color: #ffffff;
+//   border-radius: 15px;
+//   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+//   font-family: 'Roboto', sans-serif;
 
 //   .rbc-event {
 //     background-color: #3f51b5;
-//     color: white;
+//     color: #ffffff;
 //     border: none;
+//     border-radius: 5px;
 //   }
 
 //   .rbc-today {
 //     background-color: #ffeb3b !important;
+//     color: #000000;
 //   }
 
 //   .rbc-off-range-bg {
-//     background-color: #f0f8ff;
+//     background-color: #ffffff;
 //   }
 // `;
 
 // const CalendarComponent = () => {
-//   const [events, setEvents] = useState([
-//     {
-//       title: 'Meeting',
-//       start: new Date(),
-//       end: new Date(),
-//       allDay: false,
-//     },
-//   ]);
+//   const [events, setEvents] = useState([]);
+
+//   const handleAddEvent = (newEvent) => {
+//     setEvents([...events, newEvent]);
+//   };
 
 //   return (
 //     <CalendarContainer>
+//       <EventForm onSubmit={handleAddEvent} />
 //       <StyledCalendar
 //         localizer={localizer}
 //         events={events}
-//         startAccessor="start"
-//         endAccessor="end"
-//         views={[Views.MONTH, Views.WEEK, Views.DAY]}
-//         defaultView={Views.MONTH}
-//         style={{ height: 700 }}
+//         startAccessor="startDate"
+//         endAccessor="endDate"
+//         style={{ height: 600 }}
 //       />
-//     </CalendarContainer>
-//   );
-// };
-
-// export default CalendarComponent;
-
-
-
-
-
-
-// Old Calendar
-// import React, { useState } from 'react';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
-// import styled from 'styled-components';
-
-// const CalendarContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100vh;
-//   background-color: #f0f8ff;
-// `;
-
-// const StyledCalendar = styled(Calendar)`
-//   width: 100%;
-//   max-width: 800px;
-//   background-color: white;
-//   border: none;
-//   border-radius: 10px;
-//   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-
-//   .react-calendar__tile {
-//     max-width: 100%;
-//     height: 100px;
-//     font-size: 1.2rem;
-//     color: #333;
-//   }
-
-//   .react-calendar__tile--now {
-//     background: #ffeb3b;
-//     color: white;
-//   }
-
-//   .react-calendar__tile--active {
-//     background: #3f51b5;
-//     color: white;
-//   }
-// `;
-
-// const CalendarComponent = () => {
-//   const [date, setDate] = useState(new Date());
-
-//   return (
-//     <CalendarContainer>
-//       <StyledCalendar onChange={setDate} value={date} />
 //     </CalendarContainer>
 //   );
 // };

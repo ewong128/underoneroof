@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 import contactModel from '../models/contact.js';
 
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 
-mongoose
-  .connect('mongodb://localhost:27017/users', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch(error => console.log(error));
+// mongoose
+//   .connect('mongodb://localhost:27017/users', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .catch(error => console.log(error));
 
 function getContacts(contact) {
     let promise;
