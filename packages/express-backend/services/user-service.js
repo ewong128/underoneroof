@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import userModel from "../models/users.js";
 
 function getUsers(username, group) {

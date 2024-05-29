@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import groupModel from "../models/groups.js";
 
 

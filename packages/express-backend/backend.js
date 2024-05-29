@@ -1,6 +1,7 @@
 // backend.js
 import mongoose from "mongoose";
 import express from "express";
+import mongoose from "mongoose"
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
@@ -8,6 +9,7 @@ import groupServices from "./services/group-services.js"
 import contactServices from "./services/contact-services.js";
 import preferenceServices from "./services/preference-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
+import eventServices from "./services/event-services.js";
 import dotenv from "dotenv";
 
 mongoose.set("debug", true);
