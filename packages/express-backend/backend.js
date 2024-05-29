@@ -309,6 +309,7 @@ app.put("/groups/:id", authenticateUser, (req, res) => {
       res.status(200).send(result);
     }
   })
+
 });
 
 app.get("/events/:id", authenticateUser, (req, res) => {
