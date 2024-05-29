@@ -40,6 +40,7 @@ function EventForm(props) {
         value={event.time}
         onChange={handleChange}
       />
+
       <label htmlFor="name">Name</label>
       <input
         type="text"
