@@ -2,8 +2,10 @@ import React, { useState } from "react";
 
 function EventForm(props) {
   const [event, setEvent] = useState({
-    date: "",
-    time: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
     name: "",
     event: "",
     description: "",
@@ -19,25 +21,49 @@ function EventForm(props) {
 
   function submitForm() {
     props.handleSubmit(event);
-    setEvent({ date: "", time: "", name: "", event: "" , description: "" });
+    setEvent({ 
+      startDate: "", 
+      endDate: "", 
+      startTime: "", 
+      endTime: "", 
+      name: "", 
+      event: "", 
+      description: "" 
+    });
   }
 
   return (
     <form>
-      <label htmlFor="date">Date</label>
+      <label htmlFor="startDate">Start Date</label>
       <input
-        type="text"
-        name="date"
-        id="date"
-        value={event.date}
+        type="date"
+        name="startDate"
+        id="startDate"
+        value={event.startDate}
         onChange={handleChange}
       />
-	  <label htmlFor="time">Time</label>
+      <label htmlFor="endDate">End Date</label>
       <input
-        type="text"
-        name="time"
-        id="time"
-        value={event.time}
+        type="date"
+        name="endDate"
+        id="endDate"
+        value={event.endDate}
+        onChange={handleChange}
+      />
+      <label htmlFor="startTime">Start Time</label>
+      <input
+        type="time"
+        name="startTime"
+        id="startTime"
+        value={event.startTime}
+        onChange={handleChange}
+      />
+      <label htmlFor="endTime">End Time</label>
+      <input
+        type="time"
+        name="endTime"
+        id="endTime"
+        value={event.endTime}
         onChange={handleChange}
       />
       <label htmlFor="name">Name</label>
@@ -56,7 +82,7 @@ function EventForm(props) {
         value={event.event}
         onChange={handleChange}
       />
-	   <label htmlFor="description">Description</label>
+      <label htmlFor="description">Description</label>
       <input
         type="text"
         name="description"
@@ -64,9 +90,82 @@ function EventForm(props) {
         value={event.description}
         onChange={handleChange}
       />
-      <input type="button" value="Add Event" onClick={submitForm} />
+      <input type="button" value="Add Event" onClick={submitForm} style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
     </form>
   );
 }
 
 export default EventForm;
+
+// import React, { useState } from "react";
+
+// function EventForm(props) {
+//   const [event, setEvent] = useState({
+//     date: "",
+//     time: "",
+//     name: "",
+//     event: "",
+//     description: "",
+//   });
+
+//   function handleChange(event) {
+//     const { name, value } = event.target;
+//     setEvent(prevEvent => ({
+//       ...prevEvent,
+//       [name]: value
+//     }));
+//   }
+
+//   function submitForm() {
+//     props.handleSubmit(event);
+//     setEvent({ date: "", time: "", name: "", event: "" , description: "" });
+//   }
+
+//   return (
+//     <form>
+//       <label htmlFor="date">Date</label>
+//       <input
+//         type="text"
+//         name="date"
+//         id="date"
+//         value={event.date}
+//         onChange={handleChange}
+//       />
+// 	  <label htmlFor="time">Time</label>
+//       <input
+//         type="text"
+//         name="time"
+//         id="time"
+//         value={event.time}
+//         onChange={handleChange}
+//       />
+//       <label htmlFor="name">Name</label>
+//       <input
+//         type="text"
+//         name="name"
+//         id="name"
+//         value={event.name}
+//         onChange={handleChange}
+//       />
+//       <label htmlFor="event">Event</label>
+//       <input
+//         type="text"
+//         name="event"
+//         id="event"
+//         value={event.event}
+//         onChange={handleChange}
+//       />
+// 	   <label htmlFor="description">Description</label>
+//       <input
+//         type="text"
+//         name="description"
+//         id="description"
+//         value={event.description}
+//         onChange={handleChange}
+//       />
+//       <input type="button" value="Add Event" onClick={submitForm} />
+//     </form>
+//   );
+// }
+
+// export default EventForm;

@@ -10,17 +10,21 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-function getEvents(events, name) {
+function getEvents(startDate, endDate, name) {
   let promise;
-  if (events === undefined && name === undefined) {
+  if (startDate === undefined && endDate === undefined && name === undefined) {
     promise = eventModel.find();
-  } else if (events && !name) {
-    promise = findEventByEvent(events);
-  } else if (name && !events) {
+  } else if (startDate && !endDate && !name) {
+    promise = findEventByStartDate(startDate);
+  } else if (endDate && !startDate && !name) {
+    promise = findEventByEndDate(endDate);
+  } else if (name && !startDate && !endDate) {
     promise = findEventByName(name);
-  } else if (name && events) {
-    promise = findEventByEventName(events, name);
-  } 
+  } else if (startDate && endDate && !name) {
+    promise = findEventByDateRange(startDate, endDate);
+  } else if (startDate && endDate && name) {
+    promise = findEventByDateRangeAndName(startDate, endDate, name);
+  }
   return promise;
 }
 
@@ -28,23 +32,31 @@ function findEventById(id) {
   return eventModel.findById(id);
 }
 
-function addEvent(events) {
-  console.log(events);
-  const eventToAdd = new eventModel(events);
+function addEvent(event) {
+  console.log(event);
+  const eventToAdd = new eventModel(event);
   const promise = eventToAdd.save();
   return promise;
 }
 
-function findEventByEvent(events) {
-  return eventModel.find({ events: events });
+function findEventByStartDate(startDate) {
+  return eventModel.find({ startDate: startDate });
+}
+
+function findEventByEndDate(endDate) {
+  return eventModel.find({ endDate: endDate });
 }
 
 function findEventByName(name) {
   return eventModel.find({ name: name });
 }
 
-function findEventByEventName(events, name) {
-  return eventModel.find({ events: events, name: name });
+function findEventByDateRange(startDate, endDate) {
+  return eventModel.find({ startDate: { $gte: startDate }, endDate: { $lte: endDate } });
+}
+
+function findEventByDateRangeAndName(startDate, endDate, name) {
+  return eventModel.find({ startDate: { $gte: startDate }, endDate: { $lte: endDate }, name: name });
 }
 
 function deleteEventById(id) {
@@ -55,8 +67,10 @@ export default {
   addEvent,
   getEvents,
   findEventById,
-  findEventByEvent,
+  findEventByStartDate,
+  findEventByEndDate,
   findEventByName,
-  findEventByEventName,
+  findEventByDateRange,
+  findEventByDateRangeAndName,
   deleteEventById,
 };
