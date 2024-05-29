@@ -1,14 +1,4 @@
-import mongoose from "mongoose";
 import choreModel from "../models/chores.js";
-
-mongoose.set("debug", true);
-
-mongoose
-  .connect("mongodb://localhost:27017/users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch((error) => console.log(error));
 
 function getChores(chore, roommate) {
   let promise;
@@ -35,6 +25,11 @@ function addChore(chore) {
   return promise;
 }
 
+function updateChoreById(id,body) {
+  const promise = choreModel.findByIdAndUpdate(id, body, {new : true});
+  return promise;
+}
+
 function findChoreByChore(chore) {
   return choreModel.find({ chore: chore });
 }
@@ -58,5 +53,6 @@ export default {
   findChoreByChore,
   findChoreByRoommate,
   findChoreByChoreRoommate,
-  deleteChoreById,
+  updateChoreById,
+  deleteChoreById
 };

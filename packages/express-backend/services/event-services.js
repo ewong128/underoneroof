@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import eventModel from "../models/events.js";
 
 mongoose.set("debug", true);

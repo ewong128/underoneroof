@@ -1,11 +1,26 @@
 // backend.js
 import express from "express";
+import mongoose from "mongoose"
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
 import groupServices from "./services/group-services.js"
+import contactServices from "./services/contact-services.js";
+import preferenceServices from "./services/preference-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
 import eventServices from "./services/event-services.js";
+import dotenv from "dotenv";
+
+mongoose.set("debug", true);
+
+dotenv.config();
+console.log("hello", process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .catch((error) => console.log(error));
 
 // import dotenv from "dotenv";
 
@@ -26,23 +41,13 @@ const port = 8000;
 app.use(cors());
 app.use(express.json());
 
+// for users
 app.get("/users", authenticateUser, (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
   let promise = userServices.getUsers(name, job);
   promise.then((result) => {
     result = { users_list: result };
-    res.send(result);
-  } )
-    
-});
-
-app.get("/chores", authenticateUser, (req, res) => {
-  const chore = req.query.chore;
-  const roommate = req.query.roommate;
-  let promise = choreServices.getChores(chore, roommate);
-  promise.then((result) => {
-    result = { chores_list: result };
     res.send(result);
   } )
     
@@ -59,6 +64,7 @@ app.get("/events", authenticateUser, (req, res) => {
     
 });
 
+
 app.get("/users/:id",  authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = userServices.findUserById(id);
@@ -70,6 +76,39 @@ app.get("/users/:id",  authenticateUser, (req, res) => {
     }
   })
   
+});
+
+app.delete("/users/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = userServices.deleteUserById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
+app.post("/users", authenticateUser, (req, res) => {
+  const userToAdd = req.body;
+  const promise = userServices.addUser(userToAdd);
+  promise.then((newUser) => {
+    res.status(201).send(newUser);
+  })
+  
+});
+
+// for chores
+app.get("/chores", authenticateUser, (req, res) => {
+  const chore = req.query.chore;
+  const roommate = req.query.roommate;
+  let promise = choreServices.getChores(chore, roommate);
+  promise.then((result) => {
+    result = { chores_list: result };
+    res.send(result);
+  } )
+    
 });
 
 app.get("/chores/:id", authenticateUser, (req, res) => {
@@ -85,6 +124,42 @@ app.get("/chores/:id", authenticateUser, (req, res) => {
   
 });
 
+app.delete("/chores/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = choreServices.deleteChoreById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
+app.post("/chores", authenticateUser, (req, res) => {
+  const choreToAdd = req.body;
+  const promise = choreServices.addChore(choreToAdd);
+  promise.then((newChore) => {
+    res.status(201).send(newChore);
+  })
+  
+});
+
+app.put("/chores/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = choreServices.updateChoreById(id, req.body);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      console.log("put backend")
+      console.log(result)
+      res.status(200).send(result);
+    }
+  })
+});
+
+// for groups
 app.get("/groups", authenticateUser, (req, res) => {
   const roommate = req.query.roommate;
   console.log("in backend")
@@ -98,40 +173,6 @@ app.get("/groups", authenticateUser, (req, res) => {
     
 });
 
-app.delete("/users/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = userServices.deleteUserById(id);
-  promise.then((result) => {
-    if (!result){
-      res.status(404).send("Resource not found.");
-    } else{
-      res.status(204).send();
-    }
-  })
-});
-
-app.delete("/chores/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = choreServices.deleteChoreById(id);
-  promise.then((result) => {
-    if (!result){
-      res.status(404).send("Resource not found.");
-    } else{
-      res.status(204).send();
-    }
-  })
-});
-
-
-app.post("/users", authenticateUser, (req, res) => {
-  const userToAdd = req.body;
-  const promise = userServices.addUser(userToAdd);
-  promise.then((newUser) => {
-    res.status(201).send(newUser);
-  })
-  
-});
-
 app.post("/groups", authenticateUser, (req, res) => {
   const groupToAdd = req.body;
   const promise = groupServices.addGroup(groupToAdd);
@@ -141,11 +182,94 @@ app.post("/groups", authenticateUser, (req, res) => {
   
 });
 
-app.post("/chores", authenticateUser, (req, res) => {
-  const choreToAdd = req.body;
-  const promise = choreServices.addChore(choreToAdd);
-  promise.then((newChore) => {
-    res.status(201).send(newChore);
+
+// for contacts
+app.get("/contacts", authenticateUser, (req, res) => {
+  const contact = req.query.contact;
+  let promise = contactServices.getContacts(contact);
+  promise.then((result) => {
+    result = { contacts_list: result };
+    res.send(result);
+  } )
+    
+});
+
+app.get("/contacts/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = contactServices.findContactById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+
+app.delete("/contacts/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = contactServices.deleteContactById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
+app.post("/contacts", authenticateUser, (req, res) => {
+  const contactToAdd = req.body;
+  const promise = contactServices.addContact(contactToAdd);
+  promise.then((newContact) => {
+    res.status(201).send(newContact);
+  })
+  
+});
+
+// for preferences
+app.get("/preferences", authenticateUser, (req, res) => {
+  const preference = req.query.preference;
+  let promise = preferenceServices.getPreferences(preference);
+  promise.then((result) => {
+    result = { preferences_list: result };
+    res.send(result);
+  } )
+    
+});
+
+app.get("/preferences/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = preferenceServices.findPrefById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  })
+  
+});
+
+app.delete("/preferences/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = preferenceServices.deletePrefById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
+
+
+app.post("/preferences", authenticateUser, (req, res) => {
+  const prefToAdd = req.body;
+  const promise = preferenceServices.addPref(prefToAdd);
+  promise.then((newPref) => {
+    res.status(201).send(newPref);
   })
   
 });
@@ -173,6 +297,17 @@ app.get("/events/:id", authenticateUser, (req, res) => {
   
 });
 
+app.delete("/events/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = eventServices.deleteEventById(id);
+  promise.then((result) => {
+    if (!result){
+      res.status(404).send("Resource not found.");
+    } else{
+      res.status(204).send();
+    }
+  })
+});
 app.delete("/events/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   let promise = eventServices.deleteEventById(id);
