@@ -1,15 +1,6 @@
 import mongoose from "mongoose";
 import choreModel from "../models/chores.js";
 
-mongoose.set("debug", true);
-
-mongoose
-  .connect("mongodb://localhost:27017/users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch((error) => console.log(error));
-
 function getChores(chore, roommate) {
   let promise;
   if (chore === undefined && roommate === undefined) {
