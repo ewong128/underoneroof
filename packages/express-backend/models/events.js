@@ -1,36 +1,44 @@
 import mongoose from "mongoose";
 
-const ChoreSchema = new mongoose.Schema(
+const EventSchema = new mongoose.Schema(
   {
-    chore: {
+    
+	date: {
       type: String,
       required: true,
       trim: true,
     },
-    roommate: {
+	
+	time: {
+        type: String,
+        required: true,
+        trim: true,
+       
+      },
+	  
+	name: {
       type: String,
       required: true,
       trim: true,
     },
-    status: {
+    event: {
       type: String,
       required: true,
       trim: true,
-      default: "Pending..."
     },
-    day: {
+	description: {
         type: String,
         required: true,
         trim: true,
         validate(value) {
           if (value.length < 2)
-            throw new Error("Invalid day of the week, must be at least 2 characters.");
+            throw new Error("Invalid description");
         },
       },
   },
-  { collection: "chores_list" }
+  { collection: "events_list" }
 );
 
-const Chore = mongoose.model("Chore", ChoreSchema);
+const Event = mongoose.model("Event", EventSchema);
 
-export default Chore;
+export default Event;
