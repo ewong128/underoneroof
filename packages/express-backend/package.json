@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\"",
     "dev": "npx nodemon backend.js",
     "lint": "eslint .  && npx prettier --check .",
+    "format": "prettier . --write",
     "start": "node backend.js"
   },
   "author": "",

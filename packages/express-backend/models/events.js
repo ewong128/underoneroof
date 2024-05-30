@@ -2,21 +2,19 @@ import mongoose from "mongoose";
 
 const EventSchema = new mongoose.Schema(
   {
-    
-	date: {
+    date: {
       type: String,
       required: true,
       trim: true,
     },
-  
-    time: {
-        type: String,
-        required: true,
-        trim: true,
-       
-      },
 
-	name: {
+    time: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    name: {
       type: String,
       required: true,
       trim: true,
@@ -26,17 +24,16 @@ const EventSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-	description: {
-        type: String,
-        required: true,
-        trim: true,
-        validate(value) {
-          if (value.length < 2)
-            throw new Error("Invalid description");
-        },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+      validate(value) {
+        if (value.length < 2) throw new Error("Invalid description");
       },
+    },
   },
-  { collection: "events_list" }
+  { collection: "events_list" },
 );
 
 const Event = mongoose.model("Event", EventSchema);

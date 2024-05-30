@@ -6,7 +6,7 @@ function getGroups(roommate) {
     promise = groupModel.find();
   } else if (roommate) {
     promise = findGroupByRoommate(roommate);
-  } 
+  }
   return promise;
 }
 
@@ -21,19 +21,18 @@ function addGroup(group) {
 }
 
 function findGroupByRoommate(roommate) {
-  console.log(roommate)
-  return groupModel.find({roommates: roommate});
+  console.log(roommate);
+  return groupModel.find({ roommates: roommate });
 }
 
-function deleteGroupById(id){
+function deleteGroupById(id) {
   return groupModel.findByIdAndDelete(id);
 }
 
-function updateGroupById(id,body) {
-  const promise = groupModel.findByIdAndUpdate(id, body, {new : true});
+function updateGroupById(id, body) {
+  const promise = groupModel.findByIdAndUpdate(id, body, { new: true });
   return promise;
 }
-
 
 export default {
   addGroup,
@@ -41,5 +40,5 @@ export default {
   findGroupById,
   findGroupByRoommate,
   deleteGroupById,
-  updateGroupById
+  updateGroupById,
 };

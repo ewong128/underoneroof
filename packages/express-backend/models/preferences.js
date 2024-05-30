@@ -1,33 +1,44 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const PreferencesSchema = new mongoose.Schema(
   {
     preferredContact: {
       type: String,
       required: true,
-      enum: ['Text', 'Call', 'Email', 'Other']
+      enum: ["Text", "Call", "Email", "Other"],
     },
     preferredContactOther: {
       type: String,
-      required: function() { return this.preferredContact === 'Other'; }
+      required: function () {
+        return this.preferredContact === "Other";
+      },
     },
     responseTime: {
       type: String,
       required: true,
-      enum: ['Within 12 hours', 'Within 24 hours', 'Within 48 hours', 'Other']
+      enum: ["Within 12 hours", "Within 24 hours", "Within 48 hours", "Other"],
     },
     responseTimeOther: {
       type: String,
-      required: function() { return this.responseTime === 'Other'; }
+      required: function () {
+        return this.responseTime === "Other";
+      },
     },
     challengingConversation: {
       type: String,
       required: true,
-      enum: ['Have it right then and there', 'Give each other some time to calm down or cool off before sitting down to talk', 'Schedule a time to chat at least hours or days in advance', 'Other']
+      enum: [
+        "Have it right then and there",
+        "Give each other some time to calm down or cool off before sitting down to talk",
+        "Schedule a time to chat at least hours or days in advance",
+        "Other",
+      ],
     },
     challengingConversationOther: {
       type: String,
-      required: function() { return this.challengingConversation === 'Other'; }
+      required: function () {
+        return this.challengingConversation === "Other";
+      },
     },
     weekdaySleepHours: {
       type: String,
@@ -42,17 +53,17 @@ const PreferencesSchema = new mongoose.Schema(
     quietStudyTime: {
       type: String,
       required: true,
-      enum: ['Mornings', 'Afternoons', 'Evenings', 'Late nights']
+      enum: ["Mornings", "Afternoons", "Evenings", "Late nights"],
     },
     studyHouseCondition: {
       type: String,
       required: true,
-      enum: ['Silent', 'Minimal background noise']
+      enum: ["Silent", "Minimal background noise"],
     },
     sharingPossessions: {
       type: String,
       required: true,
-      enum: ['Never', 'Sometimes']
+      enum: ["Never", "Sometimes"],
     },
     guestsPolicy: {
       anyTime: { type: Boolean, default: false },
@@ -60,14 +71,16 @@ const PreferencesSchema = new mongoose.Schema(
       midtermsFinals: { type: Boolean, default: false },
       advanceNotice: { type: Boolean, default: false },
       other: { type: Boolean, default: false },
-      guestsPolicyOther: { 
-        type: String, 
-        default: '',
-        required: function() { return this.guestsPolicy.other === true; }
+      guestsPolicyOther: {
+        type: String,
+        default: "",
+        required: function () {
+          return this.guestsPolicy.other === true;
+        },
       },
     },
-  }, 
-  { collection: 'preferences_list' }
+  },
+  { collection: "preferences_list" },
 );
 
 const Preference = mongoose.model("Preference", PreferencesSchema);

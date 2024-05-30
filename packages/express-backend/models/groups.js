@@ -13,7 +13,7 @@ const GroupSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { collection: "groups_list" }
+  { collection: "groups_list" },
 );
 
 const Group = mongoose.model("Group", GroupSchema);

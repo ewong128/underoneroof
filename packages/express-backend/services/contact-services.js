@@ -1,13 +1,13 @@
-import contactModel from '../models/contact.js';
+import contactModel from "../models/contact.js";
 
 function getContacts(contact) {
-    let promise;
-    if (contact === undefined) {
-        promise = contactModel.find();
-    } else if (contact) {
-        promise = findContactById(contact);
-    }
-    return promise;
+  let promise;
+  if (contact === undefined) {
+    promise = contactModel.find();
+  } else if (contact) {
+    promise = findContactById(contact);
+  }
+  return promise;
 }
 
 function findContactById(id) {

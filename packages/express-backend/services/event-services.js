@@ -10,7 +10,7 @@ function getEvents(events, name) {
     promise = findEventByName(name);
   } else if (name && events) {
     promise = findEventByEventName(events, name);
-  } 
+  }
   return promise;
 }
 

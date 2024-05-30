@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ContactSchema = new mongoose.Schema(
   {
@@ -22,8 +22,8 @@ const ContactSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-  }, 
-  { collection: 'contacts_list' }
+  },
+  { collection: "contacts_list" },
 );
 
 const Contact = mongoose.model("Contact", ContactSchema);
