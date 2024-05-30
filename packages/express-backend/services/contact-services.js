@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
 import contactModel from '../models/contact.js';
-
 
 function getContacts(contact) {
     let promise;

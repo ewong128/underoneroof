@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import eventModel from "../models/events.js";
-
 
 function getEvents(events, name) {
   let promise;

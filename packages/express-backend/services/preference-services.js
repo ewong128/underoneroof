@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
 import preferenceModel from '../models/preferences.js';
-
 
 function getPreferences(preference) {
     let promise;

@@ -1,6 +1,4 @@
-import mongoose from "mongoose";
 import choreModel from "../models/chores.js";
-
 
 function getChores(chore, roommate) {
   let promise;
