@@ -331,7 +331,7 @@ function MyApp() {
           return group_id;
         }
       })
-      .then(
+      .then((group_id) => {
         fetchChores()
           .then((res) => (res.status === 200 ? res.json() : undefined))
           .then((json) => {
@@ -339,6 +339,8 @@ function MyApp() {
               console.log(json);
               const updated = json["chores_list"].filter((chore, i) => {
                 console.log(chore);
+                console.log(chore.group_id);
+                console.log(group_id);
                 return chore.group_id === group_id;
               });
               console.log(updated);
@@ -349,8 +351,8 @@ function MyApp() {
           })
           .catch((error) => {
             console.log(error);
-          })
-      );
+          });
+      });
   }, [token]);
 
   function fetchEvents() {
