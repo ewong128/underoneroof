@@ -20,13 +20,13 @@ function addPref(preference) {
   return promise;
 }
 
-function deletePrefById(id) {
-  return preferenceModel.findByIdAndDelete(id);
+function deleteAllPreferences() {
+  return preferenceModel.deleteMany({});
 }
 
 export default {
   getPreferences,
   findPrefById,
   addPref,
-  deletePrefById,
+  deleteAllPreferences,
 };

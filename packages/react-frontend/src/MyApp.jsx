@@ -550,16 +550,11 @@ function MyApp() {
       });
   }, [token]);
 
-  function removeOnePreference(index) {
-    const id = preferences[index]._id;
-
-    deletePreference(id)
+  function removeAllPreferences() {
+    deleteAllPreferences()
       .then((res) => {
         if (res.status === 204) {
-          const updated = preferences.filter((preference, i) => {
-            return i !== index;
-          });
-          setPreferences(updated);
+          setPreferences([]);
         }
       })
       .catch((error) => {
@@ -567,8 +562,8 @@ function MyApp() {
       });
   }
 
-  function deletePreference(id) {
-    const promise = fetch(link + "/preferences/" + id, {
+  function deleteAllPreferences() {
+    const promise = fetch(link + "/preferences", {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -656,9 +651,11 @@ function MyApp() {
               )}
               <PreferencesTable
                 preferencesData={preferences}
-                removePreference={removeOnePreference}
+                removePreference={removeAllPreferences}
               />
-              <PreferencesForm handleSubmit={updatePreferences} />
+              {preferences.length === 0 && (
+                <PreferencesForm handleSubmit={updatePreferences} />
+              )}
             </>
           }
         />
