@@ -3,7 +3,6 @@ import contactIcon from "../../contact.png";
 
 function ContactTable({ contactData, removeContact }) {
   const contacts = Array.isArray(contactData) ? contactData : [];
-  const currentUser = localStorage.getItem("current user");
 
   if (contacts.length === 0) {
     return (
@@ -40,7 +39,7 @@ function ContactTable({ contactData, removeContact }) {
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
         {contacts.map((contact, index) => (
           <div key={index} style={{ width: "calc(25% - 10px)", marginBottom: "20px" }}>
-            <h3 style={{ color: "#0a978d", fontSize: "1.5rem" }}>{currentUser}'s Contact</h3>
+            <h3 style={{ color: "#0a978d", fontSize: "1.5rem" }}>{contact.username}'s Contact</h3>
             <div style={{ marginBottom: "10px" }}>
               <strong>Emergency Contact Relation:</strong>
               <div>{contact.emergencyContactRelation}</div>

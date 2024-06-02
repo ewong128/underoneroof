@@ -14,7 +14,9 @@ function ContactForm(props) {
   }
 
   function submitForm() {
-    props.handleSubmit(formData);
+    const username = localStorage.getItem("current user");
+    const formDataWithUsername = { ...formData, username };
+    props.handleSubmit(formDataWithUsername);
     setFormData({
       emergencyContactRelation: "",
       emergencyContactName: "",
