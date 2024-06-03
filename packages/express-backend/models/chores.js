@@ -16,19 +16,33 @@ const ChoreSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      default: "Pending..."
+      default: "Pending...",
     },
     day: {
-        type: String,
-        required: true,
-        trim: true,
-        validate(value) {
-          if (value.length < 2)
-            throw new Error("Invalid day of the week, must be at least 2 characters.");
-        },
+      type: String,
+      required: true,
+      trim: true,
+      validate(value) {
+        if (value.length < 2)
+          throw new Error(
+            "Invalid day of the week, must be at least 2 characters.",
+          );
       },
+    },
+    group_id: {
+      type: String,
+      trim: true,
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Group"
+    },
+    color: {
+      type: String,
+      required: true,
+      trim: true,
+      default: "#000000",
+    },
   },
-  { collection: "chores_list" }
+  { collection: "chores_list" },
 );
 
 const Chore = mongoose.model("Chore", ChoreSchema);

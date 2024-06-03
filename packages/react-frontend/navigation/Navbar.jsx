@@ -79,7 +79,7 @@ const Navbar = ({ handleLogout, copyLink }) => {
             marginRight: "10px",
             backgroundColor: "#00AA9E",
             borderColor: "#0a978d",
-            color: "#ffffff", // Text color
+            color: "#ffffff", 
           }} 
           onClick={handleCopyLink}>
           Invite Roommates

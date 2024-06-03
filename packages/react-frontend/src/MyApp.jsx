@@ -14,13 +14,17 @@ import Login from "./routes/Login";
 import EventTable from "./routes/EventTable";
 import EventForm from "./routes/EventForm";
 import GroupForm from "./routes/GroupForm";
+import Invitation from "./routes/Invitation";
 import ContactForm from "./routes/ContactForm";
 import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
 import { jwtDecode } from "jwt-decode";
+("");
 
 function MyApp() {
+  const link = "https://underoneroof.azurewebsites.net";
+  //const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -31,6 +35,7 @@ function MyApp() {
   const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
   const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
+  const currentUser = localStorage.getItem("current user");
 
   // authentiation
 
@@ -64,10 +69,11 @@ function MyApp() {
     navigate("/login");
   }
 
-  function signupUser(creds, rememberMe) {
+  function signupUser(creds, rememberMe, next) {
+    console.log(next);
     creds.rememberMe = rememberMe;
     localStorage.setItem("current user", creds.username);
-    const promise = fetch("Http://localhost:8000/signup", {
+    const promise = fetch(link + "/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +88,7 @@ function MyApp() {
           setMessage(
             `Signup successful for user: ${creds.username}; auth token saved`
           );
-          navigate("/createGroup");
+          navigate(next || "/createGroup");
         } else {
           setMessage(`Signup Error ${response.status}: ${response.data}`);
         }
@@ -98,7 +104,7 @@ function MyApp() {
   function loginUser(creds, rememberMe, next) {
     localStorage.setItem("current user", creds.username);
     creds.rememberMe = rememberMe;
-    const promise = fetch("Http://localhost:8000/login", {
+    const promise = fetch(link + "/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,6 +117,7 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(`Login successful; auth token saved`);
+          console.log(next);
           navigate(next || "/");
         } else {
           setMessage(`Login Error ${response.status}: ${response.data}`);
@@ -151,7 +158,7 @@ function MyApp() {
     group.roommates.push(currentUser);
     console.log(group.roommates);
     //group.roommates.append(currentUser);
-    const promise = fetch("Http://localhost:8000/groups", {
+    const promise = fetch(link + "/groups", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -177,7 +184,7 @@ function MyApp() {
   }
 
   function fetchGroup(username) {
-    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+    const promise = fetch(link + "/groups?roommate=" + username, {
       headers: addAuthHeader(),
     });
 
@@ -194,9 +201,12 @@ function MyApp() {
         if (json) {
           group_id = json[0]._id.toString();
           console.log(group_id);
+          //navigator.clipboard.writeText(
+          //"Http://localhost:5173/login?next=acceptInvitation?group=" +
+          //group_id
+          //);
           navigator.clipboard.writeText(
-            "Http://localhost:5173/login?next=acceptInvitation?group=" +
-              group_id
+            link + "/login?next=acceptInvitation?group=" + group_id
           );
         } else {
           //setChores(null);
@@ -243,29 +253,65 @@ function MyApp() {
   }
 
   function updateList(chore) {
-    postChore(chore)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setChores([...chores, json]);
+          console.log(json);
+          chore.group_id = json[0]._id.valueOf();
+          console.log(chore.group_id);
+          return chore;
         }
+      })
+      .then((chore) => {
+        console.log(chore);
+        postChore(chore)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              setChores([...chores, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
   function updateEventList(events) {
-    postEvent(events)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          // setEvents([...events, json])
-          setEvents((prevEvents) => [...prevEvents, json]);
+          console.log(json);
+          events.group_id = json[0]._id.valueOf();
+          console.log(events.group_id);
+          return events;
         }
+      })
+      .then((events) => {
+        console.log(events);
+        postEvent(events)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              // setEvents([...events, json])
+              setEvents((prevEvents) => [...prevEvents, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -273,7 +319,39 @@ function MyApp() {
   }
 
   function fetchChores() {
-    const promise = fetch("Http://localhost:8000/chores", {
+    const promise = fetch(link + "/chores", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroup(username) {
+    const promise = fetch(link + "/groups?roommate=" + username, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroupById(id) {
+    const promise = fetch(link + "/groups/" + id, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroup(username) {
+    const promise = fetch(link + "/groups?roommate=" + username, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroupById(id) {
+    const promise = fetch(link + "/groups/" + id, {
       headers: addAuthHeader(),
     });
 
@@ -281,44 +359,103 @@ function MyApp() {
   }
 
   useEffect(() => {
-    fetchChores()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setChores(json["chores_list"]);
-        } else {
-          setChores(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchChores()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              const updated = json["chores_list"].filter((chore, i) => {
+                console.log(chore);
+                console.log(chore.group_id);
+                console.log(group_id);
+                return chore.group_id === group_id;
+              });
+              console.log(updated);
+              setChores(updated);
+            } else {
+              setChores(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
   function fetchEvents() {
-    const promise = fetch("Http://localhost:8000/events", {
+    const promise = fetch(link + "/events", {
       headers: addAuthHeader(),
     });
     return promise;
   }
 
   useEffect(() => {
-    fetchEvents()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setEvents(json["events_list"]);
-        } else {
-          setEvents(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchEvents()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["events_list"].filter((event, i) => {
+                console.log(event);
+                console.log(event.group_id);
+                console.log(group_id);
+                return event.group_id === group_id;
+              });
+              setEvents(updated);
+            } else {
+              setEvents(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
+  //useEffect(() => {
+  //fetchEvents()
+  //.then((res) => (res.status === 200 ? res.json() : undefined))
+  //.then((json) => {
+  //if (json) {
+  //setEvents(json["events_list"]);
+  //} else {
+  //setEvents(null);
+  //}
+  //})
+  //.catch((error) => {
+  //console.log(error);
+  //});
+  //}, [token]);
+
   function postEvent(event) {
-    const promise = fetch("Http://localhost:8000/events", {
+    const promise = fetch(link + "/events", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -329,7 +466,7 @@ function MyApp() {
   }
 
   function postChore(chore) {
-    const promise = fetch("Http://localhost:8000/chores", {
+    const promise = fetch(link + "/chores", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -341,7 +478,7 @@ function MyApp() {
   }
 
   function deleteChore(id) {
-    const promise = fetch("Http://localhost:8000/chores/" + id, {
+    const promise = fetch(link + "/chores/" + id, {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -349,7 +486,7 @@ function MyApp() {
     return promise;
   }
   function deleteEvents(id) {
-    const promise = fetch("Http://localhost:8000/events/" + id, {
+    const promise = fetch(link + "/events/" + id, {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -378,7 +515,7 @@ function MyApp() {
     console.log(chore);
     console.log(chore.chore);
     console.log(chore.roommate);
-    const promise = fetch("Http://localhost:8000/chores/" + id, {
+    const promise = fetch(link + "/chores/" + id, {
       method: "PUT",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -444,7 +581,7 @@ function MyApp() {
   }
 
   function deleteContact(id) {
-    const promise = fetch("Http://localhost:8000/contacts/" + id, {
+    const promise = fetch(link + "/contacts/" + id, {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -484,7 +621,7 @@ function MyApp() {
   }
 
   function fetchContacts() {
-    const promise = fetch("Http://localhost:8000/contacts", {
+    const promise = fetch(link + "/contacts", {
       headers: addAuthHeader(),
     });
 
@@ -492,7 +629,7 @@ function MyApp() {
   }
 
   function postContact(contact) {
-    const promise = fetch("Http://localhost:8000/contacts", {
+    const promise = fetch(link + "/contacts", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -548,16 +685,11 @@ function MyApp() {
       });
   }, [token]);
 
-  function removeOnePreference(index) {
-    const id = preferences[index]._id;
-
-    deletePreference(id)
+  function removeAllPreferences() {
+    deleteAllPreferences()
       .then((res) => {
         if (res.status === 204) {
-          const updated = preferences.filter((preference, i) => {
-            return i !== index;
-          });
-          setPreferences(updated);
+          setPreferences([]);
         }
       })
       .catch((error) => {
@@ -565,8 +697,8 @@ function MyApp() {
       });
   }
 
-  function deletePreference(id) {
-    const promise = fetch("Http://localhost:8000/preferences/" + id, {
+  function deleteAllPreferences() {
+    const promise = fetch(link + "/preferences", {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -589,8 +721,57 @@ function MyApp() {
       });
   }
 
+  function updateGroup(group_id) {
+    const currentUser = localStorage.getItem("current user");
+    console.log("before put group");
+    console.log(group_id);
+    let group = null;
+
+    fetchGroupById(group_id)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          console.log(json);
+          console.log(json[0]);
+          group = json;
+
+          putGroup(group_id, currentUser, group)
+            .then((res) => {
+              navigate("/");
+              //if (res.status === 200) return res.json();
+            })
+            .then((json) => {
+              if (json) {
+                console.log(json);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function putGroup(id, currentUser, group) {
+    const promise = fetch(link + "/groups/" + id, {
+      method: "PUT",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        group: group.name,
+        roommates: group.roommates.concat([currentUser]),
+      }),
+    });
+
+    return promise;
+  }
+
   function fetchPreferences() {
-    const promise = fetch("Http://localhost:8000/preferences", {
+    const promise = fetch(link + "/preferences", {
       headers: addAuthHeader(),
     });
 
@@ -598,7 +779,7 @@ function MyApp() {
   }
 
   function postPreference(preference) {
-    const promise = fetch("Http://localhost:8000/preferences", {
+    const promise = fetch(link + "/preferences", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -635,10 +816,8 @@ function MyApp() {
           }
         />
         <Route
-          path="/createGroup"
-          element={
-            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
-          }
+          path="/acceptInvitation"
+          element={<Invitation handleSubmit={updateGroup} />}
         />
         <Route
           path="/agreement"
@@ -654,9 +833,39 @@ function MyApp() {
               )}
               <PreferencesTable
                 preferencesData={preferences}
-                removePreference={removeOnePreference}
+                removePreference={removeAllPreferences}
               />
               <PreferencesForm handleSubmit={updatePreferences} />
+            </>
+          }
+        />
+        <Route
+          path="/agreement"
+          element={
+            <>
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
+              <ContactTable
+                contactData={contacts}
+                removeContact={removeOneContact}
+              />
+              {!allContactsSubmitted && (
+                <ContactForm handleSubmit={updateContacts} />
+              )}
+              <PreferencesTable
+                preferencesData={preferences}
+                removePreference={removeAllPreferences}
+              />
+              {preferences && preferences.length === 0 && (
+                <PreferencesForm handleSubmit={updatePreferences} />
+              )}
             </>
           }
         />
@@ -665,6 +874,14 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
               <ChoreTable
                 choreData={chores}
                 removeChore={removeOneChore}

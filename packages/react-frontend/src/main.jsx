@@ -1,25 +1,22 @@
 import React from "react";
 import ReactDOMClient from "react-dom/client";
-import {
-    createBrowserRouter,
-    RouterProvider,
-  } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MyApp from "./MyApp";
 import ErrorPage from "./routes/error-page";
 import "./main.css";
 
 const router = createBrowserRouter([
-    {
-      path: "*",
-      element: <div><MyApp /></div>,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-            
-        }
-      ]
-    },
-  ]);
+  {
+    path: "*",
+    element: (
+      <div>
+        <MyApp />
+      </div>
+    ),
+    errorElement: <ErrorPage />,
+    children: [{}],
+  },
+]);
 
 // Create the container
 const container = document.getElementById("root");
@@ -29,6 +26,7 @@ const root = ReactDOMClient.createRoot(container);
 
 // Initial render:
 root.render(
-<React.StrictMode>
+  <React.StrictMode>
     <RouterProvider router={router} />
-</React.StrictMode>);
+  </React.StrictMode>,
+);
