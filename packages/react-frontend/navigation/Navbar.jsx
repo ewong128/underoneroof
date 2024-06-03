@@ -35,7 +35,8 @@ const Navbar = ({ handleLogout, copyLink }) => {
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
             })}
-          > {({ isActive }) => (
+          > 
+            {({ isActive }) => (
             <span
               style={{
                 textDecoration: isActive ? "underline" : "none",
