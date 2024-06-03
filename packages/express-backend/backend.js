@@ -247,15 +247,17 @@ app.get("/preferences/:id", authenticateUser, (req, res) => {
   });
 });
 
-app.delete("/preferences/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = preferenceServices.deletePrefById(id);
+app.delete("/preferences", authenticateUser, (req, res) => {
+  let promise = preferenceServices.deleteAllPreferences();
   promise.then((result) => {
     if (!result) {
       res.status(404).send("Resource not found.");
     } else {
       res.status(204).send();
     }
+  })
+  .catch((error) => {
+    res.status(500).send(error);
   });
 });
 
@@ -328,6 +330,10 @@ app.delete("/events/:id", authenticateUser, (req, res) => {
 app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
+
+// app.listen(process.env.PORT || port, () => {
+//   console.log("REST API is listening.");
+// });
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

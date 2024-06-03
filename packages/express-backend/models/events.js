@@ -9,16 +9,18 @@ const EventSchema = new mongoose.Schema(
     },
 
     time: {
-      type: String,
-      required: true,
-      trim: true,
+        type: String,
+        required: true,
+        trim: true,
+       
     },
-
+    
     name: {
       type: String,
       required: true,
       trim: true,
     },
+
     event: {
       type: String,
       required: true,

@@ -7,6 +7,7 @@ function EventForm(props) {
     name: "",
     event: "",
     description: "",
+    color: "#000000"
   });
 
   function handleChange(event) {
@@ -17,9 +18,16 @@ function EventForm(props) {
     }));
   }
 
+  function handleColorChange(event) {
+    setEvent(prevEvent => ({
+      ...prevEvent,
+      color: event.target.value
+    }));
+  }
+
   function submitForm() {
     props.handleSubmit(event);
-    setEvent({ date: "", time: "", name: "", event: "" , description: "" });
+    setEvent({ date: "", time: "", name: "", event: "" , description: "", color: "#000000" });
   }
 
   return (
@@ -40,7 +48,7 @@ function EventForm(props) {
         value={event.time}
         onChange={handleChange}
       />
-      <label htmlFor="name">Name</label>
+      <label htmlFor="name">Roommate</label>
       <input
         type="text"
         name="name"
@@ -64,6 +72,32 @@ function EventForm(props) {
         value={event.description}
         onChange={handleChange}
       />
+
+      <label htmlFor="Color" style={{ display: "flex", alignItems: "center" }}>
+        <span>Color:</span>
+        <input
+          type="color"
+          name="color"
+          id="color"
+          value={event.color}
+          onChange={handleColorChange}
+          style={{
+            width: "50px",
+            height: "50px",
+            borderRadius: "10px",
+            boxShadow: "0 0 0 2px #fff",
+            cursor: "pointer",
+            marginLeft: "10px"
+          }}
+        />
+        <input
+          type="text"
+          name="hexColor"
+          value={event.color}
+          onChange={handleColorChange}
+          style={{ width: "95px", marginLeft: "10px" }}
+        />
+      </label>
       <input type="button" value="Add Event" onClick={submitForm} style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
     </form>
   );

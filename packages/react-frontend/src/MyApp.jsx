@@ -20,8 +20,11 @@ import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
 import { jwtDecode } from "jwt-decode";
+("");
 
 function MyApp() {
+  // const link = "https://underoneroof.azurewebsites.net"
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -32,6 +35,7 @@ function MyApp() {
   const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
   const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
+  const currentUser = localStorage.getItem("current user");
 
   // authentiation
 
@@ -69,7 +73,7 @@ function MyApp() {
     console.log(next);
     creds.rememberMe = rememberMe;
     localStorage.setItem("current user", creds.username);
-    const promise = fetch("Http://localhost:8000/signup", {
+    const promise = fetch(link + "/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +104,7 @@ function MyApp() {
   function loginUser(creds, rememberMe, next) {
     localStorage.setItem("current user", creds.username);
     creds.rememberMe = rememberMe;
-    const promise = fetch("Http://localhost:8000/login", {
+    const promise = fetch(link + "/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +158,7 @@ function MyApp() {
     group.roommates.push(currentUser);
     console.log(group.roommates);
     //group.roommates.append(currentUser);
-    const promise = fetch("Http://localhost:8000/groups", {
+    const promise = fetch(link + "/groups", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -180,7 +184,7 @@ function MyApp() {
   }
 
   function fetchGroup(username) {
-    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+    const promise = fetch(link + "/groups?roommate=" + username, {
       headers: addAuthHeader(),
     });
 
@@ -312,7 +316,23 @@ function MyApp() {
   }
 
   function fetchChores() {
-    const promise = fetch("Http://localhost:8000/chores", {
+    const promise = fetch(link + "/chores", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroup(username) {
+    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroupById(id) {
+    const promise = fetch("Http://localhost:8000/groups/" + id, {
       headers: addAuthHeader(),
     });
 
@@ -374,7 +394,7 @@ function MyApp() {
   }, [token]);
 
   function fetchEvents() {
-    const promise = fetch("Http://localhost:8000/events", {
+    const promise = fetch(link + "/events", {
       headers: addAuthHeader(),
     });
     return promise;
@@ -432,7 +452,7 @@ function MyApp() {
   //}, [token]);
 
   function postEvent(event) {
-    const promise = fetch("Http://localhost:8000/events", {
+    const promise = fetch(link + "/events", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -443,9 +463,7 @@ function MyApp() {
   }
 
   function postChore(chore) {
-    console.log(chore);
-    console.log(JSON.stringify(chore));
-    const promise = fetch("Http://localhost:8000/chores", {
+    const promise = fetch(link + "/chores", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -457,7 +475,7 @@ function MyApp() {
   }
 
   function deleteChore(id) {
-    const promise = fetch("Http://localhost:8000/chores/" + id, {
+    const promise = fetch(link + "/chores/" + id, {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -465,7 +483,7 @@ function MyApp() {
     return promise;
   }
   function deleteEvents(id) {
-    const promise = fetch("Http://localhost:8000/events/" + id, {
+    const promise = fetch(link + "/events/" + id, {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -494,7 +512,7 @@ function MyApp() {
     console.log(chore);
     console.log(chore.chore);
     console.log(chore.roommate);
-    const promise = fetch("Http://localhost:8000/chores/" + id, {
+    const promise = fetch(link + "/chores/" + id, {
       method: "PUT",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -560,7 +578,7 @@ function MyApp() {
   }
 
   function deleteContact(id) {
-    const promise = fetch("Http://localhost:8000/contacts/" + id, {
+    const promise = fetch(link + "/contacts/" + id, {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -600,7 +618,7 @@ function MyApp() {
   }
 
   function fetchContacts() {
-    const promise = fetch("Http://localhost:8000/contacts", {
+    const promise = fetch(link + "/contacts", {
       headers: addAuthHeader(),
     });
 
@@ -608,7 +626,7 @@ function MyApp() {
   }
 
   function postContact(contact) {
-    const promise = fetch("Http://localhost:8000/contacts", {
+    const promise = fetch(link + "/contacts", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -664,16 +682,11 @@ function MyApp() {
       });
   }, [token]);
 
-  function removeOnePreference(index) {
-    const id = preferences[index]._id;
-
-    deletePreference(id)
+  function removeAllPreferences() {
+    deleteAllPreferences()
       .then((res) => {
         if (res.status === 204) {
-          const updated = preferences.filter((preference, i) => {
-            return i !== index;
-          });
-          setPreferences(updated);
+          setPreferences([]);
         }
       })
       .catch((error) => {
@@ -681,8 +694,8 @@ function MyApp() {
       });
   }
 
-  function deletePreference(id) {
-    const promise = fetch("Http://localhost:8000/preferences/" + id, {
+  function deleteAllPreferences() {
+    const promise = fetch(link + "/preferences", {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -755,7 +768,7 @@ function MyApp() {
   }
 
   function fetchPreferences() {
-    const promise = fetch("Http://localhost:8000/preferences", {
+    const promise = fetch(link + "/preferences", {
       headers: addAuthHeader(),
     });
 
@@ -763,7 +776,7 @@ function MyApp() {
   }
 
   function postPreference(preference) {
-    const promise = fetch("Http://localhost:8000/preferences", {
+    const promise = fetch(link + "/preferences", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json",
@@ -828,6 +841,14 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
               <ContactTable
                 contactData={contacts}
                 removeContact={removeOneContact}
@@ -837,9 +858,11 @@ function MyApp() {
               )}
               <PreferencesTable
                 preferencesData={preferences}
-                removePreference={removeOnePreference}
+                removePreference={removeAllPreferences}
               />
-              <PreferencesForm handleSubmit={updatePreferences} />
+              {preferences && preferences.length === 0 && (
+                <PreferencesForm handleSubmit={updatePreferences} />
+              )}
             </>
           }
         />
@@ -848,6 +871,14 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
               <ChoreTable
                 choreData={chores}
                 removeChore={removeOneChore}
