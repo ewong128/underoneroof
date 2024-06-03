@@ -3,7 +3,12 @@ Under One Roof is a task-management app designed for roommates who want to organ
 
 UI Prototype:
 https://www.figma.com/board/TAjLMUL4MTRL6kxSfJbvpm/UML-diagram-(Copy)?node-id=0-1&t=A2mKEpu4XFyWK2K2-0 
-Date last updated: May 26, 2024
+Last updated: May 26, 2024
+
+Development environment set up:
+
+
+Diagrams:
 
 
 
