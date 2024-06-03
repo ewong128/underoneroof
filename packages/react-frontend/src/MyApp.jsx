@@ -277,16 +277,34 @@ function MyApp() {
         console.log(error);
       });
   }
+
   function updateEventList(events) {
-    postEvent(events)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          // setEvents([...events, json])
-          setEvents((prevEvents) => [...prevEvents, json]);
+          console.log(json);
+          events.group_id = json[0]._id.valueOf();
+          console.log(events.group_id);
+          return events;
         }
+      })
+      .then((events) => {
+        console.log(events);
+        postEvent(events)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              // setEvents([...events, json])
+              setEvents((prevEvents) => [...prevEvents, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -363,34 +381,55 @@ function MyApp() {
   }
 
   useEffect(() => {
-    fetchEvents()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setEvents(json["events_list"]);
-        } else {
-          setEvents(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchEvents()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["events_list"].filter((event, i) => {
+                console.log(event);
+                console.log(event.group_id);
+                console.log(group_id);
+                return event.group_id === group_id;
+              });
+              setEvents(updated);
+            } else {
+              setEvents(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
-  useEffect(() => {
-    fetchEvents()
-      .then((res) => (res.status === 200 ? res.json() : undefined))
-      .then((json) => {
-        if (json) {
-          setEvents(json["events_list"]);
-        } else {
-          setEvents(null);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  //useEffect(() => {
+  //fetchEvents()
+  //.then((res) => (res.status === 200 ? res.json() : undefined))
+  //.then((json) => {
+  //if (json) {
+  //setEvents(json["events_list"]);
+  //} else {
+  //setEvents(null);
+  //}
+  //})
+  //.catch((error) => {
+  //console.log(error);
+  //});
+  //}, [token]);
 
   function postEvent(event) {
     const promise = fetch("Http://localhost:8000/events", {

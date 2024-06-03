@@ -32,6 +32,12 @@ const EventSchema = new mongoose.Schema(
         if (value.length < 2) throw new Error("Invalid description");
       },
     },
+    group_id: {
+      type: String,
+      trim: true,
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Group"
+    },
   },
   { collection: "events_list" },
 );
