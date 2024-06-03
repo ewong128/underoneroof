@@ -9,7 +9,7 @@ Development environment set up:
 
 
 Diagrams:
-https://private-user-images.githubusercontent.com/93020600/336226203-336c1d24-afc6-4351-b425-6f1834fe5547.png
+
 
 
 # UnderOneRoof
