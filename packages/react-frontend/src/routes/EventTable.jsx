@@ -1,4 +1,3 @@
-// src/Table.jsx
 import React from "react";
 import trashDelete from "../../trash.png";
 
@@ -6,7 +5,7 @@ function TableHeader() {
   return (
     <thead>
       <tr>
-        <th colSpan="6">Events</th>
+        <th colSpan="6" style={{ fontSize: "1.5rem", color: "#0a978d" }}>Events</th>
       </tr>
       <tr>
         <th>Date</th>
@@ -61,10 +60,12 @@ function TableBody(props) {
 
 function EventTable(props) {
   return (
-    <table>
-      <TableHeader />
-      <TableBody eventData={props.eventData} removeEvent={props.removeEvents} />
-    </table>
+    <div style={{ paddingTop: "40px" }}> 
+      <table style={{ borderTop: "1px solid black" }}>
+        <TableHeader />
+        <TableBody eventData={props.eventData} removeEvent={props.removeEvents} />
+      </table>
+    </div>
   );
 }
 

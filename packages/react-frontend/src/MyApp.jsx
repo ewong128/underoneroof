@@ -18,7 +18,7 @@ import ContactForm from "./routes/ContactForm";
 import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";""
 
 function MyApp() {
   // const link = "https://underoneroof.azurewebsites.net"
@@ -33,6 +33,7 @@ function MyApp() {
   const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
   const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
+  const currentUser = localStorage.getItem("current user");
 
   // authentiation
 
@@ -664,6 +665,9 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && <div>Welcome back, {currentUser}!</div>}
+              </div>
               <ChoreTable
                 choreData={chores}
                 removeChore={removeOneChore}
