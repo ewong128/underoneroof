@@ -23,8 +23,8 @@ import UnavailabilityForm from "./routes/UnavailabilityForm";
 import { jwtDecode } from "jwt-decode";
 
 function MyApp() {
- // const link = "https://underoneroof.azurewebsites.net";
-  const link = "http://localhost:8000"
+  // const link = "https://underoneroof.azurewebsites.net";
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -721,12 +721,6 @@ function MyApp() {
           }
         />
         <Route
-          path="/createGroup"
-          element={
-            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
-          }
-        />
-        <Route
           path="/agreement"
           element={
             <>
@@ -743,22 +737,6 @@ function MyApp() {
                 removePreference={removeOnePreference}
               />
               <PreferencesForm handleSubmit={updatePreferences} />
-            </>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <>
-              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
-              <ChoreTable
-                choreData={chores}
-                removeChore={removeOneChore}
-                updateChoreStatus={updateChore}
-              />
-              <ChoreForm handleSubmit={updateList} />
-              <EventTable eventData={events} removeEvents={removeOneEvent} />
-              <EventForm handleSubmit={updateEventList} />
             </>
           }
         />
