@@ -82,13 +82,14 @@ function TableBody(props) {
             {status}
           </span>
         </td>
-        <td style={{ paddingLeft: "1px", paddingRight: "-20px", textAlign: "center" }}> 
+        <td style={{ width: "80px", textAlign: "center" }}> 
           <input
             type="checkbox"
             id={`completed_${index}`}
             name="completed"
             checked={isChecked}
             onChange={() => handleCheckboxChange(index)}
+            style={{ margin: 0 }}
           />
         </td>
         <td style={{ paddingLeft: "23px" }}>

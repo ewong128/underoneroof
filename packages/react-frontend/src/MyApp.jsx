@@ -643,6 +643,13 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back, <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
               <ContactTable
                 contactData={contacts}
                 removeContact={removeOneContact}
@@ -666,7 +673,11 @@ function MyApp() {
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
               <div className="welcome-message" style={{ float: "right" }}>
-                {currentUser && <div>Welcome back, {currentUser}!</div>}
+                {currentUser && (
+                  <div>
+                    Welcome back, <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
               </div>
               <ChoreTable
                 choreData={chores}
