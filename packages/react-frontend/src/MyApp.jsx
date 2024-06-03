@@ -23,8 +23,8 @@ import { jwtDecode } from "jwt-decode";
 ("");
 
 function MyApp() {
-  // const link = "https://underoneroof.azurewebsites.net"
-  const link = "http://localhost:8000";
+  const link = "https://underoneroof.azurewebsites.net";
+  //const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -86,7 +86,7 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(
-            `Signup successful for user: ${creds.username}; auth token saved`,
+            `Signup successful for user: ${creds.username}; auth token saved`
           );
           navigate(next || "/createGroup");
         } else {
@@ -203,7 +203,7 @@ function MyApp() {
           console.log(group_id);
           navigator.clipboard.writeText(
             "Http://localhost:5173/login?next=acceptInvitation?group=" +
-              group_id,
+              group_id
           );
         } else {
           //setChores(null);
