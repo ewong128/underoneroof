@@ -654,7 +654,7 @@ function MyApp() {
                 preferencesData={preferences}
                 removePreference={removeAllPreferences}
               />
-              {preferences.length === 0 && (
+              {preferences && preferences.length === 0 && (
                 <PreferencesForm handleSubmit={updatePreferences} />
               )}
             </>
