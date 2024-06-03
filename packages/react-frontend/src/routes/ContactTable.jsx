@@ -13,13 +13,23 @@ function ContactTable({ contactData, removeContact }) {
           border: "1px solid #ccc",
         }}
       >
-        <caption style={{ textAlign: "center" }}>No emergency contacts recorded. Please fill out the form.</caption>
+        <caption style={{ textAlign: "center" }}>
+          No emergency contacts recorded. Please fill out the form.
+        </caption>
       </table>
     );
   }
 
   return (
-    <div style={{ margin: "40px 20px 20px 20px", padding: "20px", backgroundColor: "#fff", border: "1px solid #ccc", borderRadius: "10px" }}>
+    <div
+      style={{
+        margin: "40px 20px 20px 20px",
+        padding: "20px",
+        backgroundColor: "#fff",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+      }}
+    >
       <div
         style={{
           textAlign: "center",
@@ -32,15 +42,43 @@ function ContactTable({ contactData, removeContact }) {
         <img
           src={contactIcon}
           alt="Contact Icon"
-          style={{ width: "30px", height: "30px", marginRight: "7px", marginTop: "1px" }}
+          style={{
+            width: "30px",
+            height: "30px",
+            marginRight: "7px",
+            marginTop: "1px",
+          }}
         />
         <h2 style={{ margin: 0, fontSize: "1.5rem" }}>Emergency Contacts</h2>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+        }}
+      >
         {contacts.map((contact, index) => (
-          <div key={index} style={{ width: "calc(25% - 10px)", marginBottom: "20px", backgroundColor: "#f8f9fa", borderRadius: "15px", padding: "10px" }}>
-            <h3 style={{ color: "#0a978d", fontSize: "1.5rem", borderBottom: "1.5px solid #0a978d", textAlign: "center" }}>
-              {contact.username}'s Contact</h3>
+          <div
+            key={index}
+            style={{
+              width: "calc(25% - 10px)",
+              marginBottom: "20px",
+              backgroundColor: "#f8f9fa",
+              borderRadius: "15px",
+              padding: "10px",
+            }}
+          >
+            <h3
+              style={{
+                color: "#0a978d",
+                fontSize: "1.5rem",
+                borderBottom: "1.5px solid #0a978d",
+                textAlign: "center",
+              }}
+            >
+              {contact.username}'s Contact
+            </h3>
             <div style={{ marginBottom: "10px" }}>
               <strong>Emergency Contact Relation:</strong>
               <div>{contact.emergencyContactRelation}</div>

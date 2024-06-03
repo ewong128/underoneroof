@@ -9,12 +9,11 @@ const EventSchema = new mongoose.Schema(
     },
 
     time: {
-        type: String,
-        required: true,
-        trim: true,
-       
+      type: String,
+      required: true,
+      trim: true,
     },
-    
+
     name: {
       type: String,
       required: true,
@@ -44,7 +43,7 @@ const EventSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      default: "#000000"
+      default: "#000000",
     },
   },
   { collection: "events_list" },

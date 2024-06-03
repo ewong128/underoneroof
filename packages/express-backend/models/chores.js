@@ -39,7 +39,7 @@ const ChoreSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      default: "#000000"
+      default: "#000000",
     },
   },
   { collection: "chores_list" },

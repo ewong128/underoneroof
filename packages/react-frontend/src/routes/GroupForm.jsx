@@ -31,7 +31,7 @@ function GroupForm(props) {
           setErrorMessage("");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         setErrorMessage(error.message);
       });
@@ -39,11 +39,24 @@ function GroupForm(props) {
   }
 
   return (
-    <div className="group-container"
-    style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20vh" }}>
-    <img src={groupLogo} alt="logo" style={{ width: "75px", height: "75px", marginBottom: "10px" }} />
-    <h1 style={{ marginTop: "0", marginBottom: "10px" }}>UnderOneRoof</h1>
-    <p style={{ fontSize: "1rem", fontWeight: "300", marginBottom: "10px" }}>{welcomeMessage}</p>
+    <div
+      className="group-container"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: "20vh",
+      }}
+    >
+      <img
+        src={groupLogo}
+        alt="logo"
+        style={{ width: "75px", height: "75px", marginBottom: "10px" }}
+      />
+      <h1 style={{ marginTop: "0", marginBottom: "10px" }}>UnderOneRoof</h1>
+      <p style={{ fontSize: "1rem", fontWeight: "300", marginBottom: "10px" }}>
+        {welcomeMessage}
+      </p>
       <form style={{ width: "50%" }}>
         <label htmlFor="username">Group Name</label>
         <input
@@ -58,7 +71,12 @@ function GroupForm(props) {
           type="button"
           value={props.buttonLabel || "Create Group"}
           onClick={submitForm}
-          style={{ width: "100%", marginTop: "10px", backgroundColor: "#00AA9E", borderColor: "#0a978d"}}
+          style={{
+            width: "100%",
+            marginTop: "10px",
+            backgroundColor: "#00AA9E",
+            borderColor: "#0a978d",
+          }}
         />
       </form>
       {errorMessage && <p>{errorMessage}</p>}

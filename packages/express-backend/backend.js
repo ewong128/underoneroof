@@ -249,16 +249,17 @@ app.get("/preferences/:id", authenticateUser, (req, res) => {
 
 app.delete("/preferences", authenticateUser, (req, res) => {
   let promise = preferenceServices.deleteAllPreferences();
-  promise.then((result) => {
-    if (!result) {
-      res.status(404).send("Resource not found.");
-    } else {
-      res.status(204).send();
-    }
-  })
-  .catch((error) => {
-    res.status(500).send(error);
-  });
+  promise
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("Resource not found.");
+      } else {
+        res.status(204).send();
+      }
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
 app.post("/preferences", authenticateUser, (req, res) => {
