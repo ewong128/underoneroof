@@ -1,4 +1,3 @@
-// src/Form.jsx
 import React, { useState } from "react";
 
 function ChoreForm(props) {
@@ -11,15 +10,7 @@ function ChoreForm(props) {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    if (name === "roommate") {
-      setChore({ chore: chore["chore"], roommate: value, day: chore["day"], color: chore["color"] });
-    } else if (name === "day") {
-      setChore({ chore: chore["chore"], roommate: chore["roommate"], day: value, color: chore["color"] });
-    } else if (name === "color") {
-      setChore({ chore: chore["chore"], roommate: chore["roommate"], day: chore["day"], color: value });
-    } else {
-      setChore({ chore: value, roommate: chore["roommate"], day: chore["day"], color: chore["color"] });
-    }
+    setChore({ ...chore, [name]: value });
   }
 
   function handleColorChange(event) {
@@ -69,28 +60,37 @@ function ChoreForm(props) {
         <option value="Saturday">Saturday</option>
       </select>
 
-      <label htmlFor="color">Color</label>
-      <input
-        type="color"
-        name="color"
-        id="color"
-        value={chore.color}
-        onChange={handleColorChange}
-        style={{
-          width: "50px",
-          height: "50px",
-          borderRadius: "10px",
-          boxShadow: "0 0 0 2px #fff",
-          cursor: "pointer"
-        }}
-      />
+      <label htmlFor="Color" style={{ display: "flex", alignItems: "center" }}>
+        <span>Color:</span>
+        <input
+          type="color"
+          name="color"
+          id="color"
+          value={chore.color}
+          onChange={handleColorChange}
+          style={{
+            width: "50px",
+            height: "50px",
+            borderRadius: "10px",
+            boxShadow: "0 0 0 2px #fff",
+            cursor: "pointer",
+            marginLeft: "10px"
+          }}
+        />
+        <input
+          type="text"
+          name="hexColor"
+          value={chore.color}
+          onChange={handleColorChange}
+          style={{ width: "95px", marginLeft: "10px" }}
+        />
+      </label>
 
       <input 
         type="button" 
         value="Add Chore" 
         onClick={submitForm} 
-        style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
-
+        style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "10px" }} />
     </form>
   );
 }

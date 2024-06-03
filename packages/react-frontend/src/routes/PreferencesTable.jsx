@@ -39,7 +39,8 @@ function PreferencesTable({ preferencesData, removePreference }) {
         fontFamily: "Arial, sans-serif",
         margin: "0 auto",
         border: "1px solid #ccc",
-        borderRadius: "10px"
+        borderRadius: "10px",
+        backgroundColor: "#f8f9fa",
       }}
     >
       <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#0a978d" }}>
