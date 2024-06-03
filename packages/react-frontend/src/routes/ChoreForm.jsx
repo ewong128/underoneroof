@@ -5,7 +5,8 @@ function ChoreForm(props) {
     chore: "",
     roommate: "",
     day: "",
-    color: "#000000"
+    color: "#000000",
+    group_id: undefined,
   });
 
   function handleChange(event) {
@@ -50,7 +51,9 @@ function ChoreForm(props) {
 
       <label htmlFor="day">Day</label>
       <select name="day" id="day" onChange={handleChange} value={chore.day}>
-        <option value="" disabled>Select a day</option>
+        <option value="" disabled>
+          Select a day
+        </option>
         <option value="Sunday">Sunday</option>
         <option value="Monday">Monday</option>
         <option value="Tuesday">Tuesday</option>
@@ -74,7 +77,7 @@ function ChoreForm(props) {
             borderRadius: "10px",
             boxShadow: "0 0 0 2px #fff",
             cursor: "pointer",
-            marginLeft: "10px"
+            marginLeft: "10px",
           }}
         />
         <input
@@ -86,11 +89,16 @@ function ChoreForm(props) {
         />
       </label>
 
-      <input 
-        type="button" 
-        value="Add Chore" 
-        onClick={submitForm} 
-        style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "10px" }} />
+      <input
+        type="button"
+        value="Add Chore"
+        onClick={submitForm}
+        style={{
+          backgroundColor: "#00AA9E",
+          borderColor: "#0a978d",
+          marginTop: "10px",
+        }}
+      />
     </form>
   );
 }

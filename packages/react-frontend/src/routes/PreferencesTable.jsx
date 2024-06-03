@@ -23,10 +23,22 @@ function PreferencesTable({ preferencesData, removePreference }) {
     return (
       <ul style={{ listStyle: "none", padding: 0 }}>
         <li>Anytime: {preference.guestsPolicy.anyTime ? "Yes" : "No"}</li>
-        <li>Study Hours: {preference.guestsPolicy.studyHours ? "Yes" : "No"}</li>
-        <li>Midterms/Finals: {preference.guestsPolicy.midtermsFinals ? "Yes" : "No"}</li>
-        <li>Advance Notice: {preference.guestsPolicy.advanceNotice ? "Yes" : "No"}</li>
-        <li>Other: {preference.guestsPolicy.other ? `Yes: ${preference.guestsPolicy.guestsPolicyOther}` : "No"}</li>
+        <li>
+          Study Hours: {preference.guestsPolicy.studyHours ? "Yes" : "No"}
+        </li>
+        <li>
+          Midterms/Finals:{" "}
+          {preference.guestsPolicy.midtermsFinals ? "Yes" : "No"}
+        </li>
+        <li>
+          Advance Notice: {preference.guestsPolicy.advanceNotice ? "Yes" : "No"}
+        </li>
+        <li>
+          Other:{" "}
+          {preference.guestsPolicy.other
+            ? `Yes: ${preference.guestsPolicy.guestsPolicyOther}`
+            : "No"}
+        </li>
       </ul>
     );
   };
@@ -46,7 +58,9 @@ function PreferencesTable({ preferencesData, removePreference }) {
       <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#0a978d" }}>
         Preferences
       </h2>
-      <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
+      <table
+        style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}
+      >
         <thead>
           <tr>
             <th style={{ borderBottom: "1px solid #ccc", padding: "10px" }}>

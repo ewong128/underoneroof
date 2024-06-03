@@ -14,15 +14,17 @@ import Login from "./routes/Login";
 import EventTable from "./routes/EventTable";
 import EventForm from "./routes/EventForm";
 import GroupForm from "./routes/GroupForm";
+import Invitation from "./routes/Invitation";
 import ContactForm from "./routes/ContactForm";
 import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
-import { jwtDecode } from "jwt-decode";""
+import { jwtDecode } from "jwt-decode";
+("");
 
 function MyApp() {
   // const link = "https://underoneroof.azurewebsites.net"
-  const link = "http://localhost:8000"
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -67,7 +69,8 @@ function MyApp() {
     navigate("/login");
   }
 
-  function signupUser(creds, rememberMe) {
+  function signupUser(creds, rememberMe, next) {
+    console.log(next);
     creds.rememberMe = rememberMe;
     localStorage.setItem("current user", creds.username);
     const promise = fetch(link + "/signup", {
@@ -83,9 +86,9 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(
-            `Signup successful for user: ${creds.username}; auth token saved`
+            `Signup successful for user: ${creds.username}; auth token saved`,
           );
-          navigate("/createGroup");
+          navigate(next || "/createGroup");
         } else {
           setMessage(`Signup Error ${response.status}: ${response.data}`);
         }
@@ -114,6 +117,7 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(`Login successful; auth token saved`);
+          console.log(next);
           navigate(next || "/");
         } else {
           setMessage(`Login Error ${response.status}: ${response.data}`);
@@ -199,7 +203,7 @@ function MyApp() {
           console.log(group_id);
           navigator.clipboard.writeText(
             "Http://localhost:5173/login?next=acceptInvitation?group=" +
-              group_id
+              group_id,
           );
         } else {
           //setChores(null);
@@ -246,29 +250,65 @@ function MyApp() {
   }
 
   function updateList(chore) {
-    postChore(chore)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setChores([...chores, json]);
+          console.log(json);
+          chore.group_id = json[0]._id.valueOf();
+          console.log(chore.group_id);
+          return chore;
         }
+      })
+      .then((chore) => {
+        console.log(chore);
+        postChore(chore)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              setChores([...chores, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
   function updateEventList(events) {
-    postEvent(events)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          // setEvents([...events, json])
-          setEvents((prevEvents) => [...prevEvents, json]);
+          console.log(json);
+          events.group_id = json[0]._id.valueOf();
+          console.log(events.group_id);
+          return events;
         }
+      })
+      .then((events) => {
+        console.log(events);
+        postEvent(events)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              // setEvents([...events, json])
+              setEvents((prevEvents) => [...prevEvents, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -283,18 +323,73 @@ function MyApp() {
     return promise;
   }
 
+  function fetchGroup(username) {
+    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroupById(id) {
+    const promise = fetch("Http://localhost:8000/groups/" + id, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroup(username) {
+    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  function fetchGroupById(id) {
+    const promise = fetch("Http://localhost:8000/groups/" + id, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
   useEffect(() => {
-    fetchChores()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setChores(json["chores_list"]);
-        } else {
-          setChores(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchChores()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              const updated = json["chores_list"].filter((chore, i) => {
+                console.log(chore);
+                console.log(chore.group_id);
+                console.log(group_id);
+                return chore.group_id === group_id;
+              });
+              console.log(updated);
+              setChores(updated);
+            } else {
+              setChores(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
@@ -306,19 +401,55 @@ function MyApp() {
   }
 
   useEffect(() => {
-    fetchEvents()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setEvents(json["events_list"]);
-        } else {
-          setEvents(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchEvents()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["events_list"].filter((event, i) => {
+                console.log(event);
+                console.log(event.group_id);
+                console.log(group_id);
+                return event.group_id === group_id;
+              });
+              setEvents(updated);
+            } else {
+              setEvents(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
+
+  //useEffect(() => {
+  //fetchEvents()
+  //.then((res) => (res.status === 200 ? res.json() : undefined))
+  //.then((json) => {
+  //if (json) {
+  //setEvents(json["events_list"]);
+  //} else {
+  //setEvents(null);
+  //}
+  //})
+  //.catch((error) => {
+  //console.log(error);
+  //});
+  //}, [token]);
 
   function postEvent(event) {
     const promise = fetch(link + "/events", {
@@ -587,6 +718,55 @@ function MyApp() {
       });
   }
 
+  function updateGroup(group_id) {
+    const currentUser = localStorage.getItem("current user");
+    console.log("before put group");
+    console.log(group_id);
+    let group = null;
+
+    fetchGroupById(group_id)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          console.log(json);
+          console.log(json[0]);
+          group = json;
+
+          putGroup(group_id, currentUser, group)
+            .then((res) => {
+              navigate("/");
+              //if (res.status === 200) return res.json();
+            })
+            .then((json) => {
+              if (json) {
+                console.log(json);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function putGroup(id, currentUser, group) {
+    const promise = fetch("Http://localhost:8000/groups/" + id, {
+      method: "PUT",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        group: group.name,
+        roommates: group.roommates.concat([currentUser]),
+      }),
+    });
+
+    return promise;
+  }
+
   function fetchPreferences() {
     const promise = fetch(link + "/preferences", {
       headers: addAuthHeader(),
@@ -633,9 +813,27 @@ function MyApp() {
           }
         />
         <Route
-          path="/createGroup"
+          path="/acceptInvitation"
+          element={<Invitation handleSubmit={updateGroup} />}
+        />
+        <Route
+          path="/agreement"
           element={
-            <GroupForm handleSubmit={createGroup} buttonLabel="Create Group" />
+            <>
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <ContactTable
+                contactData={contacts}
+                removeContact={removeOneContact}
+              />
+              {!allContactsSubmitted && (
+                <ContactForm handleSubmit={updateContacts} />
+              )}
+              <PreferencesTable
+                preferencesData={preferences}
+                removePreference={removeAllPreferences}
+              />
+              <PreferencesForm handleSubmit={updatePreferences} />
+            </>
           }
         />
         <Route
@@ -646,7 +844,8 @@ function MyApp() {
               <div className="welcome-message" style={{ float: "right" }}>
                 {currentUser && (
                   <div>
-                    Welcome back, <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
                   </div>
                 )}
               </div>
@@ -675,7 +874,8 @@ function MyApp() {
               <div className="welcome-message" style={{ float: "right" }}>
                 {currentUser && (
                   <div>
-                    Welcome back, <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
                   </div>
                 )}
               </div>

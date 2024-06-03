@@ -8,7 +8,7 @@ function getUsers(username, group) {
     promise = findUserByName(username);
   } else if (group && !username) {
     promise = findUserByGroup(group);
-  } else if (group && username){
+  } else if (group && username) {
     promise = findUserByNameGroup(username, group);
   }
   return promise;
@@ -32,11 +32,11 @@ function findUserByGroup(group) {
   return userModel.find({ group: group });
 }
 
-function findUserByNameGroup(username, group){
-  return userModel.find({username: username, group: group});
+function findUserByNameGroup(username, group) {
+  return userModel.find({ username: username, group: group });
 }
 
-function deleteUserById(id){
+function deleteUserById(id) {
   return userModel.findByIdAndDelete(id);
 }
 
@@ -46,5 +46,5 @@ export default {
   findUserById,
   findUserByName,
   findUserByGroup,
-  deleteUserById
+  deleteUserById,
 };

@@ -7,27 +7,34 @@ function EventForm(props) {
     name: "",
     event: "",
     description: "",
-    color: "#000000"
+    color: "#000000",
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setEvent(prevEvent => ({
+    setEvent((prevEvent) => ({
       ...prevEvent,
-      [name]: value
+      [name]: value,
     }));
   }
 
   function handleColorChange(event) {
-    setEvent(prevEvent => ({
+    setEvent((prevEvent) => ({
       ...prevEvent,
-      color: event.target.value
+      color: event.target.value,
     }));
   }
 
   function submitForm() {
     props.handleSubmit(event);
-    setEvent({ date: "", time: "", name: "", event: "" , description: "", color: "#000000" });
+    setEvent({
+      date: "",
+      time: "",
+      name: "",
+      event: "",
+      description: "",
+      color: "#000000",
+    });
   }
 
   return (
@@ -40,7 +47,7 @@ function EventForm(props) {
         value={event.date}
         onChange={handleChange}
       />
-	  <label htmlFor="time">Time</label>
+      <label htmlFor="time">Time</label>
       <input
         type="time"
         name="time"
@@ -64,7 +71,7 @@ function EventForm(props) {
         value={event.event}
         onChange={handleChange}
       />
-	   <label htmlFor="description">Description</label>
+      <label htmlFor="description">Description</label>
       <input
         type="text"
         name="description"
@@ -87,7 +94,7 @@ function EventForm(props) {
             borderRadius: "10px",
             boxShadow: "0 0 0 2px #fff",
             cursor: "pointer",
-            marginLeft: "10px"
+            marginLeft: "10px",
           }}
         />
         <input
@@ -98,7 +105,12 @@ function EventForm(props) {
           style={{ width: "95px", marginLeft: "10px" }}
         />
       </label>
-      <input type="button" value="Add Event" onClick={submitForm} style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }} />
+      <input
+        type="button"
+        value="Add Event"
+        onClick={submitForm}
+        style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }}
+      />
     </form>
   );
 }
