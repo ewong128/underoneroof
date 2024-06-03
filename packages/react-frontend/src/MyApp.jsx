@@ -201,9 +201,12 @@ function MyApp() {
         if (json) {
           group_id = json[0]._id.toString();
           console.log(group_id);
+          //navigator.clipboard.writeText(
+          //"Http://localhost:5173/login?next=acceptInvitation?group=" +
+          //group_id
+          //);
           navigator.clipboard.writeText(
-            "Http://localhost:5173/login?next=acceptInvitation?group=" +
-              group_id
+            link + "/login?next=acceptInvitation?group=" + group_id
           );
         } else {
           //setChores(null);
@@ -324,7 +327,7 @@ function MyApp() {
   }
 
   function fetchGroup(username) {
-    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+    const promise = fetch(link + "/groups?roommate=" + username, {
       headers: addAuthHeader(),
     });
 
@@ -332,7 +335,7 @@ function MyApp() {
   }
 
   function fetchGroupById(id) {
-    const promise = fetch("Http://localhost:8000/groups/" + id, {
+    const promise = fetch(link + "/groups/" + id, {
       headers: addAuthHeader(),
     });
 
@@ -340,7 +343,7 @@ function MyApp() {
   }
 
   function fetchGroup(username) {
-    const promise = fetch("Http://localhost:8000/groups?roommate=" + username, {
+    const promise = fetch(link + "/groups?roommate=" + username, {
       headers: addAuthHeader(),
     });
 
@@ -348,7 +351,7 @@ function MyApp() {
   }
 
   function fetchGroupById(id) {
-    const promise = fetch("Http://localhost:8000/groups/" + id, {
+    const promise = fetch(link + "/groups/" + id, {
       headers: addAuthHeader(),
     });
 
@@ -753,7 +756,7 @@ function MyApp() {
   }
 
   function putGroup(id, currentUser, group) {
-    const promise = fetch("Http://localhost:8000/groups/" + id, {
+    const promise = fetch(link + "/groups/" + id, {
       method: "PUT",
       headers: addAuthHeader({
         "Content-Type": "application/json",
