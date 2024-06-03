@@ -27,6 +27,12 @@ const ChoreSchema = new mongoose.Schema(
             throw new Error("Invalid day of the week, must be at least 2 characters.");
         },
       },
+      color: {
+        type: String,
+        required: true,
+        trim: true,
+        default: "#000000"
+      },
   },
   { collection: "chores_list" }
 );

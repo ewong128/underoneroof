@@ -18,11 +18,11 @@ import ContactForm from "./routes/ContactForm";
 import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";""
 
 function MyApp() {
-  const link = "https://underoneroof.azurewebsites.net"
- // const link = "http://localhost:8000"
+  // const link = "https://underoneroof.azurewebsites.net"
+  const link = "http://localhost:8000"
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -33,6 +33,7 @@ function MyApp() {
   const [allContactsSubmitted, setAllContactsSubmitted] = useState(false);
   const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
+  const currentUser = localStorage.getItem("current user");
 
   // authentiation
 
@@ -550,16 +551,11 @@ function MyApp() {
       });
   }, [token]);
 
-  function removeOnePreference(index) {
-    const id = preferences[index]._id;
-
-    deletePreference(id)
+  function removeAllPreferences() {
+    deleteAllPreferences()
       .then((res) => {
         if (res.status === 204) {
-          const updated = preferences.filter((preference, i) => {
-            return i !== index;
-          });
-          setPreferences(updated);
+          setPreferences([]);
         }
       })
       .catch((error) => {
@@ -567,8 +563,8 @@ function MyApp() {
       });
   }
 
-  function deletePreference(id) {
-    const promise = fetch(link + "/preferences/" + id, {
+  function deleteAllPreferences() {
+    const promise = fetch(link + "/preferences", {
       method: "DELETE",
       headers: addAuthHeader(),
     });
@@ -647,6 +643,13 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back, <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
               <ContactTable
                 contactData={contacts}
                 removeContact={removeOneContact}
@@ -656,9 +659,11 @@ function MyApp() {
               )}
               <PreferencesTable
                 preferencesData={preferences}
-                removePreference={removeOnePreference}
+                removePreference={removeAllPreferences}
               />
-              <PreferencesForm handleSubmit={updatePreferences} />
+              {preferences && preferences.length === 0 && (
+                <PreferencesForm handleSubmit={updatePreferences} />
+              )}
             </>
           }
         />
@@ -667,6 +672,13 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back, <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
               <ChoreTable
                 choreData={chores}
                 removeChore={removeOneChore}
