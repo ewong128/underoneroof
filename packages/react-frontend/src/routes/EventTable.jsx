@@ -16,7 +16,7 @@ function TableHeader() {
             height: "42px",
           }}
         />
-        Events
+        Upcoming Events
       </th>
       <tr>
         <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Date</th>
