@@ -70,19 +70,19 @@ function TableBody(props) {
 
     return (
       <tr key={index}>
-        <td>{row.chore}</td>
+        <td style={{ width: "25%" }}>{row.chore}</td> 
         <td>
-          <span style={{ backgroundColor: roommateColor, color: textColor, padding: "2px 5px", borderRadius: "5px" }}>
+          <span style={{ width: "15%", backgroundColor: roommateColor, color: textColor, padding: "2px 5px", borderRadius: "5px" }}>
             {row.roommate}
           </span>
         </td>
-        <td>{row.day}</td>
-        <td>
+        <td style={{ width: "20%" }}>{row.day}</td> 
+        <td style={{ width: "15%" }}>
           <span style={{ backgroundColor: statusColor, padding: "2px 5px", borderRadius: "5px" }}>
             {status}
           </span>
         </td>
-        <td style={{ width: "80px", textAlign: "center" }}> 
+        <td style={{ width: "10%", textAlign: "center" }}> 
           <input
             type="checkbox"
             id={`completed_${index}`}
@@ -92,7 +92,7 @@ function TableBody(props) {
             style={{ margin: 0 }}
           />
         </td>
-        <td style={{ paddingLeft: "23px" }}>
+        <td style={{ width: "10%", paddingLeft: "23px" }}>
           <button onClick={() => props.removeChore(index)} 
             style={{ padding: 0, border: "none", background: "none" }}>
             <img src={trashDelete} alt="Delete" style={{ marginTop: "5px", width: "20px", height: "25px" }} />
