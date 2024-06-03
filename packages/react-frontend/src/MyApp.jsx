@@ -19,12 +19,14 @@ import ContactForm from "./routes/ContactForm";
 import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
+import UnavailabilityTable from "./routes/UnavailabilityTable";
+import UnavailabilityForm from "./routes/UnavailabilityForm";
 import { jwtDecode } from "jwt-decode";
 ("");
 
 function MyApp() {
-  const link = "https://underoneroof.azurewebsites.net";
-  //const link = "http://localhost:8000";
+  // const link = "https://underoneroof.azurewebsites.net";
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -36,6 +38,7 @@ function MyApp() {
   const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
   const currentUser = localStorage.getItem("current user");
+  const [unavailabilities, setUnavailabilities] = useState([]);
 
   // authentiation
 
@@ -790,6 +793,87 @@ function MyApp() {
     return promise;
   }
 
+  //unavailability functions
+
+  function removeOneUnavailability(index) {
+    const id = unavailabilities[index]._id;
+
+    deleteUnavailability(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = unavailabilities.filter((unavailability, i) => {
+            return i !== index;
+          });
+          setUnavailabilities(updated);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function updateUnavailabilityList(unavailability) {
+    postUnavailability(unavailability)
+      .then((res) => {
+        if (res.status === 201) return res.json();
+      })
+      .then((json) => {
+        if (json) {
+          setUnavailabilities((prevUnavailabilities) => [
+            ...prevUnavailabilities,
+            json,
+          ]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function fetchUnavailabilities() {
+    const promise = fetch(link + "/unavailabilities", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  useEffect(() => {
+    fetchUnavailabilities()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setUnavailabilities(json["unavailabilities_list"]);
+        } else {
+          setUnavailabilities(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  function postUnavailability(unavailability) {
+    const promise = fetch(link + "/unavailabilities", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify(unavailability),
+    });
+
+    return promise;
+  }
+
+  function deleteUnavailability(id) {
+    const promise = fetch(link + "/unavailabilities/" + id, {
+      method: "DELETE",
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
   return (
     <div className="container">
       <Routes>
@@ -892,6 +976,11 @@ function MyApp() {
               <ChoreForm handleSubmit={updateList} />
               <EventTable eventData={events} removeEvents={removeOneEvent} />
               <EventForm handleSubmit={updateEventList} />
+              <UnavailabilityTable
+                unavailabilityData={unavailabilities}
+                removeUnavailability={removeOneUnavailability}
+              />
+              <UnavailabilityForm handleSubmit={updateUnavailabilityList} />
             </>
           }
         />
