@@ -23,8 +23,8 @@ import UnavailabilityForm from "./routes/UnavailabilityForm";
 import { jwtDecode } from "jwt-decode";
 
 function MyApp() {
-  const link = "https://underoneroof.azurewebsites.net";
-  // const link = "http://localhost:8000"
+ // const link = "https://underoneroof.azurewebsites.net";
+  const link = "http://localhost:8000"
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -614,7 +614,8 @@ function MyApp() {
     return promise;
   }
 
-  //unavailbility
+  //unavailability functions
+
   function removeOneUnavailability(index) {
     const id = unavailabilities[index]._id;
 
