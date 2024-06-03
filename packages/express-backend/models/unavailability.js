@@ -32,6 +32,12 @@ const UnavailabilitySchema = new mongoose.Schema(
           throw new Error("Invalid description");
       },
     },
+    color: {
+      type: String,
+      required: true,
+      trim: true,
+      default: "#000000",
+    },
   },
   { collection: "unavailabilities_list" }
 );
