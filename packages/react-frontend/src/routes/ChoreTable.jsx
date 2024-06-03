@@ -21,12 +21,12 @@ function TableHeader() {
         </th>
       </tr>
       <tr>
-        <th>Chore</th>
-        <th>Assigned to...</th>
-        <th>Day of the Week</th>
-        <th>Status</th>
-        <th>Completed</th>
-        <th>Delete</th>
+        <th style={{ width: "25%" }}>Chore</th>
+        <th style={{ width: "15%" }}>Assigned to...</th>
+        <th style={{ width: "20%" }}>Day of the Week</th>
+        <th style={{ width: "15%" }}>Status</th>
+        <th style={{ width: "10%" }}>Completed</th>
+        <th style={{ width: "10%" }}>Delete</th>
       </tr>
     </thead>
   );

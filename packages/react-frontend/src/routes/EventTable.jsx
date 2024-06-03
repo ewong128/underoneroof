@@ -19,12 +19,12 @@ function TableHeader() {
         Events
       </th>
       <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>By...</th>
-        <th>Name of Event</th>
-        <th>Description</th>
-        <th>Delete</th>
+        <th style={{ width: "15%" }}>Date</th>
+        <th style={{ width: "10%" }}>Time</th>
+        <th style={{ width: "15%" }}>By...</th>
+        <th style={{ width: "20%" }}>Name of Event</th>
+        <th style={{ width: "30%" }}>Description</th>
+        <th style={{ width: "10%" }}>Delete</th>
       </tr>
     </thead>
   );
