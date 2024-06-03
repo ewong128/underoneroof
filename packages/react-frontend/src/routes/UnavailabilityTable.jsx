@@ -1,20 +1,31 @@
 //UnavailabilityTable.jsx
 import React from "react";
 import trashDelete from "../../trash.png";
+import availabilityIcon from "../../availability.png";
 
 function TableHeader() {
   return (
     <thead>
+      <th colSpan="6" style={{ fontSize: "1.5rem", color: "#0a978d" }}>
+        <img
+          src={availabilityIcon}
+          alt="Events"
+          style={{
+            marginRight: "5px",
+            marginTop: "-10px",
+            width: "40px",
+            height: "37px",
+          }}
+        />
+        Unavailability
+      </th>
       <tr>
-        <th colSpan="6">Unavailability</th>
-      </tr>
-      <tr>
-        <th style={{ width: "15%" }}>Event</th>
-        <th style={{ width: "10%" }}>Roommate</th>
-        <th style={{ width: "15%" }}>Start Date</th>
-        <th style={{ width: "20%" }}>End Date</th>
-        <th style={{ width: "30%" }}>Description</th>
-        <th style={{ width: "10%" }}>Delete</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Event</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Roommate</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Start Date</th>
+        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>End Date</th>
+        <th style={{ width: "30%", backgroundColor: "#f8f9fa" }}>Description</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
     </thead>
   );
@@ -54,7 +65,19 @@ function TableBody(props) {
     return (
       <tr key={index}>
         <td>{row.eventName}</td>
-        <td>{row.roommate}</td>
+        <td>
+          <span
+            style={{
+              width: "15%",
+              backgroundColor: roommateColor,
+              color: textColor,
+              padding: "2px 5px",
+              borderRadius: "5px",
+            }}
+          >
+            {row.roommate}
+          </span>
+        </td>
         <td>{row.startDate}</td>
         <td>{row.endDate}</td>
         <td>{row.description}</td>
@@ -91,13 +114,15 @@ function TableBody(props) {
 
 function UnavailabilityTable(props) {
   return (
-    <table>
-      <TableHeader />
-      <TableBody
-        unavailabilityData={props.unavailabilityData}
-        removeUnavailability={props.removeUnavailability}
-      />
-    </table>
+    <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
+      <table>
+        <TableHeader />
+        <TableBody
+          unavailabilityData={props.unavailabilityData}
+          removeUnavailability={props.removeUnavailability}
+        />
+      </table>
+    </div>
   );
 }
 

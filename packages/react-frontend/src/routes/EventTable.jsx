@@ -19,12 +19,12 @@ function TableHeader() {
         Events
       </th>
       <tr>
-        <th style={{ width: "15%" }}>Date</th>
-        <th style={{ width: "10%" }}>Time</th>
-        <th style={{ width: "15%" }}>By...</th>
-        <th style={{ width: "20%" }}>Name of Event</th>
-        <th style={{ width: "30%" }}>Description</th>
-        <th style={{ width: "10%" }}>Delete</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Date</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Time</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>By...</th>
+        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Name of Event</th>
+        <th style={{ width: "30%", backgroundColor: "#f8f9fa" }}>Description</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
     </thead>
   );
@@ -114,7 +114,7 @@ function TableBody(props) {
 
 function EventTable(props) {
   return (
-    <div style={{ paddingTop: "40px" }}>
+    <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
       <table>
         <TableHeader />
         <TableBody

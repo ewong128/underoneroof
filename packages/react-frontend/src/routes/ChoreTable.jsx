@@ -21,12 +21,12 @@ function TableHeader() {
         </th>
       </tr>
       <tr>
-        <th style={{ width: "25%" }}>Chore</th>
-        <th style={{ width: "15%" }}>Assigned to...</th>
-        <th style={{ width: "20%" }}>Day of the Week</th>
-        <th style={{ width: "15%" }}>Status</th>
-        <th style={{ width: "10%" }}>Completed</th>
-        <th style={{ width: "10%" }}>Delete</th>
+        <th style={{ width: "25%", backgroundColor: "#f8f9fa" }}>Chore</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Assigned to...</th>
+        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Day of the Week</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Status</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Completed</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
     </thead>
   );
@@ -145,14 +145,16 @@ function TableBody(props) {
 
 function ChoreTable(props) {
   return (
-    <table>
-      <TableHeader />
-      <TableBody
-        choreData={props.choreData}
-        removeChore={props.removeChore}
-        updateChoreStatus={props.updateChoreStatus}
-      />
-    </table>
+    <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
+      <table>
+        <TableHeader />
+        <TableBody
+          choreData={props.choreData}
+          removeChore={props.removeChore}
+          updateChoreStatus={props.updateChoreStatus}
+        />
+      </table>
+    </div>
   );
 }
 

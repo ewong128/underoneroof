@@ -7,7 +7,8 @@ function UnavailabilityForm(props) {
     roommate: "",
     startDate: "",
     endDate: "",
-    description: ""
+    description: "",
+    color: "#000000",
   });
 
   function handleChange(event) {
@@ -18,6 +19,13 @@ function UnavailabilityForm(props) {
     }));
   }
 
+  function handleColorChange(event) {
+    setUnavailability((prevUnavailability) => ({
+      ...prevUnavailability,
+      color: event.target.value,
+    }));
+  }
+
   function submitForm() {
     props.handleSubmit(unavailability);
     setUnavailability({
@@ -25,7 +33,8 @@ function UnavailabilityForm(props) {
       roommate: "",
       startDate: "",
       endDate: "",
-      description: ""
+      description: "",
+      color: "#000000",
     });
   }
 
@@ -71,6 +80,31 @@ function UnavailabilityForm(props) {
         value={unavailability.description}
         onChange={handleChange}
       />
+      <label htmlFor="Color" style={{ display: "flex", alignItems: "center" }}>
+        <span>Color:</span>
+        <input
+          type="color"
+          name="color"
+          id="color"
+          value={unavailability.color}
+          onChange={handleColorChange}
+          style={{
+            width: "50px",
+            height: "50px",
+            borderRadius: "10px",
+            boxShadow: "0 0 0 2px #fff",
+            cursor: "pointer",
+            marginLeft: "10px",
+          }}
+        />
+        <input
+          type="text"
+          name="hexColor"
+          value={unavailability.color}
+          onChange={handleColorChange}
+          style={{ width: "95px", marginLeft: "10px" }}
+        />
+      </label>
       <input
         type="button"
         value="Add Unavailability"
