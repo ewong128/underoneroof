@@ -40,6 +40,12 @@ const EventSchema = new mongoose.Schema(
       //type: mongoose.Schema.Types.ObjectId,
       //ref: "Group"
     },
+    color: {
+      type: String,
+      required: true,
+      trim: true,
+      default: "#000000"
+    },
   },
   { collection: "events_list" },
 );

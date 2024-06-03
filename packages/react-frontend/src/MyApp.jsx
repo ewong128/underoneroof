@@ -830,7 +830,7 @@ function MyApp() {
               )}
               <PreferencesTable
                 preferencesData={preferences}
-                removePreference={removeOnePreference}
+                removePreference={removeAllPreferences}
               />
               <PreferencesForm handleSubmit={updatePreferences} />
             </>
