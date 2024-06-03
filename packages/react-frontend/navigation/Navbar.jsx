@@ -54,16 +54,16 @@ const Navbar = ({ handleLogout, copyLink }) => {
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
             })}
-          // > {({ isActive }) => (
-          //   <span
-          //     style={{
-          //       textDecoration: isActive ? "underline" : "none",
-          //       cursor: "pointer",
-          //     }}
+          > {({ isActive }) => (
+            <span
+              style={{
+                textDecoration: isActive ? "underline" : "normal",
+                // cursor: "pointer",
+              }}
             >
               Roommate Agreement Form
-            {/* </span>
-          )} */}
+            </span>
+          )}
           </NavLink>
         </div>
       </div>
