@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import trashDelete from "../../trash.png";
+import broom from "../../chore.png";
 
 function TableHeader() {
   return (
     <thead>
       <tr>
-        <th colSpan="6" style={{ fontSize: "1.5rem", color: "#0a978d" }}>Chores</th>
+        <th colSpan="6" style={{ fontSize: "1.5rem", color: "#0a978d" }}>
+          <img src={broom} alt="Chores" style={{ marginRight: "1px", marginTop: "-10px", width: "45px", height: "40px" }} />
+          Chores
+        </th>
       </tr>
       <tr>
         <th>Chore</th>
-        <th>Assigned to</th>
+        <th>Assigned to...</th>
         <th>Day of the Week</th>
         <th>Status</th>
         <th>Completed</th>
@@ -23,29 +27,27 @@ function TableBody(props) {
   if (props.choreData === null) {
     return <caption>Data Unavailable</caption>;
   }
-  const [checkedState, setCheckedState] = useState({}); // State to keep track of checked status
+  const [checkedState, setCheckedState] = useState({}); 
 
   useEffect(() => {
     const initialCheckedState = {};
     props.choreData.forEach((_, index) => {
       const isChecked = localStorage.getItem(`completed_${index}`) === "true";
-      initialCheckedState[index] = isChecked; // Initialize checked state from localStorage
+      initialCheckedState[index] = isChecked;
     });
-    setCheckedState(initialCheckedState); // Set initial checked state
+    setCheckedState(initialCheckedState); 
   }, [props.choreData]);
 
   const handleCheckboxChange = (index) => {
     const updatedCheckedState = { ...checkedState, [index]: !checkedState[index] };
-    setCheckedState(updatedCheckedState); // Update checked state in local state
-    localStorage.setItem(`completed_${index}`, updatedCheckedState[index]); // Update localStorage
+    setCheckedState(updatedCheckedState); 
+    localStorage.setItem(`completed_${index}`, updatedCheckedState[index]); 
     props.updateChoreStatus(index);
   };
 
   const rows = props.choreData.map((row, index) => {
-    const isChecked = checkedState[index] || false; // Get checked state from local state
-
-    // Rest of the code remains the same
-    const status = isChecked ? "Completed" : "Pending...";
+    const isChecked = checkedState[index] || false; 
+    const status = isChecked ? "Completed!" : "Pending...";
     const statusColor = isChecked ? "#D4FFD6" : "#D4EAFF";
     const roommateColor = row.color || "#FFFFFF";
     const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";
