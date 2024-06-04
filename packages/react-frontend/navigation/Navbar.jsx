@@ -35,7 +35,8 @@ const Navbar = ({ handleLogout, copyLink }) => {
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
             })}
-          > {({ isActive }) => (
+          > 
+            {({ isActive }) => (
             <span
               style={{
                 textDecoration: isActive ? "underline" : "none",
@@ -55,7 +56,17 @@ const Navbar = ({ handleLogout, copyLink }) => {
               color: isActive ? "black" : "inherit",
               
             })}
-          > Roommate Agreement Form
+          >
+             {({ isActive }) => (
+            <span
+              style={{
+                textDecoration: isActive ? "underline" : "none",
+                // cursor: "pointer",
+              }}
+            >
+              Roommate Agreement Form
+            </span>
+          )}
           </NavLink>
         </div>
       </div>
