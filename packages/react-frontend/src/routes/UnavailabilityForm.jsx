@@ -1,37 +1,37 @@
 import React, { useState } from "react";
 
-function EventForm(props) {
-  const [event, setEvent] = useState({
-    date: "",
-    time: "",
-    name: "",
-    event: "",
+function UnavailabilityForm(props) {
+  const [unavailability, setUnavailability] = useState({
+    eventName: "",
+    roommate: "",
+    startDate: "",
+    endDate: "",
     description: "",
     color: "#000000",
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setEvent((prevEvent) => ({
-      ...prevEvent,
+    setUnavailability((prevUnavailability) => ({
+      ...prevUnavailability,
       [name]: value,
     }));
   }
 
   function handleColorChange(event) {
-    setEvent((prevEvent) => ({
-      ...prevEvent,
+    setUnavailability((prevUnavailability) => ({
+      ...prevUnavailability,
       color: event.target.value,
     }));
   }
 
   function submitForm() {
-    props.handleSubmit(event);
-    setEvent({
-      date: "",
-      time: "",
-      name: "",
-      event: "",
+    props.handleSubmit(unavailability);
+    setUnavailability({
+      eventName: "",
+      roommate: "",
+      startDate: "",
+      endDate: "",
       description: "",
       color: "#000000",
     });
@@ -40,65 +40,65 @@ function EventForm(props) {
   return (
     <form>
       <div style={{ display: "flex", marginBottom: "10px" }}>
-        <div style={{ marginRight: "18px" }}>
-          <label htmlFor="date">Date</label>
+        <div style={{ marginRight: "15px" }}>
+          <label htmlFor="eventName">Event Name</label>
           <input
-            type="date"
-            name="date"
-            id="date"
-            value={event.date}
+            type="text"
+            name="eventName"
+            id="eventName"
+            value={unavailability.eventName}
             onChange={handleChange}
             style={{ width: "300%", boxSizing: "border-box" }}
           />
         </div>
-        <div style={{ marginRight: "18px", marginTop: "-3.5px" }}>
-          <label htmlFor="time">Time</label>
+        <div style={{ marginRight: "15px" }}>
+          <label htmlFor="roommate">Roommate</label>
           <input
-            type="time"
-            name="time"
-            id="time"
-            value={event.time}
+            type="text"
+            name="roommate"
+            id="roommate"
+            value={unavailability.roommate}
             onChange={handleChange}
           />
         </div>
-        <div style={{ marginRight: "18px" }}>
-          <label htmlFor="name">Roommate</label>
+        <div style={{ marginRight: "15px" }}>
+          <label htmlFor="startDate">Start Date</label>
           <input
-            type="text"
-            name="name"
-            id="name"
-            value={event.name}
+            type="date"
+            name="startDate"
+            id="startDate"
+            value={unavailability.startDate}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label htmlFor="event">Event</label>
+          <label htmlFor="endDate">End Date</label>
           <input
-            type="text"
-            name="event"
-            id="event"
-            value={event.event}
+            type="date"
+            name="endDate"
+            id="endDate"
+            value={unavailability.endDate}
             onChange={handleChange}
           />
         </div>
-        <div style={{ marginLeft: "18px" }}>
+        <div style={{ marginLeft: "15px" }}>
           <label htmlFor="description">Description</label>
           <input
             type="text"
             name="description"
             id="description"
-            value={event.description}
+            value={unavailability.description}
             onChange={handleChange}
           />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <label htmlFor="Color" style={{ marginLeft: "18px" }}>
+          <label htmlFor="Color" style={{ marginLeft: "10px" }}>
             <span>Color:</span>
             <input
               type="color"
               name="color"
               id="color"
-              value={event.color}
+              value={unavailability.color}
               onChange={handleColorChange}
               style={{
                 width: "50px",
@@ -114,7 +114,7 @@ function EventForm(props) {
           <input
             type="text"
             name="hexColor"
-            value={event.color}
+            value={unavailability.color}
             onChange={handleColorChange}
             style={{ width: "95px", marginLeft: "5px", marginTop: "35px" }}
           />
@@ -123,13 +123,13 @@ function EventForm(props) {
       <div>
         <input
           type="button"
-          value="Add Event"
+          value="Add Unavailability"
           onClick={submitForm}
-          style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "-10px", marginBottom: "25px" }}
+          style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "-10px", marginBottom: "60px" }}
         />
       </div>
     </form>
   );
 }
 
-export default EventForm;
+export default UnavailabilityForm;
