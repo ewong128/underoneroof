@@ -908,28 +908,6 @@ function MyApp() {
           element={
             <>
               <Navbar handleLogout={handleLogout} copyLink={copyLink} />
-              <ContactTable
-                contactData={contacts}
-                removeContact={removeOneContact}
-              />
-              {!allContactsSubmitted && (
-                <ContactForm handleSubmit={updateContacts} />
-              )}
-              <PreferencesTable
-                preferencesData={preferences}
-                removePreference={removeAllPreferences}
-              />
-              {preferences && preferences.length === 0 && (
-                <PreferencesForm handleSubmit={updatePreferences} />
-              )}
-            </>
-          }
-        />
-        <Route
-          path="/agreement"
-          element={
-            <>
-              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
               <div className="welcome-message" style={{ float: "right" }}>
                 {currentUser && (
                   <div>
