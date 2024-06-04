@@ -1,28 +1,29 @@
+//UnavailabilityTable.jsx
 import React from "react";
 import trashDelete from "../../trash.png";
-import event from "../../event.png";
+import availabilityIcon from "../../availability.png";
 
 function TableHeader() {
   return (
     <thead>
       <th colSpan="6" style={{ fontSize: "1.5rem", color: "#0a978d" }}>
         <img
-          src={event}
+          src={availabilityIcon}
           alt="Events"
           style={{
             marginRight: "5px",
             marginTop: "-10px",
-            width: "45px",
-            height: "42px",
+            width: "40px",
+            height: "37px",
           }}
         />
-        Upcoming Events
+        Unavailability
       </th>
       <tr>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Date</th>
-        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Time</th>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>By...</th>
-        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Name of Event</th>
+        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Event</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Roommate</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Start Date</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>End Date</th>
         <th style={{ width: "30%", backgroundColor: "#f8f9fa" }}>Description</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
@@ -31,13 +32,13 @@ function TableHeader() {
 }
 
 function TableBody(props) {
-  if (props.eventData === null) {
+  if (props.unavailabilityData === null) {
     return <caption>Data Unavailable</caption>;
   }
 
-  const rows = props.eventData.map((row, index) => {
-    const roommateColor = row.color || "#FFFFFF";
-    const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";
+  const rows = props.unavailabilityData.map((row, index) => {
+  const roommateColor = row.color || "#FFFFFF";
+  const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";
 
     function getLuminance(color) {
       let rgb = [];
@@ -61,11 +62,9 @@ function TableBody(props) {
         (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
       return luminance;
     }
-
     return (
       <tr key={index}>
-        <td>{row.date}</td>
-        <td>{row.time}</td>
+        <td>{row.eventName}</td>
         <td>
           <span
             style={{
@@ -76,14 +75,15 @@ function TableBody(props) {
               borderRadius: "5px",
             }}
           >
-            {row.name}
+            {row.roommate}
           </span>
         </td>
-        <td>{row.event}</td>
+        <td>{row.startDate}</td>
+        <td>{row.endDate}</td>
         <td>{row.description}</td>
         <td style={{ textAlign: "center" }}>
           <button
-            onClick={() => props.removeEvent(index)}
+            onClick={() => props.removeUnavailability(index)}
             style={{
               padding: 0,
               border: "none",
@@ -112,18 +112,18 @@ function TableBody(props) {
   return <tbody>{rows}</tbody>;
 }
 
-function EventTable(props) {
+function UnavailabilityTable(props) {
   return (
     <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
       <table>
         <TableHeader />
         <TableBody
-          eventData={props.eventData}
-          removeEvent={props.removeEvents}
+          unavailabilityData={props.unavailabilityData}
+          removeUnavailability={props.removeUnavailability}
         />
       </table>
     </div>
   );
 }
 
-export default EventTable;
+export default UnavailabilityTable;

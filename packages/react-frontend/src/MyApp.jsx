@@ -19,6 +19,8 @@ import ContactForm from "./routes/ContactForm";
 import ContactTable from "./routes/ContactTable";
 import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
+import UnavailabilityTable from "./routes/UnavailabilityTable";
+import UnavailabilityForm from "./routes/UnavailabilityForm";
 import { jwtDecode } from "jwt-decode";
 ("");
 
@@ -36,6 +38,7 @@ function MyApp() {
   const [preferences, setPreferences] = useState([]);
   const navigate = useNavigate();
   const currentUser = localStorage.getItem("current user");
+  const [unavailabilities, setUnavailabilities] = useState([]);
 
   // authentiation
 
@@ -790,6 +793,87 @@ function MyApp() {
     return promise;
   }
 
+  //unavailability functions
+
+  function removeOneUnavailability(index) {
+    const id = unavailabilities[index]._id;
+
+    deleteUnavailability(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = unavailabilities.filter((unavailability, i) => {
+            return i !== index;
+          });
+          setUnavailabilities(updated);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function updateUnavailabilityList(unavailability) {
+    postUnavailability(unavailability)
+      .then((res) => {
+        if (res.status === 201) return res.json();
+      })
+      .then((json) => {
+        if (json) {
+          setUnavailabilities((prevUnavailabilities) => [
+            ...prevUnavailabilities,
+            json,
+          ]);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function fetchUnavailabilities() {
+    const promise = fetch(link + "/unavailabilities", {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  useEffect(() => {
+    fetchUnavailabilities()
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setUnavailabilities(json["unavailabilities_list"]);
+        } else {
+          setUnavailabilities(null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
+  function postUnavailability(unavailability) {
+    const promise = fetch(link + "/unavailabilities", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify(unavailability),
+    });
+
+    return promise;
+  }
+
+  function deleteUnavailability(id) {
+    const promise = fetch(link + "/unavailabilities/" + id, {
+      method: "DELETE",
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
   return (
     <div className="container">
       <Routes>
@@ -818,28 +902,6 @@ function MyApp() {
         <Route
           path="/acceptInvitation"
           element={<Invitation handleSubmit={updateGroup} />}
-        />
-        <Route
-          path="/agreement"
-          element={
-            <>
-              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
-              <ContactTable
-                contactData={contacts}
-                removeContact={removeOneContact}
-              />
-              {!allContactsSubmitted && (
-                <ContactForm handleSubmit={updateContacts} />
-              )}
-              <PreferencesTable
-                preferencesData={preferences}
-                removePreference={removeAllPreferences}
-              />
-              {preferences && preferences.length === 0 && (
-                <PreferencesForm handleSubmit={updatePreferences} />
-              )}
-            </>
-          }
         />
         <Route
           path="/agreement"
@@ -892,6 +954,11 @@ function MyApp() {
               <ChoreForm handleSubmit={updateList} />
               <EventTable eventData={events} removeEvents={removeOneEvent} />
               <EventForm handleSubmit={updateEventList} />
+              <UnavailabilityTable
+                unavailabilityData={unavailabilities}
+                removeUnavailability={removeOneUnavailability}
+              />
+              <UnavailabilityForm handleSubmit={updateUnavailabilityList} />
             </>
           }
         />
