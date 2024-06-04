@@ -20,10 +20,10 @@ function TableHeader() {
         Unavailability
       </th>
       <tr>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Event</th>
+        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Event</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Roommate</th>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Start Date</th>
-        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>End Date</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Start Date</th>
+        <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>End Date</th>
         <th style={{ width: "30%", backgroundColor: "#f8f9fa" }}>Description</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
