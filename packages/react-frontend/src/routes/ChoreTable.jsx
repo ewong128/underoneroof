@@ -60,9 +60,10 @@ function TableBody(props) {
   const rows = props.choreData.map((row, index) => {
     const isChecked = checkedState[index] || false;
     const status = isChecked ? "Completed!" : "Pending...";
-    const statusColor = isChecked ? "#D4FFD6" : "#D4EAFF";
+    const statusColor = isChecked ? "#CEF4D0" : "#D4EAFF";
     const roommateColor = row.color || "#FFFFFF";
     const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";
+    const rowBackgroundColor = isChecked ? "#F0F6F6" : "transparent";
 
     function getLuminance(color) {
       let rgb = [];
@@ -88,7 +89,7 @@ function TableBody(props) {
     }
 
     return (
-      <tr key={index}>
+      <tr key={index} style={{ backgroundColor: rowBackgroundColor }}>
         <td style={{ width: "25%" }}>{row.chore}</td>
         <td>
           <span
