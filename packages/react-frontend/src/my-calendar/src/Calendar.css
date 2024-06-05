@@ -1,0 +1,66 @@
+/* src/calendar.css */
+.calendar {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .col {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+  }
+  
+  .col-start {
+    justify-content: flex-start;
+  }
+  
+  .col-end {
+    justify-content: flex-end;
+  }
+  
+  .col-center {
+    justify-content: center;
+  }
+  
+  .days .col {
+    background-color: #e0e0e0;
+    font-weight: bold;
+  }
+  
+  .cell {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .cell.disabled {
+    background-color: #f0f0f0;
+    color: #ccc;
+  }
+  
+  .cell.selected {
+    background-color: #2196F3;
+    color: #fff;
+  }
+  
+  .number {
+    display: block;
+  }
+  
