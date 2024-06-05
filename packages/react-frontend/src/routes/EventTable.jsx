@@ -22,9 +22,9 @@ function TableHeader() {
       </tr>
       <tr>
         <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Date</th>
-        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Time</th>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>By...</th>
-        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Name of Event</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Time</th>
+        <th style={{ width: "12%", backgroundColor: "#f8f9fa" }}>By...</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Name of Event</th>
         <th style={{ width: "25%", backgroundColor: "#f8f9fa" }}>Description</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
@@ -33,10 +33,12 @@ function TableHeader() {
 }
 
 function convertTo12HourFormat(time) {
-  let [hour, minute] = time.split(":").map(Number);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  hour = hour % 12 || 12; // Convert 0 to 12
-  return `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
+  if(time) {
+    let [hour, minute] = time.split(":").map(Number);
+    const ampm = hour >= 12 ? "PM" : "AM";
+    hour = hour % 12 || 12; // Convert 0 to 12
+    return `${hour}:${minute.toString().padStart(2, "0")} ${ampm}`;
+  }
 }
 
 function TableBody(props) {
@@ -93,7 +95,7 @@ function TableBody(props) {
           <button
             onClick={() => props.removeEvent(index)}
             style={{
-              padding: 0,
+              padding: 10,
               border: "none",
               background: "none",
               display: "flex",

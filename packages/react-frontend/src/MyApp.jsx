@@ -204,12 +204,12 @@ function MyApp() {
         if (json) {
           group_id = json[0]._id.toString();
           console.log(group_id);
-          //navigator.clipboard.writeText(
-          //"Http://localhost:5173/login?next=acceptInvitation?group=" +
-          //group_id
-          //);
+          // navigator.clipboard.writeText(
+          //   "Http://localhost:5173/login?next=acceptInvitation?group=" +
+          //     group_id
+          // );
           navigator.clipboard.writeText(
-            link + "/login?next=acceptInvitation?group=" + group_id
+          "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" + group_id
           );
         } else {
           //setChores(null);
@@ -536,17 +536,38 @@ function MyApp() {
 
   // contacts form
   useEffect(() => {
-    fetchContacts()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setContacts(json["contacts_list"]);
-        } else {
-          setContacts(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchContacts()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["contacts_list"].filter((contact, i) => {
+                console.log(contact);
+                console.log(contact.group_id);
+                console.log(group_id);
+                return contact.group_id === group_id;
+              });
+              setContacts(updated);
+            } else {
+              setContacts(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
@@ -559,18 +580,14 @@ function MyApp() {
             return i !== index;
           });
           setContacts(updated);
-
-          // check if all contacts have been submitted
-          fetchGroup(localStorage.getItem("current user"))
+  
+          // Check if all contacts have been submitted
+          fetchGroup(currentUser)
             .then((res) => (res.status === 200 ? res.json() : undefined))
             .then((groupJson) => {
               if (groupJson) {
                 const roommatesCount = groupJson[0].roommates.length;
-                if (updated.length === roommatesCount) {
-                  setAllContactsSubmitted(true);
-                } else {
-                  setAllContactsSubmitted(false);
-                }
+                setAllContactsSubmitted(updated.length === roommatesCount);
               }
             })
             .catch((error) => {
@@ -581,7 +598,7 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-  }
+  }  
 
   function deleteContact(id) {
     const promise = fetch(link + "/contacts/" + id, {
@@ -593,35 +610,48 @@ function MyApp() {
   }
 
   function updateContacts(contact) {
-    postContact(contact)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setContacts([...contacts, json]);
-
-          // for no refresh
-          // check if all agreements submitted based on # of roommates
-          fetchGroup(localStorage.getItem("current user"))
-            .then((res) => (res.status === 200 ? res.json() : undefined))
-            .then((groupJson) => {
-              if (groupJson) {
-                const roommatesCount = groupJson[0].roommates.length;
-                if (contacts.length + 1 === roommatesCount) {
-                  setAllContactsSubmitted(true);
-                }
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          console.log(json);
+          contact.group_id = json[0]._id.valueOf();
+          console.log(contact.group_id);
+          return contact;
         }
+      })
+      .then((contact) => {
+        console.log(contact);
+        postContact(contact)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              setContacts([...contacts, json]);
+              
+              // Check if all contacts have been submitted
+              fetchGroup(localStorage.getItem("current user"))
+                .then((res) => (res.status === 200 ? res.json() : undefined))
+                .then((groupJson) => {
+                  if (groupJson) {
+                    const roommatesCount = groupJson[0].roommates.length;
+                    setAllContactsSubmitted([...contacts, json].length === roommatesCount);
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  }  
 
   function fetchContacts() {
     const promise = fetch(link + "/contacts", {
@@ -644,47 +674,91 @@ function MyApp() {
   }
 
   useEffect(() => {
-    fetchContacts()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setContacts(json["contacts_list"]);
-          // Check if all agreements have been submitted
-          fetchGroup(localStorage.getItem("current user"))
-            .then((res) => (res.status === 200 ? res.json() : undefined))
-            .then((groupJson) => {
-              if (groupJson) {
-                const roommatesCount = groupJson[0].roommates.length;
-                if (json["contacts_list"].length === roommatesCount) {
-                  setAllContactsSubmitted(true);
-                }
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          setContacts(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchContacts()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["contacts_list"].filter((contact, i) => {
+                console.log(contact);
+                console.log(contact.group_id);
+                console.log(group_id);
+                return contact.group_id === group_id;
+              });
+              setContacts(updated);
+              // Check if all contacts have been submitted
+              fetchGroup(localStorage.getItem("current user"))
+                .then((res) => (res.status === 200 ? res.json() : undefined))
+                .then((groupJson) => {
+                  if (groupJson) {
+                    const roommatesCount = groupJson[0].roommates.length;
+                    if (updated.length === roommatesCount) {
+                      setAllContactsSubmitted(true);
+                    }
+                  }
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            } else {
+              setContacts(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
   // for preferences
   useEffect(() => {
-    fetchPreferences()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setPreferences(json["preferences_list"]);
-        } else {
-          setPreferences(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchPreferences()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["preferences_list"].filter(
+                (preference, i) => {
+                  console.log(preference);
+                  console.log(preference.group_id);
+                  console.log(group_id);
+                  return preference.group_id === group_id;
+                }
+              );
+              setPreferences(updated);
+            } else {
+              setPreferences(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 
@@ -710,14 +784,31 @@ function MyApp() {
   }
 
   function updatePreferences(preference) {
-    postPreference(preference)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setPreferences([...preferences, json]);
+          console.log(json);
+          preference.group_id = json[0]._id.valueOf();
+          console.log(preference.group_id);
+          return preference;
         }
+      })
+      .then((preference) => {
+        console.log(preference);
+        postPreference(preference)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              setPreferences([...preferences, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -813,17 +904,34 @@ function MyApp() {
   }
 
   function updateUnavailabilityList(unavailability) {
-    postUnavailability(unavailability)
-      .then((res) => {
-        if (res.status === 201) return res.json();
-      })
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setUnavailabilities((prevUnavailabilities) => [
-            ...prevUnavailabilities,
-            json,
-          ]);
+          console.log(json);
+          unavailability.group_id = json[0]._id.valueOf();
+          console.log(unavailability.group_id);
+          return unavailability;
         }
+      })
+      .then((unavailability) => {
+        console.log(unavailability);
+        postUnavailability(unavailability)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              setUnavailabilities((prevUnavailabilities) => [
+                ...prevUnavailabilities,
+                json,
+              ]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -839,17 +947,43 @@ function MyApp() {
   }
 
   useEffect(() => {
-    fetchUnavailabilities()
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    console.log(currentUser);
+    fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setUnavailabilities(json["unavailabilities_list"]);
-        } else {
-          setUnavailabilities(null);
+          console.log(json);
+          group_id = json[0]._id.valueOf();
+          console.log(group_id);
+          return group_id;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .then((group_id) => {
+        fetchUnavailabilities()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              console.log(json);
+              const updated = json["unavailabilities_list"].filter(
+                (unavalability, i) => {
+                  console.log(unavalability);
+                  console.log(unavalability.group_id);
+                  console.log(group_id);
+                  return unavalability.group_id === group_id;
+                }
+              );
+              console.log(updated);
+
+              setUnavailabilities(updated);
+            } else {
+              setUnavailabilities(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   }, [token]);
 

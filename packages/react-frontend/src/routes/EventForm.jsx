@@ -43,7 +43,7 @@ function EventForm(props) {
 
   return (
     <form>
-      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", gridTemplateColumns: "1fr 1fr 1fr" }}>
+      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", gridTemplateColumns: "repeat(4, 1fr)" }}>
         <div>
           <label htmlFor="startDate">Start Date</label>
           <input
@@ -88,6 +88,8 @@ function EventForm(props) {
             style={{ width: "100%" }}
           />
         </div>
+      </div>
+      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", marginTop: "-20px", gridTemplateColumns: "repeat(4, 1fr)" }}>
         <div>
           <label htmlFor="name">Roommate</label>
           <input
@@ -122,27 +124,31 @@ function EventForm(props) {
           />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <label htmlFor="Color" style={{ marginRight: "10px" }}>Color:</label>
-          <input
-            type="color"
-            name="color"
-            id="color"
-            value={event.color}
-            onChange={handleColorChange}
-            style={{
-              width: "50px",
-              height: "50px",
-              borderRadius: "10px",
-              boxShadow: "0 0 0 2px #fff",
-              cursor: "pointer",
-            }}
-          />
+          <label htmlFor="Color" style={{ marginLeft: "1px" }}>
+            <span>Color:</span>
+            <input
+              type="color"
+              name="color"
+              id="color"
+              value={event.color}
+              onChange={handleColorChange}
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "10px",
+                boxShadow: "0 0 0 2px #fff",
+                cursor: "pointer",
+                marginLeft: "1px",
+                marginTop: "4px"
+              }}
+            />
+          </label>
           <input
             type="text"
             name="hexColor"
             value={event.color}
             onChange={handleColorChange}
-            style={{ width: "95px", marginLeft: "10px" }}
+            style={{ width: "95px", marginLeft: "5px", marginTop: "35px" }}
           />
         </div>
       </div>
@@ -154,7 +160,7 @@ function EventForm(props) {
           style={{
             backgroundColor: "#00AA9E",
             borderColor: "#0a978d",
-            marginTop: "10px",
+            marginTop: "-10px",
           }}
         />
       </div>
@@ -163,4 +169,3 @@ function EventForm(props) {
 }
 
 export default EventForm;
-

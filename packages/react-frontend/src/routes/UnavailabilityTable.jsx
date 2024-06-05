@@ -24,7 +24,9 @@ function TableHeader() {
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Roommate</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Start Date</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>End Date</th>
-        <th style={{ width: "30%", backgroundColor: "#f8f9fa" }}>Description</th>
+        <th style={{ width: "30%", backgroundColor: "#f8f9fa" }}>
+          Description
+        </th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
     </thead>
@@ -36,9 +38,10 @@ function TableBody(props) {
     return <caption>Data Unavailable</caption>;
   }
 
+  console.log(props.unavailabilityData);
   const rows = props.unavailabilityData.map((row, index) => {
-  const roommateColor = row.color || "#FFFFFF";
-  const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";
+    const roommateColor = row.color || "#FFFFFF";
+    const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";
 
     function getLuminance(color) {
       let rgb = [];
@@ -114,7 +117,14 @@ function TableBody(props) {
 
 function UnavailabilityTable(props) {
   return (
-    <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
+    <div
+      style={{
+        marginTop: "30px",
+        paddingTop: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+      }}
+    >
       <table>
         <TableHeader />
         <TableBody
