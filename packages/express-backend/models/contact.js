@@ -27,6 +27,12 @@ const ContactSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    group_id: {
+      type: String,
+      trim: true,
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Group"
+    },
   },
   { collection: "contacts_list" },
 );
