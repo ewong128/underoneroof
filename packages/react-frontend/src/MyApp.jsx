@@ -21,7 +21,7 @@ import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
 import UnavailabilityTable from "./routes/UnavailabilityTable";
 import UnavailabilityForm from "./routes/UnavailabilityForm";
-import CalendarComponent from './my-calendar/src/CalendarComponent';
+import Calendar from "./routes/Calendar";
 import { jwtDecode } from "jwt-decode";
 ("");
 
@@ -960,11 +960,13 @@ function MyApp() {
                 removeUnavailability={removeOneUnavailability}
               />
               <UnavailabilityForm handleSubmit={updateUnavailabilityList} />
+              {/* <div className="App"> */}
+              <Calendar />
+              {/* </div> */}
             </>
           }
         />
       </Routes>
-      <CalendarComponent />
     </div>
   );
 }
