@@ -1094,9 +1094,9 @@ function MyApp() {
                 removeUnavailability={removeOneUnavailability}
               />
               <UnavailabilityForm handleSubmit={updateUnavailabilityList} />
-              {/* <div className="App"> */}
+             
               <Calendar />
-              {/* </div> */}
+               
             </>
           }
         />
