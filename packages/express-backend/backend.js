@@ -23,6 +23,19 @@ mongoose
   })
   .catch((error) => console.log(error));
 
+// import dotenv from "dotenv";
+
+// mongoose.set("debug", true);
+
+// dotenv.config();
+// console.log("hello", process.env.MONGODB_URI)
+// mongoose
+//   .connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .catch((error) => console.log(error));
+
 const app = express();
 const port = 8000;
 
@@ -334,14 +347,15 @@ app.get("/unavailabilities", authenticateUser, (req, res) => {
   const eventName = req.query.eventName;
   const roommate = req.query.roommate;
   let promise = unavailabilityServices.getUnavailabilities(eventName, roommate);
-  promise.then((result) => {
-    result = { unavailabilities_list: result };
-    res.send(result);
-  })
-  .catch((error) => {
-    console.error(error);
-    res.status(500).send("An error occurred");
-  });
+  promise
+    .then((result) => {
+      result = { unavailabilities_list: result };
+      res.send(result);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("An error occurred");
+    });
 });
 
 app.get("/unavailabilities/:id", authenticateUser, (req, res) => {
@@ -395,12 +409,10 @@ app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
 
-// app.listen(process.env.PORT || port, () => {
-//   console.log("REST API is listening.");
-// });
-
-app.listen(port, () => {
-  console.log(
-    `Example app listening at http://localhost:${port}`
-  );
+app.listen(process.env.PORT || port, () => {
+  console.log("REST API is listening.");
 });
+
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`);
+// });

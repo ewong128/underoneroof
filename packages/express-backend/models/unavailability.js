@@ -28,8 +28,7 @@ const UnavailabilitySchema = new mongoose.Schema(
       required: true,
       trim: true,
       validate(value) {
-        if (value.length < 2)
-          throw new Error("Invalid description");
+        if (value.length < 2) throw new Error("Invalid description");
       },
     },
     group_id: {
@@ -45,7 +44,7 @@ const UnavailabilitySchema = new mongoose.Schema(
       default: "#000000",
     },
   },
-  { collection: "unavailabilities_list" }
+  { collection: "unavailabilities_list" },
 );
 
 const Unavailability = mongoose.model("Unavailability", UnavailabilitySchema);

@@ -54,6 +54,7 @@ const Navbar = ({ handleLogout, copyLink }) => {
               fontWeight: isActive ? "bold" : "normal",
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
+              
             })}
           >
              {({ isActive }) => (
