@@ -580,18 +580,14 @@ function MyApp() {
             return i !== index;
           });
           setContacts(updated);
-
-          // check if all contacts have been submitted
-          fetchGroup(localStorage.getItem("current user"))
+  
+          // Check if all contacts have been submitted
+          fetchGroup(currentUser)
             .then((res) => (res.status === 200 ? res.json() : undefined))
             .then((groupJson) => {
               if (groupJson) {
                 const roommatesCount = groupJson[0].roommates.length;
-                if (updated.length === roommatesCount) {
-                  setAllContactsSubmitted(true);
-                } else {
-                  setAllContactsSubmitted(false);
-                }
+                setAllContactsSubmitted(updated.length === roommatesCount);
               }
             })
             .catch((error) => {
@@ -602,7 +598,7 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-  }
+  }  
 
   function deleteContact(id) {
     const promise = fetch(link + "/contacts/" + id, {
@@ -614,7 +610,6 @@ function MyApp() {
   }
 
   function updateContacts(contact) {
-    const currentUser = localStorage.getItem("current user");
     fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
@@ -634,17 +629,14 @@ function MyApp() {
           .then((json) => {
             if (json) {
               setContacts([...contacts, json]);
-
-              // for no refresh
-              // check if all agreements submitted based on # of roommates
+              
+              // Check if all contacts have been submitted
               fetchGroup(localStorage.getItem("current user"))
                 .then((res) => (res.status === 200 ? res.json() : undefined))
                 .then((groupJson) => {
                   if (groupJson) {
                     const roommatesCount = groupJson[0].roommates.length;
-                    if (contacts.length + 1 === roommatesCount) {
-                      setAllContactsSubmitted(true);
-                    }
+                    setAllContactsSubmitted([...contacts, json].length === roommatesCount);
                   }
                 })
                 .catch((error) => {
@@ -659,7 +651,7 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-  }
+  }  
 
   function fetchContacts() {
     const promise = fetch(link + "/contacts", {
@@ -707,13 +699,13 @@ function MyApp() {
                 return contact.group_id === group_id;
               });
               setContacts(updated);
-              // Check if all agreements have been submitted
+              // Check if all contacts have been submitted
               fetchGroup(localStorage.getItem("current user"))
                 .then((res) => (res.status === 200 ? res.json() : undefined))
                 .then((groupJson) => {
                   if (groupJson) {
                     const roommatesCount = groupJson[0].roommates.length;
-                    if (json["contacts_list"].length === roommatesCount) {
+                    if (updated.length === roommatesCount) {
                       setAllContactsSubmitted(true);
                     }
                   }
@@ -1062,6 +1054,7 @@ function MyApp() {
                 contactData={contacts}
                 removeContact={removeOneContact}
               />
+              {console.log("allContactsSubmitted:", allContactsSubmitted)}
               {!allContactsSubmitted && (
                 <ContactForm handleSubmit={updateContacts} />
               )}
