@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import eventModel from "../models/events.js";
 
 // mongoose.set("debug", true);
@@ -20,7 +19,7 @@ function getEvents(events, name) {
     promise = findEventByName(name);
   } else if (name && events) {
     promise = findEventByEventName(events, name);
-  } 
+  }
   return promise;
 }
 

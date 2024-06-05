@@ -1,8 +1,9 @@
+//unavailbility.js(models)
 import mongoose from "mongoose";
 
-const ChoreSchema = new mongoose.Schema(
+const UnavailabilitySchema = new mongoose.Schema(
   {
-    chore: {
+    eventName: {
       type: String,
       required: true,
       trim: true,
@@ -12,28 +13,23 @@ const ChoreSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    status: {
+    startDate: {
       type: String,
       required: true,
       trim: true,
-      default: "Pending...",
     },
-    day: {
+    endDate: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
       type: String,
       required: true,
       trim: true,
       validate(value) {
-        if (value.length < 2)
-          throw new Error(
-            "Invalid day of the week, must be at least 2 characters.",
-          );
+        if (value.length < 2) throw new Error("Invalid description");
       },
-    },
-    group_id: {
-      type: String,
-      trim: true,
-      //type: mongoose.Schema.Types.ObjectId,
-      //ref: "Group"
     },
     color: {
       type: String,
@@ -42,9 +38,9 @@ const ChoreSchema = new mongoose.Schema(
       default: "#000000",
     },
   },
-  { collection: "chores_list" },
+  { collection: "unavailabilities_list" },
 );
 
-const Chore = mongoose.model("Chore", ChoreSchema);
+const Unavailability = mongoose.model("Unavailability", UnavailabilitySchema);
 
-export default Chore;
+export default Unavailability;

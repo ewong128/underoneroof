@@ -1,14 +1,4 @@
-import mongoose from "mongoose";
 import userModel from "../models/users.js";
-
-// mongoose.set("debug", true);
-
-// mongoose
-//   .connect("mongodb://localhost:27017/users", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .catch((error) => console.log(error));
 
 function getUsers(username, group) {
   let promise;
@@ -18,7 +8,7 @@ function getUsers(username, group) {
     promise = findUserByName(username);
   } else if (group && !username) {
     promise = findUserByGroup(group);
-  } else if (group && username){
+  } else if (group && username) {
     promise = findUserByNameGroup(username, group);
   }
   return promise;
@@ -42,11 +32,11 @@ function findUserByGroup(group) {
   return userModel.find({ group: group });
 }
 
-function findUserByNameGroup(username, group){
-  return userModel.find({username: username, group: group});
+function findUserByNameGroup(username, group) {
+  return userModel.find({ username: username, group: group });
 }
 
-function deleteUserById(id){
+function deleteUserById(id) {
   return userModel.findByIdAndDelete(id);
 }
 
@@ -56,5 +46,5 @@ export default {
   findUserById,
   findUserByName,
   findUserByGroup,
-  deleteUserById
+  deleteUserById,
 };
