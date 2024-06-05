@@ -1,63 +1,79 @@
-.calendar {
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 800px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    margin-top: 50px;
-}
+/* src/Calendar.css */
 
-.header {
+.calendar .rbc-calendar {
+    border: 2px solid #008080; /* Teal blue outline */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9; /* Light grey background */
+    padding: 10px;
+  }
+  
+  .calendar .rbc-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-}
-
-.title {
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-.navButton,
-.viewButton {
-    background-color: teal;
-    color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .calendar .rbc-toolbar .rbc-btn-group {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .calendar .rbc-toolbar button {
+    background-color: #008080; /* Teal blue buttons */
+    color: white;
     border: none;
-    padding: 10px 15px;
+    border-radius: 5px;
+    padding: 5px 10px;
     cursor: pointer;
-    border-radius: 6px;
     transition: background-color 0.3s ease;
-}
-
-.navButton:hover,
-.viewButton:hover {
-    background-color: #007a74; /* Darker shade of teal on hover */
-}
-
-.days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-}
-
-.day {
-    border: 1px solid #ccc;
-    padding: 10px;
+  }
+  
+  .calendar .rbc-toolbar button:hover {
+    background-color: #005959; /* Darker teal on hover */
+  }
+  
+  .calendar .rbc-toolbar button:disabled {
+    background-color: #ccc; /* Grey color for disabled buttons */
+    color: #666;
+  }
+  
+  .calendar .rbc-toolbar button:disabled:hover {
+    background-color: #ccc; /* Same grey color on hover for disabled buttons */
+  }
+  
+  .calendar .rbc-toolbar button:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px rgba(0, 128, 128, 0.5); /* Focus outline for buttons */
+  }
+  
+  .calendar .rbc-event {
+    background-color: #008080;
+    border-radius: 5px;
+    color: white;
+    padding: 2px 5px;
+    border: none;
+  }
+  
+  .calendar .rbc-month-view {
+    background-color: #f9f9f9;
+  }
+  
+  .calendar .rbc-month-view .rbc-header {
+    background-color: #e6f7f7;
+    color: #008080;
+    font-weight: bold;
     text-align: center;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-}
-
-.day.disabled {
-    color: #ccc;
-}
-
-.day:hover {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .calendar .rbc-today {
+    background-color: #e6f7f7;
+  }
+  
+  .calendar .rbc-off-range-bg {
     background-color: #f0f0f0;
-}
+  }
+  
