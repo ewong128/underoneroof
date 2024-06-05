@@ -1039,6 +1039,23 @@ function MyApp() {
           element={<Invitation handleSubmit={updateGroup} />}
         />
         <Route
+          path="/calendar"
+          element={
+            <>
+              <Navbar handleLogout={handleLogout} copyLink={copyLink} />
+              <div className="welcome-message" style={{ float: "right" }}>
+                {currentUser && (
+                  <div>
+                    Welcome back,{" "}
+                    <span style={{ fontWeight: "bold" }}>{currentUser}</span>!
+                  </div>
+                )}
+              </div>
+              <Calendar/>
+            </>
+          }
+        />
+        <Route
           path="/agreement"
           element={
             <>
@@ -1094,9 +1111,6 @@ function MyApp() {
                 removeUnavailability={removeOneUnavailability}
               />
               <UnavailabilityForm handleSubmit={updateUnavailabilityList} />
-              {/* <div className="App"> */}
-              <Calendar />
-              {/* </div> */}
             </>
           }
         />
