@@ -21,6 +21,7 @@ import PreferencesForm from "./routes/PreferencesForm";
 import PreferencesTable from "./routes/PreferencesTable";
 import UnavailabilityTable from "./routes/UnavailabilityTable";
 import UnavailabilityForm from "./routes/UnavailabilityForm";
+import CalendarComponent from './my-calendar/src/CalendarComponent';
 import { jwtDecode } from "jwt-decode";
 ("");
 
@@ -963,6 +964,7 @@ function MyApp() {
           }
         />
       </Routes>
+      <CalendarComponent />
     </div>
   );
 }

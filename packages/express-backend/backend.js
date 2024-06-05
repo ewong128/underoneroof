@@ -12,30 +12,17 @@ import eventServices from "./services/event-services.js";
 import unavailabilityServices from "./services/unavailability-services.js";
 import dotenv from "dotenv";
 
-mongoose.set("debug", true);
+// mongoose.set("debug", true);
 
-dotenv.config();
-console.log("hello", process.env.MONGODB_URI);
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch((error) => console.log(error));
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-mongoose.set("debug", true);
-
-dotenv.config();
-console.log("hello", process.env.MONGODB_URI)
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch((error) => console.log(error));
-
+// dotenv.config();
+// console.log("hello", process.env.MONGODB_URI);
+// mongoose
+//   .connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .catch((error) => console.log(error));
+// import mongoose from "mongoose";
 // import dotenv from "dotenv";
 
 // mongoose.set("debug", true);
