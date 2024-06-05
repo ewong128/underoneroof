@@ -36,6 +36,19 @@ mongoose
   })
   .catch((error) => console.log(error));
 
+// import dotenv from "dotenv";
+
+// mongoose.set("debug", true);
+
+// dotenv.config();
+// console.log("hello", process.env.MONGODB_URI)
+// mongoose
+//   .connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .catch((error) => console.log(error));
+
 const app = express();
 const port = 8000;
 

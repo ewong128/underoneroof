@@ -2,8 +2,10 @@ import React, { useState } from "react";
 
 function EventForm(props) {
   const [event, setEvent] = useState({
-    date: "",
-    time: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
     name: "",
     event: "",
     description: "",
@@ -28,8 +30,10 @@ function EventForm(props) {
   function submitForm() {
     props.handleSubmit(event);
     setEvent({
-      date: "",
-      time: "",
+      startDate: "",
+      endDate: "",
+      startTime: "",
+      endTime: "",
       name: "",
       event: "",
       description: "",
@@ -39,29 +43,52 @@ function EventForm(props) {
 
   return (
     <form>
-      <div style={{ display: "flex", marginBottom: "10px" }}>
-        <div style={{ marginRight: "18px" }}>
-          <label htmlFor="date">Date</label>
+      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", gridTemplateColumns: "1fr 1fr 1fr" }}>
+        <div>
+          <label htmlFor="startDate">Start Date</label>
           <input
             type="date"
-            name="date"
-            id="date"
-            value={event.date}
+            name="startDate"
+            id="startDate"
+            value={event.startDate}
             onChange={handleChange}
-            style={{ width: "300%", boxSizing: "border-box" }}
+            style={{ width: "100%" }}
           />
         </div>
-        <div style={{ marginRight: "18px", marginTop: "-3.5px" }}>
-          <label htmlFor="time">Time</label>
+        <div>
+          <label htmlFor="endDate">End Date</label>
+          <input
+            type="date"
+            name="endDate"
+            id="endDate"
+            value={event.endDate}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="startTime">Start Time</label>
           <input
             type="time"
-            name="time"
-            id="time"
-            value={event.time}
+            name="startTime"
+            id="startTime"
+            value={event.startTime}
             onChange={handleChange}
+            style={{ width: "100%" }}
           />
         </div>
-        <div style={{ marginRight: "18px" }}>
+        <div>
+          <label htmlFor="endTime">End Time</label>
+          <input
+            type="time"
+            name="endTime"
+            id="endTime"
+            value={event.endTime}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
           <label htmlFor="name">Roommate</label>
           <input
             type="text"
@@ -69,6 +96,7 @@ function EventForm(props) {
             id="name"
             value={event.name}
             onChange={handleChange}
+            style={{ width: "100%" }}
           />
         </div>
         <div>
@@ -79,9 +107,10 @@ function EventForm(props) {
             id="event"
             value={event.event}
             onChange={handleChange}
+            style={{ width: "100%" }}
           />
         </div>
-        <div style={{ marginLeft: "18px" }}>
+        <div>
           <label htmlFor="description">Description</label>
           <input
             type="text"
@@ -89,34 +118,31 @@ function EventForm(props) {
             id="description"
             value={event.description}
             onChange={handleChange}
+            style={{ width: "100%" }}
           />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <label htmlFor="Color" style={{ marginLeft: "18px" }}>
-            <span>Color:</span>
-            <input
-              type="color"
-              name="color"
-              id="color"
-              value={event.color}
-              onChange={handleColorChange}
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "10px",
-                boxShadow: "0 0 0 2px #fff",
-                cursor: "pointer",
-                marginLeft: "1px",
-                marginTop: "3px"
-              }}
-            />
-          </label>
+          <label htmlFor="Color" style={{ marginRight: "10px" }}>Color:</label>
+          <input
+            type="color"
+            name="color"
+            id="color"
+            value={event.color}
+            onChange={handleColorChange}
+            style={{
+              width: "50px",
+              height: "50px",
+              borderRadius: "10px",
+              boxShadow: "0 0 0 2px #fff",
+              cursor: "pointer",
+            }}
+          />
           <input
             type="text"
             name="hexColor"
             value={event.color}
             onChange={handleColorChange}
-            style={{ width: "95px", marginLeft: "5px", marginTop: "35px" }}
+            style={{ width: "95px", marginLeft: "10px" }}
           />
         </div>
       </div>
@@ -125,7 +151,11 @@ function EventForm(props) {
           type="button"
           value="Add Event"
           onClick={submitForm}
-          style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "-10px", marginBottom: "25px" }}
+          style={{
+            backgroundColor: "#00AA9E",
+            borderColor: "#0a978d",
+            marginTop: "10px",
+          }}
         />
       </div>
     </form>
@@ -133,3 +163,4 @@ function EventForm(props) {
 }
 
 export default EventForm;
+
