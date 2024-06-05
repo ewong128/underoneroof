@@ -1,7 +1,7 @@
 // src/MyApp.jsx
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Route,
   Routes,
   useNavigate,
