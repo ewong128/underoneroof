@@ -204,13 +204,13 @@ function MyApp() {
         if (json) {
           group_id = json[0]._id.toString();
           console.log(group_id);
+          // navigator.clipboard.writeText(
+          //   "Http://localhost:5173/login?next=acceptInvitation?group=" +
+          //     group_id
+          // );
           navigator.clipboard.writeText(
-            "Http://localhost:5173/login?next=acceptInvitation?group=" +
-              group_id
+          link + "/login?next=acceptInvitation?group=" + group_id
           );
-          //navigator.clipboard.writeText(
-          //link + "/login?next=acceptInvitation?group=" + group_id
-          //);
         } else {
           //setChores(null);
         }
