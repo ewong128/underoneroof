@@ -6,7 +6,18 @@ https://www.figma.com/design/dkUe8wp54yWO3c4DVuejyd/CSC-307?node-id=4-9&t=bTSEoA
 Last updated: May 10,2024
 
 Development environment set up:
+To get started, git clone the https link: https://github.com/ewong128/underoneroof.git
+Then you will need to install the following packages to run the application:
+in the packages/react-frontend --> npm start:
+  need to "npm install _______";
+      bootstrap, react-bootstrap bootstrap@5.1.3, react-big-calendar, date-fns
+in the packages/express-backend --> npm run dev;
+  need to "npm install _______";
+      express, moongoose, bcrypt, jsonwebtoken, react-router-dom localforage match-sorter sort-by, dotenv, prettier -D --save-exact
 
+!?!From Here, the collaborator should be able to edit and run the files to view the application. For more information look below.
+      
+*Documentation on Prettier and Lint
 
 Diagrams:
 [UMLDIAGRAMS](docs/UML_Class_Diagram.md)
