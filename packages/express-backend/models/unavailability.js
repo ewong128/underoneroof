@@ -32,6 +32,12 @@ const UnavailabilitySchema = new mongoose.Schema(
           throw new Error("Invalid description");
       },
     },
+    group_id: {
+      type: String,
+      trim: true,
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Group"
+    },
     color: {
       type: String,
       required: true,

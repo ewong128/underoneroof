@@ -79,6 +79,12 @@ const PreferencesSchema = new mongoose.Schema(
         },
       },
     },
+    group_id: {
+      type: String,
+      trim: true,
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Group"
+    },
   },
   { collection: "preferences_list" },
 );
