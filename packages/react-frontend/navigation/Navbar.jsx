@@ -48,6 +48,26 @@ const Navbar = ({ handleLogout, copyLink }) => {
           )}
           </NavLink>
           <NavLink
+            to="/calendar"
+            style={({ isActive }) => ({
+              marginRight: "10px",
+              fontWeight: isActive ? "bold" : "normal",
+              textDecoration: "none",
+              color: isActive ? "black" : "inherit",
+              
+            })}
+          >
+             {({ isActive }) => (
+            <span
+              style={{
+                textDecoration: isActive ? "underline" : "none",
+              }}
+            >
+              Calendar
+            </span>
+          )}
+          </NavLink>
+          <NavLink
             to="/agreement"
             style={({ isActive }) => ({
               marginRight: "10px",

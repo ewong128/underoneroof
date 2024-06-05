@@ -48,7 +48,7 @@ function Invitation(props) {
           type="button"
           value={"Accept Invitation"}
           onClick={submitForm}
-          style={{ width: "100%", marginTop: "10px" }}
+          style={{ width: "100%", marginTop: "10px", backgroundColor: "#00AA9E", borderColor: "#0a978d", }}
         />
       </form>
       {errorMessage && <p>{errorMessage}</p>}
