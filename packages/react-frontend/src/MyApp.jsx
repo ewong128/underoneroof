@@ -1054,7 +1054,6 @@ function MyApp() {
                 contactData={contacts}
                 removeContact={removeOneContact}
               />
-              {console.log("allContactsSubmitted:", allContactsSubmitted)}
               {!allContactsSubmitted && (
                 <ContactForm handleSubmit={updateContacts} />
               )}
