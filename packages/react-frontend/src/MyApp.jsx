@@ -209,7 +209,7 @@ function MyApp() {
           //     group_id
           // );
           navigator.clipboard.writeText(
-          "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" + group_id
+          "https://witty-grass-005ac821e.5.azurestaticapps.net/signup?next=acceptInvitation?group=" + group_id
           );
         } else {
           //setChores(null);
