@@ -9,7 +9,7 @@ Development environment set up:
 
 
 Diagrams:
-
+[UMLDIAGRAMS](docs/UML_Class_Diagram.md)
 
 
 # UnderOneRoof

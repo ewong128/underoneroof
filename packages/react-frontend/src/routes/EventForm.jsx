@@ -2,8 +2,10 @@ import React, { useState } from "react";
 
 function EventForm(props) {
   const [event, setEvent] = useState({
-    date: "",
-    time: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
     name: "",
     event: "",
     description: "",
@@ -28,8 +30,10 @@ function EventForm(props) {
   function submitForm() {
     props.handleSubmit(event);
     setEvent({
-      date: "",
-      time: "",
+      startDate: "",
+      endDate: "",
+      startTime: "",
+      endTime: "",
       name: "",
       event: "",
       description: "",
@@ -39,80 +43,124 @@ function EventForm(props) {
 
   return (
     <form>
-      <label htmlFor="date">Date</label>
-      <input
-        type="date"
-        name="date"
-        id="date"
-        value={event.date}
-        onChange={handleChange}
-      />
-      <label htmlFor="time">Time</label>
-      <input
-        type="time"
-        name="time"
-        id="time"
-        value={event.time}
-        onChange={handleChange}
-      />
-      <label htmlFor="name">Roommate</label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        value={event.name}
-        onChange={handleChange}
-      />
-      <label htmlFor="event">Event</label>
-      <input
-        type="text"
-        name="event"
-        id="event"
-        value={event.event}
-        onChange={handleChange}
-      />
-      <label htmlFor="description">Description</label>
-      <input
-        type="text"
-        name="description"
-        id="description"
-        value={event.description}
-        onChange={handleChange}
-      />
-
-      <label htmlFor="Color" style={{ display: "flex", alignItems: "center" }}>
-        <span>Color:</span>
+      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", gridTemplateColumns: "1fr 1fr 1fr" }}>
+        <div>
+          <label htmlFor="startDate">Start Date</label>
+          <input
+            type="date"
+            name="startDate"
+            id="startDate"
+            value={event.startDate}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="endDate">End Date</label>
+          <input
+            type="date"
+            name="endDate"
+            id="endDate"
+            value={event.endDate}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="startTime">Start Time</label>
+          <input
+            type="time"
+            name="startTime"
+            id="startTime"
+            value={event.startTime}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="endTime">End Time</label>
+          <input
+            type="time"
+            name="endTime"
+            id="endTime"
+            value={event.endTime}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="name">Roommate</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value={event.name}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="event">Event</label>
+          <input
+            type="text"
+            name="event"
+            id="event"
+            value={event.event}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div>
+          <label htmlFor="description">Description</label>
+          <input
+            type="text"
+            name="description"
+            id="description"
+            value={event.description}
+            onChange={handleChange}
+            style={{ width: "100%" }}
+          />
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <label htmlFor="Color" style={{ marginRight: "10px" }}>Color:</label>
+          <input
+            type="color"
+            name="color"
+            id="color"
+            value={event.color}
+            onChange={handleColorChange}
+            style={{
+              width: "50px",
+              height: "50px",
+              borderRadius: "10px",
+              boxShadow: "0 0 0 2px #fff",
+              cursor: "pointer",
+            }}
+          />
+          <input
+            type="text"
+            name="hexColor"
+            value={event.color}
+            onChange={handleColorChange}
+            style={{ width: "95px", marginLeft: "10px" }}
+          />
+        </div>
+      </div>
+      <div>
         <input
-          type="color"
-          name="color"
-          id="color"
-          value={event.color}
-          onChange={handleColorChange}
+          type="button"
+          value="Add Event"
+          onClick={submitForm}
           style={{
-            width: "50px",
-            height: "50px",
-            borderRadius: "10px",
-            boxShadow: "0 0 0 2px #fff",
-            cursor: "pointer",
-            marginLeft: "10px",
+            backgroundColor: "#00AA9E",
+            borderColor: "#0a978d",
+            marginTop: "10px",
           }}
         />
-        <input
-          type="text"
-          name="hexColor"
-          value={event.color}
-          onChange={handleColorChange}
-          style={{ width: "95px", marginLeft: "10px" }}
-        />
-      </label>
-      <input
-        type="button"
-        value="Add Event"
-        onClick={submitForm}
-        style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d" }}
-      />
+      </div>
     </form>
   );
 }
 
 export default EventForm;
+

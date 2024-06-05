@@ -9,6 +9,7 @@ import contactServices from "./services/contact-services.js";
 import preferenceServices from "./services/preference-services.js";
 import { authenticateUser, registerUser, loginUser } from "./auth.js";
 import eventServices from "./services/event-services.js";
+import unavailabilityServices from "./services/unavailability-services.js";
 import dotenv from "dotenv";
 
 mongoose.set("debug", true);
@@ -21,6 +22,19 @@ mongoose
     useUnifiedTopology: true,
   })
   .catch((error) => console.log(error));
+
+// import dotenv from "dotenv";
+
+// mongoose.set("debug", true);
+
+// dotenv.config();
+// console.log("hello", process.env.MONGODB_URI)
+// mongoose
+//   .connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .catch((error) => console.log(error));
 
 const app = express();
 const port = 8000;
@@ -328,6 +342,69 @@ app.delete("/events/:id", authenticateUser, (req, res) => {
   });
 });
 
+// for unavailabilities
+app.get("/unavailabilities", authenticateUser, (req, res) => {
+  const eventName = req.query.eventName;
+  const roommate = req.query.roommate;
+  let promise = unavailabilityServices.getUnavailabilities(eventName, roommate);
+  promise
+    .then((result) => {
+      result = { unavailabilities_list: result };
+      res.send(result);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("An error occurred");
+    });
+});
+
+app.get("/unavailabilities/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = unavailabilityServices.findUnavailabilityById(id);
+  promise
+    .then((result) => {
+      if (result === undefined) {
+        res.status(404).send("Resource not found.");
+      } else {
+        res.send(result);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("An error occurred");
+    });
+});
+
+app.delete("/unavailabilities/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = unavailabilityServices.deleteUnavailabilityById(id);
+  promise
+    .then((result) => {
+      if (!result) {
+        res.status(404).send("Resource not found.");
+      } else {
+        res.status(204).send();
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("An error occurred");
+    });
+});
+
+app.post("/unavailabilities", authenticateUser, (req, res) => {
+  const unavailabilityToAdd = req.body;
+  const promise = unavailabilityServices.addUnavailability(unavailabilityToAdd);
+  promise
+    .then((newUnavailability) => {
+      res.status(201).send(newUnavailability);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send("An error occurred");
+    });
+});
+
 app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
@@ -336,6 +413,6 @@ app.listen(process.env.PORT || port, () => {
   console.log("REST API is listening.");
 });
 
-//app.listen(port, () => {
-//console.log(`Example app listening at http://localhost:${port}`);
-//});
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`);
+// });
