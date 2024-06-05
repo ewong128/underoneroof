@@ -43,11 +43,18 @@ function findEventByName(name) {
 }
 
 function findEventByDateRange(startDate, endDate) {
-  return eventModel.find({ startDate: { $gte: startDate }, endDate: { $lte: endDate } });
+  return eventModel.find({
+    startDate: { $gte: startDate },
+    endDate: { $lte: endDate },
+  });
 }
 
 function findEventByDateRangeAndName(startDate, endDate, name) {
-  return eventModel.find({ startDate: { $gte: startDate }, endDate: { $lte: endDate }, name: name });
+  return eventModel.find({
+    startDate: { $gte: startDate },
+    endDate: { $lte: endDate },
+    name: name,
+  });
 }
 
 function deleteEventById(id) {
