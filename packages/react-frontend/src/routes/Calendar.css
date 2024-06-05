@@ -1,0 +1,60 @@
+.calendar {
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.navButton,
+.viewButton {
+    background-color: teal;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.navButton:hover,
+.viewButton:hover {
+    background-color: #007a74; /* Darker shade of teal on hover */
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.day.disabled {
+    color: #ccc;
+}
+
+.day:hover {
+    background-color: #f0f0f0;
+}
