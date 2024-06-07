@@ -8,27 +8,12 @@ function Invitation(props) {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  // function handleChange(event) {
-  //   const { name, value } = event.target;
-  //   setGroup({ ...group, name: value });
-  // }
-
   function submitForm() {
     const group_id = searchParams.get("group");
-    props.handleSubmit(group_id);
-    // .then((response) => {
-    //   if (response.status === 401) {
-    //     setErrorMessage("Invalid group name1.");
-    //   } else {
-    //     // Reset error message if login succeeds
-    //     setErrorMessage("");
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    //   setErrorMessage(error.message);
-    // });
-    //setGroup({ name: "" });
+    props.handleSubmit(group_id).catch((error) => {
+      console.log(error);
+      setErrorMessage(error.message);
+    });
   }
 
   return (

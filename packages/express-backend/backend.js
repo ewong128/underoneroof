@@ -40,16 +40,6 @@ app.get("/users", authenticateUser, (req, res) => {
   });
 });
 
-// app.get("/events", authenticateUser, (req, res) => {
-//   const event = req.query.event;
-//   const name = req.query.name;
-//   let promise = eventServices.getEvents(event, name);
-//   promise.then((result) => {
-//     result = { events_list: result };
-//     res.send(result);
-//   });
-// });
-
 app.get("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
   let promise = userServices.findUserById(id);
@@ -197,14 +187,6 @@ app.get("/groups/:id", authenticateUser, (req, res) => {
   });
 });
 
-// app.get("/groups/:id", authenticateUser, (req, res) => {
-//   const id = req.params["id"];
-//   let promise = groupServices.findGroupById(id);
-//   promise.then((result) => {
-//     res.send(result);
-//   });
-// });
-
 app.post("/groups", authenticateUser, (req, res) => {
   const groupToAdd = req.body;
   const promise = groupServices.addGroup(groupToAdd);
@@ -312,61 +294,6 @@ app.post("/preferences", authenticateUser, (req, res) => {
   });
 });
 
-// app.post("/events", authenticateUser, (req, res) => {
-//   const eventToAdd = req.body;
-//   const promise = eventServices.addEvent(eventToAdd);
-//   promise.then((newEvent) => {
-//     res.status(201).send(newEvent);
-//   });
-// });
-
-// app.put("/groups/:id", authenticateUser, (req, res) => {
-//   const id = req.params["id"];
-//   let promise = groupServices.updateGroupById(id, req.body);
-//   promise.then((result) => {
-//     if (!result) {
-//       res.status(404).send("Resource not found.");
-//     } else {
-//       res.status(200).send(result);
-//     }
-//   });
-// });
-
-// app.get("/events/:id", authenticateUser, (req, res) => {
-//   const id = req.params["id"]; //or req.params.id
-//   let promise = eventServices.findEventById(id);
-//   promise.then((result) => {
-//     if (result === undefined) {
-//       res.status(404).send("Resource not found.");
-//     } else {
-//       res.send(result);
-//     }
-//   });
-// });
-
-// app.delete("/events/:id", authenticateUser, (req, res) => {
-//   const id = req.params["id"];
-//   let promise = eventServices.deleteEventById(id);
-//   promise.then((result) => {
-//     if (!result) {
-//       res.status(404).send("Resource not found.");
-//     } else {
-//       res.status(204).send();
-//     }
-//   });
-// });
-// app.delete("/events/:id", authenticateUser, (req, res) => {
-//   const id = req.params["id"];
-//   let promise = eventServices.deleteEventById(id);
-//   promise.then((result) => {
-//     if (!result) {
-//       res.status(404).send("Resource not found.");
-//     } else {
-//       res.status(204).send();
-//     }
-//   });
-// });
-
 // for unavailabilities
 app.get("/unavailabilities", authenticateUser, (req, res) => {
   const eventName = req.query.eventName;
@@ -434,10 +361,10 @@ app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
 
-app.listen(process.env.PORT || port, () => {
-  console.log("REST API is listening.");
-});
-
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
+// app.listen(process.env.PORT || port, () => {
+//   console.log("REST API is listening.");
 // });
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
