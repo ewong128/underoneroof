@@ -53,15 +53,31 @@ app.get("/users", authenticateUser, (req, res) => {
   });
 });
 
+// app.get("/events", authenticateUser, (req, res) => {
+//   const event = req.query.event;
+//   const name = req.query.name;
+//   let promise = eventServices.getEvents(event, name);
+//   promise.then((result) => {
+//     result = { events_list: result };
+//     res.send(result);
+//   });
+// });
+
 app.get("/events", authenticateUser, (req, res) => {
-  const event = req.query.event;
-  const name = req.query.name;
-  let promise = eventServices.getEvents(event, name);
-  promise.then((result) => {
-    result = { events_list: result };
-    res.send(result);
+  eventServices.getEvents().then((events) => {
+    const formattedEvents = events.map(event => ({
+      title: event.name,
+      start: new Date(event.startDate),
+      end: new Date(event.endDate),
+      allDay: false // Assuming all events are not all-day events
+    }));
+    res.json(formattedEvents);
+  }).catch(error => {
+    console.error("Error fetching events:", error);
+    res.status(500).send("Internal server error");
   });
 });
+
 
 app.get("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
@@ -409,10 +425,10 @@ app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
 
-app.listen(process.env.PORT || port, () => {
-  console.log("REST API is listening.");
-});
-
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
+// app.listen(process.env.PORT || port, () => {
+//   console.log("REST API is listening.");
 // });
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
