@@ -14,7 +14,9 @@ function ContactForm(props) {
   }
 
   function submitForm() {
-    props.handleSubmit(formData);
+    const username = localStorage.getItem("current user");
+    const formDataWithUsername = { ...formData, username };
+    props.handleSubmit(formDataWithUsername);
     setFormData({
       emergencyContactRelation: "",
       emergencyContactName: "",
@@ -24,10 +26,24 @@ function ContactForm(props) {
   }
 
   return (
-    <div className="contacts-form-container" style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "600px", margin: "0 auto", border: "1px solid #ccc", borderRadius: "10px" }}>
-      <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#0a978d" }}>Emergency Contacts</h2>
+    <div
+      className="contacts-form-container"
+      style={{
+        padding: "20px",
+        fontFamily: "Arial, sans-serif",
+        maxWidth: "600px",
+        margin: "0 auto",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+      }}
+    >
+      <h2 style={{ margin: 0, fontSize: "1.5rem", color: "#0a978d" }}>
+        Emergency Contacts
+      </h2>
       <div style={{ marginBottom: "15px" }}>
-        <label style={{ display: "block", marginBottom: "5px" }}>Emergency Contact Relation:</label>
+        <label style={{ display: "block", marginBottom: "5px" }}>
+          Emergency Contact Relation:
+        </label>
         <input
           type="text"
           name="emergencyContactRelation"
@@ -37,7 +53,9 @@ function ContactForm(props) {
         />
       </div>
       <div style={{ marginBottom: "15px" }}>
-        <label style={{ display: "block", marginBottom: "5px" }}>Emergency Contact Name:</label>
+        <label style={{ display: "block", marginBottom: "5px" }}>
+          Emergency Contact Name:
+        </label>
         <input
           type="text"
           name="emergencyContactName"
@@ -47,7 +65,9 @@ function ContactForm(props) {
         />
       </div>
       <div style={{ marginBottom: "15px" }}>
-        <label style={{ display: "block", marginBottom: "5px" }}>Emergency Contact Email:</label>
+        <label style={{ display: "block", marginBottom: "5px" }}>
+          Emergency Contact Email:
+        </label>
         <input
           type="email"
           name="emergencyContactEmail"
@@ -57,7 +77,9 @@ function ContactForm(props) {
         />
       </div>
       <div style={{ marginBottom: "15px" }}>
-        <label style={{ display: "block", marginBottom: "5px" }}>Emergency Contact Phone:</label>
+        <label style={{ display: "block", marginBottom: "5px" }}>
+          Emergency Contact Phone:
+        </label>
         <input
           type="text"
           name="emergencyContactPhone"
@@ -68,7 +90,15 @@ function ContactForm(props) {
       </div>
       <button
         onClick={submitForm}
-        style={{ padding: "10px 20px", backgroundColor: "#00AA9E", borderColor: "#0a978d", color: "#fff", fontSize: "16px", cursor: "pointer", borderRadius: "5px" }}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#00AA9E",
+          borderColor: "#0a978d",
+          color: "#fff",
+          fontSize: "16px",
+          cursor: "pointer",
+          borderRadius: "5px",
+        }}
       >
         Submit
       </button>

@@ -1,34 +1,24 @@
+//unavailbility.js(models)
 import mongoose from "mongoose";
 
-const EventSchema = new mongoose.Schema(
+const UnavailabilitySchema = new mongoose.Schema(
   {
+    eventName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    roommate: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     startDate: {
       type: String,
       required: true,
       trim: true,
     },
     endDate: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    startTime: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    endTime: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    event: {
       type: String,
       required: true,
       trim: true,
@@ -54,9 +44,9 @@ const EventSchema = new mongoose.Schema(
       default: "#000000",
     },
   },
-  { collection: "events_list" },
+  { collection: "unavailabilities_list" },
 );
 
-const Event = mongoose.model("Event", EventSchema);
+const Unavailability = mongoose.model("Unavailability", UnavailabilitySchema);
 
-export default Event;
+export default Unavailability;

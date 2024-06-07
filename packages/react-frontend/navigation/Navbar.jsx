@@ -35,7 +35,8 @@ const Navbar = ({ handleLogout, copyLink }) => {
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
             })}
-          > {({ isActive }) => (
+          > 
+            {({ isActive }) => (
             <span
               style={{
                 textDecoration: isActive ? "underline" : "none",
@@ -53,12 +54,14 @@ const Navbar = ({ handleLogout, copyLink }) => {
               fontWeight: isActive ? "bold" : "normal",
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
+              
             })}
-          > {({ isActive }) => (
+          >
+             {({ isActive }) => (
             <span
               style={{
                 textDecoration: isActive ? "underline" : "none",
-                cursor: "pointer",
+                // cursor: "pointer",
               }}
             >
               Roommate Agreement Form
@@ -79,7 +82,7 @@ const Navbar = ({ handleLogout, copyLink }) => {
             marginRight: "10px",
             backgroundColor: "#00AA9E",
             borderColor: "#0a978d",
-            color: "#ffffff", // Text color
+            color: "#ffffff", 
           }} 
           onClick={handleCopyLink}>
           Invite Roommates

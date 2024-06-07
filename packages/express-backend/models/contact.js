@@ -1,7 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const ContactSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     emergencyContactRelation: {
       type: String,
       required: true,
@@ -22,8 +27,14 @@ const ContactSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-  }, 
-  { collection: 'contacts_list' }
+    group_id: {
+      type: String,
+      trim: true,
+      //type: mongoose.Schema.Types.ObjectId,
+      //ref: "Group"
+    },
+  },
+  { collection: "contacts_list" },
 );
 
 const Contact = mongoose.model("Contact", ContactSchema);
