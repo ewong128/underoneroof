@@ -12,30 +12,6 @@ import eventServices from "./services/event-services.js";
 import unavailabilityServices from "./services/unavailability-services.js";
 import dotenv from "dotenv";
 
-// mongoose.set("debug", true);
-
-// dotenv.config();
-// console.log("hello", process.env.MONGODB_URI);
-// mongoose
-//   .connect(process.env.MONGODB_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .catch((error) => console.log(error));
-// import mongoose from "mongoose";
-// import dotenv from "dotenv";
-
-// mongoose.set("debug", true);
-
-// dotenv.config();
-// console.log("hello", process.env.MONGODB_URI)
-// mongoose
-//   .connect(process.env.MONGODB_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .catch((error) => console.log(error));
-
 const app = express();
 const port = 8000;
 
@@ -76,6 +52,25 @@ app.get("/events", authenticateUser, (req, res) => {
     console.error("Error fetching events:", error);
     res.status(500).send("Internal server error");
   });
+});
+
+//Newly added stuff
+// Middleware to parse JSON bodies of requests
+app.use(express.json());
+
+// Endpoint to handle GET requests for fetching events
+app.get('/api/events', async (req, res) => {
+  try {
+    // Fetch events from the database
+    const events = await eventModel.find();
+
+    // Send the events as the response
+    res.json(events);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    // Send an error response
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 

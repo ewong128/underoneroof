@@ -1,6 +1,5 @@
 import eventModel from "../models/events.js";
 
-
 function getEvents(startDate, endDate, name) {
   let promise;
   if (startDate === undefined && endDate === undefined && name === undefined) {
@@ -60,6 +59,8 @@ function findEventByDateRangeAndName(startDate, endDate, name) {
 function deleteEventById(id) {
   return eventModel.findByIdAndDelete(id);
 }
+
+
 
 export default {
   addEvent,

@@ -141,3 +141,47 @@
     box-shadow: 0 0 5px 2px rgba(0, 128, 128, 0.5); /* Custom focus outline */
 }
 
+
+
+/* Day button styles for month view */
+.calendar .rbc-month-view .rbc-day-bg {
+  background-color: white; /* Background for each day cell */
+  border: 1px solid #ddd; /* Optional border */
+}
+
+.calendar .rbc-month-view .rbc-date-cell {
+  color: black; /* Text color for the dates */
+  padding: 5px; /* Padding for date cells */
+}
+
+/* Styling for buttons within day cells */
+.calendar .rbc-month-view .rbc-date-cell button {
+  background-color: inherit; /* Inherit background color from parent cell */
+  color: black; /* Text color for day buttons */
+  border: none; /* Remove default button border */
+  padding: 5px; /* Padding inside the button */
+  cursor: pointer; /* Pointer cursor for buttons */
+}
+
+/* Hover state for buttons within day cells */
+.calendar .rbc-month-view .rbc-date-cell button:hover {
+  background-color: #f0f0f0; /* Light grey background on hover */
+}
+
+/* Focus state for buttons within day cells */
+.calendar .rbc-month-view .rbc-date-cell button:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 5px 2px rgba(0, 128, 128, 0.5); /* Custom focus outline */
+}
+
+/* Style for dates representing the previous month */
+.calendar .rbc-month-view .rbc-off-range-bg {
+  background-color: inherit; /* Inherit background color from parent cell */
+}
+
+/* Style for cells representing dates outside the current month */
+.calendar .rbc-off-range-bg {
+  background-color: #ccc; /* Darker grey background for cells representing dates outside the current month */
+}
+
+
