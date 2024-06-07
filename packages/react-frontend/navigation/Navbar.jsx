@@ -25,7 +25,9 @@ const Navbar = ({ handleLogout, copyLink }) => {
           alt="logo"
           style={{ marginRight: "10px" }}
         />
-        <span className="ml-2" style={{ marginTop: "5px" }}>UnderOneRoof</span> 
+        <span className="ml-2" style={{ marginTop: "5px" }}>
+          UnderOneRoof
+        </span>
         <div style={{ marginLeft: "20px", marginTop: "5px", fontSize: "1rem" }}>
           <NavLink
             to="/"
@@ -35,17 +37,17 @@ const Navbar = ({ handleLogout, copyLink }) => {
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
             })}
-          > 
+          >
             {({ isActive }) => (
-            <span
-              style={{
-                textDecoration: isActive ? "underline" : "none",
-                cursor: "pointer",
-              }}
-            >
-              Home
-            </span>
-          )}
+              <span
+                style={{
+                  textDecoration: isActive ? "underline" : "none",
+                  cursor: "pointer",
+                }}
+              >
+                Home
+              </span>
+            )}
           </NavLink>
           <NavLink
             to="/agreement"
@@ -54,37 +56,40 @@ const Navbar = ({ handleLogout, copyLink }) => {
               fontWeight: isActive ? "bold" : "normal",
               textDecoration: "none",
               color: isActive ? "black" : "inherit",
-              
             })}
           >
-             {({ isActive }) => (
-            <span
-              style={{
-                textDecoration: isActive ? "underline" : "none",
-                // cursor: "pointer",
-              }}
-            >
-              Roommate Agreement Form
-            </span>
-          )}
+            {({ isActive }) => (
+              <span
+                style={{
+                  textDecoration: isActive ? "underline" : "none",
+                  // cursor: "pointer",
+                }}
+              >
+                Roommate Agreement Form
+              </span>
+            )}
           </NavLink>
         </div>
       </div>
       <div className="ml-2 d-flex align-items-center">
         {copyMessage && (
-          <span className="text-success" 
-            style={{ marginRight: "10px", marginTop: "-5px" }}>
+          <span
+            className="text-success"
+            style={{ marginRight: "10px", marginTop: "-5px" }}
+          >
             <span style={{ color: "#0a978d" }}>{copyMessage}</span>
           </span>
         )}
-        <button className="btn"
+        <button
+          className="btn"
           style={{
             marginRight: "10px",
             backgroundColor: "#00AA9E",
             borderColor: "#0a978d",
-            color: "#ffffff", 
-          }} 
-          onClick={handleCopyLink}>
+            color: "#ffffff",
+          }}
+          onClick={handleCopyLink}
+        >
           Invite Roommates
         </button>
         <button className="btn btn-outline-danger" onClick={handleLogout}>

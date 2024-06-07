@@ -20,12 +20,11 @@ function GroupForm(props) {
 
   function submitForm() {
     //debugger;
-    console.log(group.name);
     props
       .handleSubmit(group)
       .then((response) => {
         if (response.status === 401) {
-          setErrorMessage("Invalid group name1.");
+          setErrorMessage("Invalid group name.");
         } else {
           // Reset error message if login succeeds
           setErrorMessage("");

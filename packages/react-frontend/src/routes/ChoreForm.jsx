@@ -85,7 +85,7 @@ function ChoreForm(props) {
                 boxShadow: "0 0 0 2px #fff",
                 cursor: "pointer",
                 marginLeft: "1px",
-                marginTop: "4px"
+                marginTop: "4px",
               }}
             />
           </label>
@@ -103,7 +103,12 @@ function ChoreForm(props) {
           type="button"
           value="Add Chore"
           onClick={submitForm}
-          style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "-10px", marginBottom: "25px" }}
+          style={{
+            backgroundColor: "#00AA9E",
+            borderColor: "#0a978d",
+            marginTop: "-10px",
+            marginBottom: "25px",
+          }}
         />
       </div>
     </form>

@@ -40,15 +40,15 @@ app.get("/users", authenticateUser, (req, res) => {
   });
 });
 
-app.get("/events", authenticateUser, (req, res) => {
-  const event = req.query.event;
-  const name = req.query.name;
-  let promise = eventServices.getEvents(event, name);
-  promise.then((result) => {
-    result = { events_list: result };
-    res.send(result);
-  });
-});
+// app.get("/events", authenticateUser, (req, res) => {
+//   const event = req.query.event;
+//   const name = req.query.name;
+//   let promise = eventServices.getEvents(event, name);
+//   promise.then((result) => {
+//     result = { events_list: result };
+//     res.send(result);
+//   });
+// });
 
 app.get("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"]; //or req.params.id
@@ -132,9 +132,50 @@ app.put("/chores/:id", authenticateUser, (req, res) => {
     if (!result) {
       res.status(404).send("Resource not found.");
     } else {
-      console.log("put backend");
-      console.log(result);
       res.status(200).send(result);
+    }
+  });
+});
+
+//for events
+app.get("/events", authenticateUser, (req, res) => {
+  const event = req.query.event;
+  const name = req.query.name;
+  let promise = eventServices.getEvents(event, name);
+  promise.then((result) => {
+    result = { events_list: result };
+    res.send(result);
+  });
+});
+
+app.post("/events", authenticateUser, (req, res) => {
+  const eventToAdd = req.body;
+  const promise = eventServices.addEvent(eventToAdd);
+  promise.then((newEvent) => {
+    res.status(201).send(newEvent);
+  });
+});
+
+app.get("/events/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"]; //or req.params.id
+  let promise = eventServices.findEventById(id);
+  promise.then((result) => {
+    if (result === undefined) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.delete("/events/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = eventServices.deleteEventById(id);
+  promise.then((result) => {
+    if (!result) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.status(204).send();
     }
   });
 });
@@ -142,45 +183,45 @@ app.put("/chores/:id", authenticateUser, (req, res) => {
 // for groups
 app.get("/groups", authenticateUser, (req, res) => {
   const roommate = req.query.roommate;
-  console.log("in backend");
-  console.log(roommate);
   let promise = groupServices.findGroupByRoommate(roommate);
   promise.then((result) => {
-    console.log("before result");
-    console.log(result);
     res.send(result);
   });
 });
 
 app.get("/groups/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
-  console.log(id);
-  console.log("in backend");
   let promise = groupServices.findGroupById(id);
   promise.then((result) => {
-    console.log("before result");
-    console.log(result);
     res.send(result);
   });
 });
 
-app.get("/groups/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  console.log(id);
-  console.log("in backend");
-  let promise = groupServices.findGroupById(id);
-  promise.then((result) => {
-    console.log("before result");
-    console.log(result);
-    res.send(result);
-  });
-});
+// app.get("/groups/:id", authenticateUser, (req, res) => {
+//   const id = req.params["id"];
+//   let promise = groupServices.findGroupById(id);
+//   promise.then((result) => {
+//     res.send(result);
+//   });
+// });
 
 app.post("/groups", authenticateUser, (req, res) => {
   const groupToAdd = req.body;
   const promise = groupServices.addGroup(groupToAdd);
   promise.then((newGroup) => {
     res.status(201).send(newGroup);
+  });
+});
+
+app.put("/groups/:id", authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  let promise = groupServices.updateGroupById(id, req.body);
+  promise.then((result) => {
+    if (!result) {
+      res.status(404).send("Resource not found.");
+    } else {
+      res.status(200).send(result);
+    }
   });
 });
 
@@ -271,63 +312,60 @@ app.post("/preferences", authenticateUser, (req, res) => {
   });
 });
 
-app.post("/events", authenticateUser, (req, res) => {
-  //console.log("the body",req.body);
-  const eventToAdd = req.body;
-  const promise = eventServices.addEvent(eventToAdd);
-  promise.then((newEvent) => {
-    res.status(201).send(newEvent);
-  });
-});
+// app.post("/events", authenticateUser, (req, res) => {
+//   const eventToAdd = req.body;
+//   const promise = eventServices.addEvent(eventToAdd);
+//   promise.then((newEvent) => {
+//     res.status(201).send(newEvent);
+//   });
+// });
 
-app.put("/groups/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = groupServices.updateGroupById(id, req.body);
-  promise.then((result) => {
-    if (!result) {
-      res.status(404).send("Resource not found.");
-    } else {
-      console.log("put backend");
-      console.log(result);
-      res.status(200).send(result);
-    }
-  });
-});
+// app.put("/groups/:id", authenticateUser, (req, res) => {
+//   const id = req.params["id"];
+//   let promise = groupServices.updateGroupById(id, req.body);
+//   promise.then((result) => {
+//     if (!result) {
+//       res.status(404).send("Resource not found.");
+//     } else {
+//       res.status(200).send(result);
+//     }
+//   });
+// });
 
-app.get("/events/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"]; //or req.params.id
-  let promise = eventServices.findEventById(id);
-  promise.then((result) => {
-    if (result === undefined) {
-      res.status(404).send("Resource not found.");
-    } else {
-      res.send(result);
-    }
-  });
-});
+// app.get("/events/:id", authenticateUser, (req, res) => {
+//   const id = req.params["id"]; //or req.params.id
+//   let promise = eventServices.findEventById(id);
+//   promise.then((result) => {
+//     if (result === undefined) {
+//       res.status(404).send("Resource not found.");
+//     } else {
+//       res.send(result);
+//     }
+//   });
+// });
 
-app.delete("/events/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = eventServices.deleteEventById(id);
-  promise.then((result) => {
-    if (!result) {
-      res.status(404).send("Resource not found.");
-    } else {
-      res.status(204).send();
-    }
-  });
-});
-app.delete("/events/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  let promise = eventServices.deleteEventById(id);
-  promise.then((result) => {
-    if (!result) {
-      res.status(404).send("Resource not found.");
-    } else {
-      res.status(204).send();
-    }
-  });
-});
+// app.delete("/events/:id", authenticateUser, (req, res) => {
+//   const id = req.params["id"];
+//   let promise = eventServices.deleteEventById(id);
+//   promise.then((result) => {
+//     if (!result) {
+//       res.status(404).send("Resource not found.");
+//     } else {
+//       res.status(204).send();
+//     }
+//   });
+// });
+// app.delete("/events/:id", authenticateUser, (req, res) => {
+//   const id = req.params["id"];
+//   let promise = eventServices.deleteEventById(id);
+//   promise.then((result) => {
+//     if (!result) {
+//       res.status(404).send("Resource not found.");
+//     } else {
+//       res.status(204).send();
+//     }
+//   });
+// });
 
 // for unavailabilities
 app.get("/unavailabilities", authenticateUser, (req, res) => {

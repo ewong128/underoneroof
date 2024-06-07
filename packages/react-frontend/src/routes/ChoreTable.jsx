@@ -22,8 +22,12 @@ function TableHeader() {
       </tr>
       <tr>
         <th style={{ width: "25%", backgroundColor: "#f8f9fa" }}>Chore</th>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Assigned to...</th>
-        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Day of the Week</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>
+          Assigned to...
+        </th>
+        <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>
+          Day of the Week
+        </th>
         <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Status</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Completed</th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
@@ -146,7 +150,14 @@ function TableBody(props) {
 
 function ChoreTable(props) {
   return (
-    <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
+    <div
+      style={{
+        marginTop: "30px",
+        paddingTop: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+      }}
+    >
       <table>
         <TableHeader />
         <TableBody

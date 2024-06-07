@@ -38,7 +38,6 @@ function TableBody(props) {
     return <caption>Data Unavailable</caption>;
   }
 
-  console.log(props.unavailabilityData);
   const rows = props.unavailabilityData.map((row, index) => {
     const roommateColor = row.color || "#FFFFFF";
     const textColor = getLuminance(roommateColor) < 0.5 ? "#FFFFFF" : "#000000";

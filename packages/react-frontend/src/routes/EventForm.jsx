@@ -43,7 +43,14 @@ function EventForm(props) {
 
   return (
     <form>
-      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", gridTemplateColumns: "repeat(4, 1fr)" }}>
+      <div
+        style={{
+          display: "grid",
+          gap: "10px",
+          marginBottom: "10px",
+          gridTemplateColumns: "repeat(4, 1fr)",
+        }}
+      >
         <div>
           <label htmlFor="startDate">Start Date</label>
           <input
@@ -89,7 +96,15 @@ function EventForm(props) {
           />
         </div>
       </div>
-      <div style={{ display: "grid", gap: "10px", marginBottom: "10px", marginTop: "-20px", gridTemplateColumns: "repeat(4, 1fr)" }}>
+      <div
+        style={{
+          display: "grid",
+          gap: "10px",
+          marginBottom: "10px",
+          marginTop: "-20px",
+          gridTemplateColumns: "repeat(4, 1fr)",
+        }}
+      >
         <div>
           <label htmlFor="name">Roommate</label>
           <input
@@ -139,7 +154,7 @@ function EventForm(props) {
                 boxShadow: "0 0 0 2px #fff",
                 cursor: "pointer",
                 marginLeft: "1px",
-                marginTop: "4px"
+                marginTop: "4px",
               }}
             />
           </label>
