@@ -1,0 +1,11 @@
+{
+  "printWidth": 80,                // Limit lines to 80 characters
+  "tabWidth": 2,                   // Use 2 spaces per indentation level
+  "useTabs": false,                // Indent lines with spaces, not tabs
+  "semi": true,                    // Add a semicolon at the end of every statement
+  "singleQuote": false,            // Use double quotes instead of single quotes
+  "trailingComma": "es5",          // Add trailing commas where valid in ES5 (objects, arrays, etc.)
+  "bracketSpacing": true,          // Print spaces between brackets in object literals
+  "arrowParens": "always",         // Always include parens for arrow functions
+  "endOfLine": "lf"                // Use linefeed (\n) as the line ending character
+}
