@@ -25,8 +25,8 @@ function addChore(chore) {
   return promise;
 }
 
-function updateChoreById(id,body) {
-  const promise = choreModel.findByIdAndUpdate(id, body, {new : true});
+function updateChoreById(id, body) {
+  const promise = choreModel.findByIdAndUpdate(id, body, { new: true });
   return promise;
 }
 
@@ -54,5 +54,5 @@ export default {
   findChoreByRoommate,
   findChoreByChoreRoommate,
   updateChoreById,
-  deleteChoreById
+  deleteChoreById,
 };

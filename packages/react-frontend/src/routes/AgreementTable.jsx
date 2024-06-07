@@ -14,7 +14,9 @@ function AgreementTable({ agreementData, removeAgreement }) {
           border: "1px solid #ccc",
         }}
       >
-        <caption style={{ textAlign: "center" }}>No agreements submitted.</caption>
+        <caption style={{ textAlign: "center" }}>
+          No agreements submitted.
+        </caption>
       </table>
     );
   }
@@ -33,25 +35,46 @@ function AgreementTable({ agreementData, removeAgreement }) {
         <img
           src={checkIcon}
           alt="Check Icon"
-          style={{ width: "20px", height: "20px", marginRight: "7px", marginTop: "1px" }}
+          style={{
+            width: "20px",
+            height: "20px",
+            marginRight: "7px",
+            marginTop: "1px",
+          }}
         />
         <h2 style={{ margin: 0, fontSize: "1.5rem" }}>Emergency Contacts</h2>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-starto" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "flex-starto",
+        }}
+      >
         {agreements.map((agreement, index) => (
-          <div key={index} style={{ width: "calc(25% - 10px)", marginBottom: "20px" }}>
-            <h3 style={{ color: "#0a978d", fontSize: "1.5rem" }}> {currentUser}'s Contact </h3>
+          <div
+            key={index}
+            style={{ width: "calc(25% - 10px)", marginBottom: "20px" }}
+          >
+            <h3 style={{ color: "#0a978d", fontSize: "1.5rem" }}>
+              {" "}
+              {currentUser}'s Contact{" "}
+            </h3>
             <p>
-              <strong>Emergency Contact Relation:</strong> <p>{agreement.emergencyContactRelation}</p>
+              <strong>Emergency Contact Relation:</strong>{" "}
+              <p>{agreement.emergencyContactRelation}</p>
             </p>
             <p>
-              <strong>Emergency Contact Name:</strong> <p>{agreement.emergencyContactName}</p>
+              <strong>Emergency Contact Name:</strong>{" "}
+              <p>{agreement.emergencyContactName}</p>
             </p>
             <p>
-              <strong>Emergency Contact Email:</strong> <p>{agreement.emergencyContactEmail}</p>
+              <strong>Emergency Contact Email:</strong>{" "}
+              <p>{agreement.emergencyContactEmail}</p>
             </p>
             <p>
-              <strong>Emergency Contact Phone:</strong> <p>{agreement.emergencyContactPhone}</p>
+              <strong>Emergency Contact Phone:</strong>{" "}
+              <p>{agreement.emergencyContactPhone}</p>
             </p>
             <button
               onClick={() => removeAgreement(index)}
