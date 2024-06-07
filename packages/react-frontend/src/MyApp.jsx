@@ -25,8 +25,8 @@ import { jwtDecode } from "jwt-decode";
 ("");
 
 function MyApp() {
-  const link = "https://underoneroof.azurewebsites.net";
-  //const link = "http://localhost:8000";
+  //const link = "https://underoneroof.azurewebsites.net";
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -241,14 +241,14 @@ function MyApp() {
         if (json) {
           group_id = json[0]._id.toString();
 
-          // navigator.clipboard.writeText(
-          //   "Http://localhost:5173/login?next=acceptInvitation?group=" +
-          //     group_id
-          // );
           navigator.clipboard.writeText(
-            "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" +
+            "Http://localhost:5173/login?next=acceptInvitation?group=" +
               group_id
           );
+          // navigator.clipboard.writeText(
+          //   "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" +
+          //     group_id
+          // );
         }
       })
       .catch((error) => {

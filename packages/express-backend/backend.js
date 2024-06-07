@@ -361,10 +361,10 @@ app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
 
-app.listen(process.env.PORT || port, () => {
-  console.log("REST API is listening.");
-});
-
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
+// app.listen(process.env.PORT || port, () => {
+//   console.log("REST API is listening.");
 // });
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
