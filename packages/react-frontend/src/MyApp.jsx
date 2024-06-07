@@ -25,8 +25,8 @@ import { jwtDecode } from "jwt-decode";
 ("");
 
 function MyApp() {
-  const link = "https://underoneroof.azurewebsites.net";
-  // const link = "http://localhost:8000";
+  // const link = "https://underoneroof.azurewebsites.net";
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -204,13 +204,13 @@ function MyApp() {
         if (json) {
           group_id = json[0]._id.toString();
           console.log(group_id);
-          // navigator.clipboard.writeText(
-          //   "Http://localhost:5173/login?next=acceptInvitation?group=" +
-          //     group_id
-          // );
           navigator.clipboard.writeText(
-          "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" + group_id
+            "Http://localhost:5173/login?next=acceptInvitation?group=" +
+              group_id
           );
+          // navigator.clipboard.writeText(
+          // "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" + group_id
+          // );
         } else {
           //setChores(null);
         }
@@ -580,7 +580,7 @@ function MyApp() {
             return i !== index;
           });
           setContacts(updated);
-  
+
           // Check if all contacts have been submitted
           fetchGroup(currentUser)
             .then((res) => (res.status === 200 ? res.json() : undefined))
@@ -598,7 +598,7 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-  }  
+  }
 
   function deleteContact(id) {
     const promise = fetch(link + "/contacts/" + id, {
@@ -629,14 +629,16 @@ function MyApp() {
           .then((json) => {
             if (json) {
               setContacts([...contacts, json]);
-              
+
               // Check if all contacts have been submitted
               fetchGroup(localStorage.getItem("current user"))
                 .then((res) => (res.status === 200 ? res.json() : undefined))
                 .then((groupJson) => {
                   if (groupJson) {
                     const roommatesCount = groupJson[0].roommates.length;
-                    setAllContactsSubmitted([...contacts, json].length === roommatesCount);
+                    setAllContactsSubmitted(
+                      [...contacts, json].length === roommatesCount
+                    );
                   }
                 })
                 .catch((error) => {
@@ -651,7 +653,7 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
-  }  
+  }
 
   function fetchContacts() {
     const promise = fetch(link + "/contacts", {
