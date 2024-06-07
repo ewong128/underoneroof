@@ -24,8 +24,12 @@ function TableHeader() {
         <th style={{ width: "20%", backgroundColor: "#f8f9fa" }}>Date</th>
         <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Time</th>
         <th style={{ width: "12%", backgroundColor: "#f8f9fa" }}>By...</th>
-        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>Name of Event</th>
-        <th style={{ width: "25%", backgroundColor: "#f8f9fa" }}>Description</th>
+        <th style={{ width: "15%", backgroundColor: "#f8f9fa" }}>
+          Name of Event
+        </th>
+        <th style={{ width: "25%", backgroundColor: "#f8f9fa" }}>
+          Description
+        </th>
         <th style={{ width: "10%", backgroundColor: "#f8f9fa" }}>Delete</th>
       </tr>
     </thead>
@@ -33,7 +37,7 @@ function TableHeader() {
 }
 
 function convertTo12HourFormat(time) {
-  if(time) {
+  if (time) {
     let [hour, minute] = time.split(":").map(Number);
     const ampm = hour >= 12 ? "PM" : "AM";
     hour = hour % 12 || 12; // Convert 0 to 12
@@ -122,7 +126,14 @@ function TableBody(props) {
 
 function EventTable(props) {
   return (
-    <div style={{ marginTop: "30px", paddingTop: "20px", border: "1px solid #ccc", borderRadius: "10px" }}>
+    <div
+      style={{
+        marginTop: "30px",
+        paddingTop: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+      }}
+    >
       <table>
         <TableHeader />
         <TableBody
@@ -135,4 +146,3 @@ function EventTable(props) {
 }
 
 export default EventTable;
-

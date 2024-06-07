@@ -8,10 +8,10 @@ function Invitation(props) {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setGroup({ ...group, name: value });
-  }
+  // function handleChange(event) {
+  //   const { name, value } = event.target;
+  //   setGroup({ ...group, name: value });
+  // }
 
   function submitForm() {
     const group_id = searchParams.get("group");
@@ -48,7 +48,12 @@ function Invitation(props) {
           type="button"
           value={"Accept Invitation"}
           onClick={submitForm}
-          style={{ width: "100%", marginTop: "10px", backgroundColor: "#00AA9E", borderColor: "#0a978d", }}
+          style={{
+            width: "100%",
+            marginTop: "10px",
+            backgroundColor: "#00AA9E",
+            borderColor: "#0a978d",
+          }}
         />
       </form>
       {errorMessage && <p>{errorMessage}</p>}

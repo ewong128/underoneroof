@@ -20,7 +20,6 @@ function Login(props) {
   const [searchParams] = useSearchParams();
 
   let next = searchParams.get("next");
-  console.log(next);
 
   localStorage.setItem("link", "/signup?next=" + next);
 
@@ -41,8 +40,6 @@ function Login(props) {
   }
 
   function submitForm() {
-    //const next = searchParams.get("next");
-    console.log(next);
     props
       .handleSubmit(creds, rememberMe, next)
       .then((response) => {

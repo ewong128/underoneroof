@@ -25,8 +25,8 @@ import { jwtDecode } from "jwt-decode";
 ("");
 
 function MyApp() {
-  const link = "https://underoneroof.azurewebsites.net";
-  // const link = "http://localhost:8000";
+  //const link = "https://underoneroof.azurewebsites.net";
+  const link = "http://localhost:8000";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -44,12 +44,9 @@ function MyApp() {
 
   function addAuthHeader(otherHeaders = {}) {
     const storedToken = localStorage.getItem("token");
-    console.log("in auth header");
     if (!storedToken || storedToken === INVALID_TOKEN) {
-      console.log('no stored token found"');
       return otherHeaders;
     } else {
-      console.log("token in header");
       return {
         ...otherHeaders,
         Authorization: `Bearer ${storedToken}`,
@@ -73,7 +70,6 @@ function MyApp() {
   }
 
   function signupUser(creds, rememberMe, next) {
-    console.log(next);
     creds.rememberMe = rememberMe;
     localStorage.setItem("current user", creds.username);
     const promise = fetch(link + "/signup", {
@@ -103,7 +99,6 @@ function MyApp() {
     return promise;
   }
 
-  // check for next component
   function loginUser(creds, rememberMe, next) {
     localStorage.setItem("current user", creds.username);
     creds.rememberMe = rememberMe;
@@ -120,7 +115,6 @@ function MyApp() {
             .json()
             .then((payload) => handleTokenSave(payload.token, rememberMe));
           setMessage(`Login successful; auth token saved`);
-          console.log(next);
           navigate(next || "/");
         } else {
           setMessage(`Login Error ${response.status}: ${response.data}`);
@@ -156,10 +150,54 @@ function MyApp() {
 
   // group
 
+  function updateGroup(group_id) {
+    const currentUser = localStorage.getItem("current user");
+    let group = null;
+
+    fetchGroupById(group_id)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          group = json;
+
+          putGroup(group_id, currentUser, group)
+            .then(() => {
+              navigate("/");
+              //if (res.status === 200) return res.json();
+            })
+            // .then((json) => {
+            //   if (json) {
+            //     console.log(json);
+            //   }
+            // })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function putGroup(id, currentUser, group) {
+    const promise = fetch(link + "/groups/" + id, {
+      method: "PUT",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify({
+        group: group.name,
+        roommates: group.roommates.concat([currentUser]),
+      }),
+    });
+
+    return promise;
+  }
+
   function createGroup(group, rememberMe) {
     const currentUser = localStorage.getItem("current user");
     group.roommates.push(currentUser);
-    console.log(group.roommates);
     //group.roommates.append(currentUser);
     const promise = fetch(link + "/groups", {
       method: "POST",
@@ -173,13 +211,11 @@ function MyApp() {
       })
       .then((json) => {
         if (json) {
-          console.log("create group");
           setGroup([...groups, json]);
           navigate("/");
         }
       })
       .catch((error) => {
-        console.log("error in create group");
         console.log(error);
       });
 
@@ -194,49 +230,59 @@ function MyApp() {
     return promise;
   }
 
+  function fetchGroupById(id) {
+    const promise = fetch(link + "/groups/" + id, {
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
   function copyLink() {
     const currentUser = localStorage.getItem("current user");
     let group_id = "";
-    console.log(currentUser);
+
     fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
           group_id = json[0]._id.toString();
-          console.log(group_id);
-          // navigator.clipboard.writeText(
-          //   "Http://localhost:5173/login?next=acceptInvitation?group=" +
-          //     group_id
-          // );
+
           navigator.clipboard.writeText(
-            "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" +
+            "Http://localhost:5173/login?next=acceptInvitation?group=" +
               group_id
           );
-        } else {
-          //setChores(null);
+          // navigator.clipboard.writeText(
+          //   "https://witty-grass-005ac821e.5.azurestaticapps.net/login?next=acceptInvitation?group=" +
+          //     group_id,
+          // );
         }
+        // else {
+        //   //setChores(null);
+        // }
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  function removeOneEvent(index) {
-    const id = events[index]._id;
+  // function removeOneEvent(index) {
+  //   const id = events[index]._id;
 
-    deleteEvents(id)
-      .then((res) => {
-        if (res.status === 204) {
-          const updated = events.filter((events, i) => {
-            return i !== index;
-          });
-          setEvents(updated);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  //   deleteEvents(id)
+  //     .then((res) => {
+  //       if (res.status === 204) {
+  //         const updated = events.filter((events, i) => {
+  //           return i !== index;
+  //         });
+  //         setEvents(updated);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
   // chore table
 
   function removeOneChore(index) {
@@ -262,55 +308,19 @@ function MyApp() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           chore.group_id = json[0]._id.valueOf();
-          console.log(chore.group_id);
+
           return chore;
         }
       })
       .then((chore) => {
-        console.log(chore);
         postChore(chore)
           .then((res) => {
             if (res.status === 201) return res.json();
           })
           .then((json) => {
             if (json) {
-              console.log(json);
               setChores([...chores, json]);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function updateEventList(events) {
-    const currentUser = localStorage.getItem("current user");
-    fetchGroup(currentUser)
-      .then((res) => (res.status === 200 ? res.json() : undefined))
-      .then((json) => {
-        if (json) {
-          console.log(json);
-          events.group_id = json[0]._id.valueOf();
-          console.log(events.group_id);
-          return events;
-        }
-      })
-      .then((events) => {
-        console.log(events);
-        postEvent(events)
-          .then((res) => {
-            if (res.status === 201) return res.json();
-          })
-          .then((json) => {
-            if (json) {
-              // setEvents([...events, json])
-              setEvents((prevEvents) => [...prevEvents, json]);
             }
           })
           .catch((error) => {
@@ -327,145 +337,6 @@ function MyApp() {
       headers: addAuthHeader(),
     });
 
-    return promise;
-  }
-
-  function fetchGroup(username) {
-    const promise = fetch(link + "/groups?roommate=" + username, {
-      headers: addAuthHeader(),
-    });
-
-    return promise;
-  }
-
-  function fetchGroupById(id) {
-    const promise = fetch(link + "/groups/" + id, {
-      headers: addAuthHeader(),
-    });
-
-    return promise;
-  }
-
-  function fetchGroup(username) {
-    const promise = fetch(link + "/groups?roommate=" + username, {
-      headers: addAuthHeader(),
-    });
-
-    return promise;
-  }
-
-  function fetchGroupById(id) {
-    const promise = fetch(link + "/groups/" + id, {
-      headers: addAuthHeader(),
-    });
-
-    return promise;
-  }
-
-  useEffect(() => {
-    let group_id;
-    let currentUser = localStorage.getItem("current user");
-    console.log(currentUser);
-    fetchGroup(currentUser)
-      .then((res) => (res.status === 200 ? res.json() : undefined))
-      .then((json) => {
-        if (json) {
-          console.log(json);
-          group_id = json[0]._id.valueOf();
-          console.log(group_id);
-          return group_id;
-        }
-      })
-      .then((group_id) => {
-        fetchChores()
-          .then((res) => (res.status === 200 ? res.json() : undefined))
-          .then((json) => {
-            if (json) {
-              console.log(json);
-              const updated = json["chores_list"].filter((chore, i) => {
-                console.log(chore);
-                console.log(chore.group_id);
-                console.log(group_id);
-                return chore.group_id === group_id;
-              });
-              console.log(updated);
-              setChores(updated);
-            } else {
-              setChores(null);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
-  }, [token]);
-
-  function fetchEvents() {
-    const promise = fetch(link + "/events", {
-      headers: addAuthHeader(),
-    });
-    return promise;
-  }
-
-  useEffect(() => {
-    let group_id;
-    let currentUser = localStorage.getItem("current user");
-    console.log(currentUser);
-    fetchGroup(currentUser)
-      .then((res) => (res.status === 200 ? res.json() : undefined))
-      .then((json) => {
-        if (json) {
-          console.log(json);
-          group_id = json[0]._id.valueOf();
-          console.log(group_id);
-          return group_id;
-        }
-      })
-      .then((group_id) => {
-        fetchEvents()
-          .then((res) => (res.status === 200 ? res.json() : undefined))
-          .then((json) => {
-            if (json) {
-              const updated = json["events_list"].filter((event, i) => {
-                console.log(event);
-                console.log(event.group_id);
-                console.log(group_id);
-                return event.group_id === group_id;
-              });
-              setEvents(updated);
-            } else {
-              setEvents(null);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
-  }, [token]);
-
-  //useEffect(() => {
-  //fetchEvents()
-  //.then((res) => (res.status === 200 ? res.json() : undefined))
-  //.then((json) => {
-  //if (json) {
-  //setEvents(json["events_list"]);
-  //} else {
-  //setEvents(null);
-  //}
-  //})
-  //.catch((error) => {
-  //console.log(error);
-  //});
-  //}, [token]);
-
-  function postEvent(event) {
-    const promise = fetch(link + "/events", {
-      method: "POST",
-      headers: addAuthHeader({
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(event),
-    });
     return promise;
   }
 
@@ -489,14 +360,7 @@ function MyApp() {
 
     return promise;
   }
-  function deleteEvents(id) {
-    const promise = fetch(link + "/events/" + id, {
-      method: "DELETE",
-      headers: addAuthHeader(),
-    });
 
-    return promise;
-  }
   function updateChore(index) {
     const id = chores[index]._id;
     const chore = chores[index];
@@ -506,7 +370,6 @@ function MyApp() {
       })
       .then((json) => {
         if (json) {
-          console.log(json);
           setChores(chores.toSpliced(index, 1, json));
         }
       })
@@ -516,9 +379,6 @@ function MyApp() {
   }
 
   function putChore(id, chore) {
-    console.log(chore);
-    console.log(chore.chore);
-    console.log(chore.roommate);
     const promise = fetch(link + "/chores/" + id, {
       method: "PUT",
       headers: addAuthHeader({
@@ -535,18 +395,274 @@ function MyApp() {
     return promise;
   }
 
-  // contacts form
+  // function updateEventList(events) {
+  //   const currentUser = localStorage.getItem("current user");
+  //   fetchGroup(currentUser)
+  //     .then((res) => (res.status === 200 ? res.json() : undefined))
+  //     .then((json) => {
+  //       if (json) {
+  //         events.group_id = json[0]._id.valueOf();
+  //         return events;
+  //       }
+  //     })
+  //     .then((events) => {
+  //       postEvent(events)
+  //         .then((res) => {
+  //           if (res.status === 201) return res.json();
+  //         })
+  //         .then((json) => {
+  //           if (json) {
+  //             // setEvents([...events, json])
+  //             setEvents((prevEvents) => [...prevEvents, json]);
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  // function fetchChores() {
+  //   const promise = fetch(link + "/chores", {
+  //     headers: addAuthHeader(),
+  //   });
+
+  //   return promise;
+  // }
+
+  // function fetchGroup(username) {
+  //   const promise = fetch(link + "/groups?roommate=" + username, {
+  //     headers: addAuthHeader(),
+  //   });
+
+  //   return promise;
+  // }
+
+  // function fetchGroupById(id) {
+  //   const promise = fetch(link + "/groups/" + id, {
+  //     headers: addAuthHeader(),
+  //   });
+
+  //   return promise;
+  // }
+
+  // function fetchGroup(username) {
+  //   const promise = fetch(link + "/groups?roommate=" + username, {
+  //     headers: addAuthHeader(),
+  //   });
+
+  //   return promise;
+  // }
+
+  // function fetchGroupById(id) {
+  //   const promise = fetch(link + "/groups/" + id, {
+  //     headers: addAuthHeader(),
+  //   });
+
+  //   return promise;
+  // }
+
   useEffect(() => {
     let group_id;
     let currentUser = localStorage.getItem("current user");
-    console.log(currentUser);
     fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           group_id = json[0]._id.valueOf();
-          console.log(group_id);
+          return group_id;
+        }
+      })
+      .then((group_id) => {
+        fetchChores()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["chores_list"].filter((chore, i) => {
+                return chore.group_id === group_id;
+              });
+              setChores(updated);
+            } else {
+              setChores(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+  }, [token]);
+
+  //events
+  function fetchEvents() {
+    const promise = fetch(link + "/events", {
+      headers: addAuthHeader(),
+    });
+    return promise;
+  }
+
+  useEffect(() => {
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          group_id = json[0]._id.valueOf();
+          return group_id;
+        }
+      })
+      .then((group_id) => {
+        fetchEvents()
+          .then((res) => (res.status === 200 ? res.json() : undefined))
+          .then((json) => {
+            if (json) {
+              const updated = json["events_list"].filter((event, i) => {
+                return event.group_id === group_id;
+              });
+              setEvents(updated);
+            } else {
+              setEvents(null);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+  }, [token]);
+
+  function updateEventList(events) {
+    const currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          events.group_id = json[0]._id.valueOf();
+          return events;
+        }
+      })
+      .then((events) => {
+        postEvent(events)
+          .then((res) => {
+            if (res.status === 201) return res.json();
+          })
+          .then((json) => {
+            if (json) {
+              // setEvents([...events, json])
+              setEvents((prevEvents) => [...prevEvents, json]);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function postEvent(event) {
+    const promise = fetch(link + "/events", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      body: JSON.stringify(event),
+    });
+    return promise;
+  }
+
+  function removeOneEvent(index) {
+    const id = events[index]._id;
+
+    deleteEvents(id)
+      .then((res) => {
+        if (res.status === 204) {
+          const updated = events.filter((events, i) => {
+            return i !== index;
+          });
+          setEvents(updated);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // function postChore(chore) {
+  //   const promise = fetch(link + "/chores", {
+  //     method: "POST",
+  //     headers: addAuthHeader({
+  //       "Content-Type": "application/json",
+  //     }),
+  //     body: JSON.stringify(chore),
+  //   });
+
+  //   return promise;
+  // }
+
+  // function deleteChore(id) {
+  //   const promise = fetch(link + "/chores/" + id, {
+  //     method: "DELETE",
+  //     headers: addAuthHeader(),
+  //   });
+
+  //   return promise;
+  // }
+  function deleteEvents(id) {
+    const promise = fetch(link + "/events/" + id, {
+      method: "DELETE",
+      headers: addAuthHeader(),
+    });
+
+    return promise;
+  }
+
+  // function updateChore(index) {
+  //   const id = chores[index]._id;
+  //   const chore = chores[index];
+  //   putChore(id, chore)
+  //     .then((res) => {
+  //       if (res.status === 200) return res.json();
+  //     })
+  //     .then((json) => {
+  //       if (json) {
+  //         setChores(chores.toSpliced(index, 1, json));
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  // function putChore(id, chore) {
+  //   const promise = fetch(link + "/chores/" + id, {
+  //     method: "PUT",
+  //     headers: addAuthHeader({
+  //       "Content-Type": "application/json",
+  //     }),
+  //     body: JSON.stringify({
+  //       chore: chore.chore,
+  //       roommate: chore.roommate,
+  //       status: "Completed",
+  //       day: chore.day,
+  //     }),
+  //   });
+
+  //   return promise;
+  // }
+
+  // contacts form
+  useEffect(() => {
+    let group_id;
+    let currentUser = localStorage.getItem("current user");
+    fetchGroup(currentUser)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          group_id = json[0]._id.valueOf();
           return group_id;
         }
       })
@@ -556,9 +672,6 @@ function MyApp() {
           .then((json) => {
             if (json) {
               const updated = json["contacts_list"].filter((contact, i) => {
-                console.log(contact);
-                console.log(contact.group_id);
-                console.log(group_id);
                 return contact.group_id === group_id;
               });
               setContacts(updated);
@@ -615,14 +728,11 @@ function MyApp() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           contact.group_id = json[0]._id.valueOf();
-          console.log(contact.group_id);
           return contact;
         }
       })
       .then((contact) => {
-        console.log(contact);
         postContact(contact)
           .then((res) => {
             if (res.status === 201) return res.json();
@@ -679,14 +789,11 @@ function MyApp() {
   useEffect(() => {
     let group_id;
     let currentUser = localStorage.getItem("current user");
-    console.log(currentUser);
     fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           group_id = json[0]._id.valueOf();
-          console.log(group_id);
           return group_id;
         }
       })
@@ -696,9 +803,6 @@ function MyApp() {
           .then((json) => {
             if (json) {
               const updated = json["contacts_list"].filter((contact, i) => {
-                console.log(contact);
-                console.log(contact.group_id);
-                console.log(group_id);
                 return contact.group_id === group_id;
               });
               setContacts(updated);
@@ -730,14 +834,11 @@ function MyApp() {
   useEffect(() => {
     let group_id;
     let currentUser = localStorage.getItem("current user");
-    console.log(currentUser);
     fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           group_id = json[0]._id.valueOf();
-          console.log(group_id);
           return group_id;
         }
       })
@@ -748,9 +849,6 @@ function MyApp() {
             if (json) {
               const updated = json["preferences_list"].filter(
                 (preference, i) => {
-                  console.log(preference);
-                  console.log(preference.group_id);
-                  console.log(group_id);
                   return preference.group_id === group_id;
                 }
               );
@@ -792,14 +890,11 @@ function MyApp() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           preference.group_id = json[0]._id.valueOf();
-          console.log(preference.group_id);
           return preference;
         }
       })
       .then((preference) => {
-        console.log(preference);
         postPreference(preference)
           .then((res) => {
             if (res.status === 201) return res.json();
@@ -818,54 +913,50 @@ function MyApp() {
       });
   }
 
-  function updateGroup(group_id) {
-    const currentUser = localStorage.getItem("current user");
-    console.log("before put group");
-    console.log(group_id);
-    let group = null;
+  // function updateGroup(group_id) {
+  //   const currentUser = localStorage.getItem("current user");
+  //   let group = null;
 
-    fetchGroupById(group_id)
-      .then((res) => (res.status === 200 ? res.json() : undefined))
-      .then((json) => {
-        if (json) {
-          console.log(json);
-          console.log(json[0]);
-          group = json;
+  //   fetchGroupById(group_id)
+  //     .then((res) => (res.status === 200 ? res.json() : undefined))
+  //     .then((json) => {
+  //       if (json) {
+  //         group = json;
 
-          putGroup(group_id, currentUser, group)
-            .then((res) => {
-              navigate("/");
-              //if (res.status === 200) return res.json();
-            })
-            .then((json) => {
-              if (json) {
-                console.log(json);
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  //         putGroup(group_id, currentUser, group)
+  //           .then((res) => {
+  //             navigate("/");
+  //             //if (res.status === 200) return res.json();
+  //           })
+  //           .then((json) => {
+  //             if (json) {
+  //               console.log(json);
+  //             }
+  //           })
+  //           .catch((error) => {
+  //             console.log(error);
+  //           });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
 
-  function putGroup(id, currentUser, group) {
-    const promise = fetch(link + "/groups/" + id, {
-      method: "PUT",
-      headers: addAuthHeader({
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify({
-        group: group.name,
-        roommates: group.roommates.concat([currentUser]),
-      }),
-    });
+  // function putGroup(id, currentUser, group) {
+  //   const promise = fetch(link + "/groups/" + id, {
+  //     method: "PUT",
+  //     headers: addAuthHeader({
+  //       "Content-Type": "application/json",
+  //     }),
+  //     body: JSON.stringify({
+  //       group: group.name,
+  //       roommates: group.roommates.concat([currentUser]),
+  //     }),
+  //   });
 
-    return promise;
-  }
+  //   return promise;
+  // }
 
   function fetchPreferences() {
     const promise = fetch(link + "/preferences", {
@@ -912,14 +1003,11 @@ function MyApp() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           unavailability.group_id = json[0]._id.valueOf();
-          console.log(unavailability.group_id);
           return unavailability;
         }
       })
       .then((unavailability) => {
-        console.log(unavailability);
         postUnavailability(unavailability)
           .then((res) => {
             if (res.status === 201) return res.json();
@@ -952,14 +1040,11 @@ function MyApp() {
   useEffect(() => {
     let group_id;
     let currentUser = localStorage.getItem("current user");
-    console.log(currentUser);
     fetchGroup(currentUser)
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          console.log(json);
           group_id = json[0]._id.valueOf();
-          console.log(group_id);
           return group_id;
         }
       })
@@ -968,16 +1053,11 @@ function MyApp() {
           .then((res) => (res.status === 200 ? res.json() : undefined))
           .then((json) => {
             if (json) {
-              console.log(json);
               const updated = json["unavailabilities_list"].filter(
                 (unavalability, i) => {
-                  console.log(unavalability);
-                  console.log(unavalability.group_id);
-                  console.log(group_id);
                   return unavalability.group_id === group_id;
                 }
               );
-              console.log(updated);
 
               setUnavailabilities(updated);
             } else {

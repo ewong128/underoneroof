@@ -107,7 +107,7 @@ function UnavailabilityForm(props) {
                 boxShadow: "0 0 0 2px #fff",
                 cursor: "pointer",
                 marginLeft: "1px",
-                marginTop: "3px"
+                marginTop: "3px",
               }}
             />
           </label>
@@ -125,7 +125,12 @@ function UnavailabilityForm(props) {
           type="button"
           value="Add Unavailability"
           onClick={submitForm}
-          style={{ backgroundColor: "#00AA9E", borderColor: "#0a978d", marginTop: "-10px", marginBottom: "60px" }}
+          style={{
+            backgroundColor: "#00AA9E",
+            borderColor: "#0a978d",
+            marginTop: "-10px",
+            marginBottom: "60px",
+          }}
         />
       </div>
     </form>
