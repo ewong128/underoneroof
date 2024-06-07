@@ -1,5 +1,6 @@
 import groupModel from "../models/groups.js";
 
+
 function getGroups(roommate) {
   let promise;
   if (roommate === undefined) {

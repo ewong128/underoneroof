@@ -1,6 +1,6 @@
 // backend.js
-import express from "express";
 import mongoose from "mongoose";
+import express from "express";
 import cors from "cors";
 import userServices from "./services/user-service.js";
 import choreServices from "./services/chore-services.js";
@@ -396,10 +396,10 @@ app.post("/signup", registerUser);
 
 app.post("/login", loginUser);
 
-app.listen(process.env.PORT || port, () => {
-  console.log("REST API is listening.");
-});
-
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
+// app.listen(process.env.PORT || port, () => {
+//   console.log("REST API is listening.");
 // });
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
