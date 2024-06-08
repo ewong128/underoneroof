@@ -19,10 +19,10 @@ in the packages/express-backend --> npm run dev;\
 
 From here, the collaborator should be able to edit and run the files to view the application. For more information look below.
 
-Note that to run locally (not on Azure) the user needs to "switch" the link in MyApp.jsx to "HTTP://localhost:8000" and subsequently change the port in backend.js to listen at "HTTP://localhost:${8000}." The code required for these changes should be on top of one another, which can be done by commenting out the current code to the ones just mentioned.
-
 Details Regarding MICROSOFT AZURE:
 Currently, the MyApp.jsx in the packages/react-frontend/src folder, has two lines of code that state "const link". The main branch has the const link to be the azure link, but can switched back to the locally link. This means that the azure link will let any user with this link https://witty-grass-005ac821e.5.azurestaticapps.net to access the web application. If the user would like to access the web application locally, the collaborator would need to comment out the azure link and uncomment the locally link. Another addition, is in the backend where the "REST API is listening" block of code is needed to be commented out and replace by block of code that has the port "Example app listening". Given that the locally link is uncommented, the collaborator will be able to view the web application locally, by running the npm run dev in the express-backend and npm start in react-frontend.
+
+Note that to run locally (not on Azure) the user also needs to "switch" the link in MyApp.jsx for the function "copyLink," which is required for the roommate invite link to work correctly. Currently, the invite link is set up with our Azure generated link, but to run locally it needs to be replaced with the string "Http://localhost:5173/login?next=acceptInvitation?group=" before the group_id. This can be done by re-commenting the commented section of code above the current one in the "copyLink" function, and subsequently commenting out the Azure link.
 
 ## Documentation on Prettier and Lint:
 This repository utilizes a comprehensive ESLint configuration that extends from eslint:recommended. 
