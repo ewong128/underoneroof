@@ -35,4 +35,5 @@ Key enforced rules include error prevention in areas such as async promise execu
 ![sequence diagram-20](https://github.com/ewong128/underoneroof/assets/102551601/81245196-f17f-4396-bd25-a8b144d8816c)
 
 ## Testing:
+<img width="557" alt="Screen Shot 2024-06-03 at 1 00 31 PM" src="https://github.com/ewong128/underoneroof/assets/118489163/3f8dd97a-b340-49b1-be10-5e5de5d6f4e2">
 For testing code we put our tests on a branch called "testing". 
