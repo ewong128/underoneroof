@@ -32,5 +32,5 @@ Key enforced rules include error prevention in areas such as async promise execu
 ## Sequence Diagram for User Logins:
 ![sequence diagram-20](https://github.com/ewong128/underoneroof/assets/102551601/81245196-f17f-4396-bd25-a8b144d8816c)
 
-##Testing:
+## Testing:
 For testing code we put our tests on a branch called "testing". 
